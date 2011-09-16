@@ -73,3 +73,10 @@ textarea
 {
     display: none;
 }
+
+/* Styles for main layout forms
+-----------------------------------------------------------*/
+
+DIV#header { color: #0099CC; border-bottom: 2px solid #002C71; font: bold 5em "Arial Narrow", "Franklin Gothic Medium", Arial; }
+DIV#content { border-left: 2px solid gray; margin-left: 9em; padding: 1em; }
+DIV#menu { float: left; width: 8em; padding-top: 0; }
