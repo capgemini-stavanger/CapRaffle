@@ -49,14 +49,20 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapRaffle.Domain\CapRaffle.Domain.csproj">
       <Project>{2507A4C1-228A-4FCB-AAA0-AB31FA15932B}</Project>
       <Name>CapRaffle.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CapRaffle\CapRaffle.WebUI.csproj">
+      <Project>{4B13A5B6-460D-4244-8145-B83FAA38A330}</Project>
+      <Name>CapRaffle.WebUI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CategoryControllerTests.cs" />
     <Compile Include="EventRepositoryTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
