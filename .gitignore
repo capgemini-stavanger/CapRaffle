@@ -1,0 +1,7 @@
+*.suo
+*.class
+*.cache
+*.exe
+bin
+obj
+
