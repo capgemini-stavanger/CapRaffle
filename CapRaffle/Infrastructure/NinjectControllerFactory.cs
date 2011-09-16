@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Ninject;
+using CapRaffle.Domain.Abstract;
 
 namespace CapRaffle.Infrastructure
 {
@@ -26,6 +27,8 @@ namespace CapRaffle.Infrastructure
         {
             //Add bindings here
             //eks: ninjectKernel.Bind<Interface>().To<ImplementationOfInterface>();
+
+            
         }
     }
 }

@@ -6,6 +6,10 @@ using NUnit.Framework;
 using CapRaffle.Domain.Abstract;
 using Moq;
 using CapRaffle.Domain.Model;
+using CapRaffle.Controllers;
+using System.Web.Mvc;
+using Event = CapRaffle.Domain.Model.Event;
+using MvcContrib.TestHelper;
 
 namespace CapRaffle.UnitTests
 {
@@ -13,8 +17,11 @@ namespace CapRaffle.UnitTests
     public class EventRepositoryTests
     {
         Mock<IEventRepository> mock;
+        Event newevent;
+        EventController controller;
 
-        public EventRepositoryTests()
+        [SetUp]
+        public void setup()
         {
             mock = new Mock<IEventRepository>();
             mock.Setup(m => m.Events).Returns(new Event[] {
@@ -24,13 +31,9 @@ namespace CapRaffle.UnitTests
                 new Event { EventId = 4, Name = "event 4", Created = DateTime.Now, Creator = "creator 4", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 4 },
                 new Event { EventId = 5, Name = "event 5", Created = DateTime.Now, Creator = "creator 5", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 5 }
             }.AsQueryable());
-        }
+            
 
-        [Test]
-        public void Can_Create_New_Events()
-        {
-            //Arrange
-            var newevent = new Event
+            newevent = new Event
             {
                 EventId = 10,
                 Name = "CanCreateNewEvents",
@@ -41,12 +44,37 @@ namespace CapRaffle.UnitTests
                 CategoryId = 10
             };
 
-            //Action
-            mock.Object.CreateEvent(newevent);
+            controller = new EventController(mock.Object);
+        }
+
+        [Test]
+        public void Can_Create_New_Events()
+        {
+            //Arrange
+
+            //Act
+            var result = controller.Create(newevent);
 
             //Assert
-            Assert.AreEqual(6, mock.Object.Events);
+            result.AssertActionRedirect().ToAction("Index");
+            mock.Verify(m => m.SaveEvent(newevent));
+        }
+
+        [Test]
+        public void Cannot_Save_Invalid_Changes()
+        {
+            //Arrange
+            controller.ModelState.AddModelError("error", "error");
+
+            //Act
+            var result = controller.Create(newevent);
+            
+            //Assert            
+            result.AssertViewRendered().ForView(string.Empty);
+            mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
         }
 
     }
+
+
 }
