@@ -34,32 +34,32 @@ namespace CapRaffle.Domain.Model
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    public partial class CapRaffleEntities : ObjectContext
+    public partial class CapRaffleContext : ObjectContext
     {
         #region Constructors
     
         /// <summary>
-        /// Initializes a new CapRaffleEntities object using the connection string found in the 'CapRaffleEntities' section of the application configuration file.
+        /// Initializes a new CapRaffleContext object using the connection string found in the 'CapRaffleContext' section of the application configuration file.
         /// </summary>
-        public CapRaffleEntities() : base("name=CapRaffleEntities", "CapRaffleEntities")
+        public CapRaffleContext() : base("name=CapRaffleContext", "CapRaffleContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new CapRaffleEntities object.
+        /// Initialize a new CapRaffleContext object.
         /// </summary>
-        public CapRaffleEntities(string connectionString) : base(connectionString, "CapRaffleEntities")
+        public CapRaffleContext(string connectionString) : base(connectionString, "CapRaffleContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
         }
     
         /// <summary>
-        /// Initialize a new CapRaffleEntities object.
+        /// Initialize a new CapRaffleContext object.
         /// </summary>
-        public CapRaffleEntities(EntityConnection connection) : base(connection, "CapRaffleEntities")
+        public CapRaffleContext(EntityConnection connection) : base(connection, "CapRaffleContext")
         {
             this.ContextOptions.LazyLoadingEnabled = true;
             OnContextCreated();
@@ -78,124 +78,124 @@ namespace CapRaffle.Domain.Model
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Category> Category
+        public ObjectSet<Category> Categories
         {
             get
             {
-                if ((_Category == null))
+                if ((_Categories == null))
                 {
-                    _Category = base.CreateObjectSet<Category>("Category");
+                    _Categories = base.CreateObjectSet<Category>("Categories");
                 }
-                return _Category;
+                return _Categories;
             }
         }
-        private ObjectSet<Category> _Category;
+        private ObjectSet<Category> _Categories;
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Event> Event
+        public ObjectSet<Event> Events
         {
             get
             {
-                if ((_Event == null))
+                if ((_Events == null))
                 {
-                    _Event = base.CreateObjectSet<Event>("Event");
+                    _Events = base.CreateObjectSet<Event>("Events");
                 }
-                return _Event;
+                return _Events;
             }
         }
-        private ObjectSet<Event> _Event;
+        private ObjectSet<Event> _Events;
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<User> User
+        public ObjectSet<User> Users
         {
             get
             {
-                if ((_User == null))
+                if ((_Users == null))
                 {
-                    _User = base.CreateObjectSet<User>("User");
+                    _Users = base.CreateObjectSet<User>("Users");
                 }
-                return _User;
+                return _Users;
             }
         }
-        private ObjectSet<User> _User;
+        private ObjectSet<User> _Users;
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<UserEvent> UserEvent
+        public ObjectSet<UserEvent> UserEvents
         {
             get
             {
-                if ((_UserEvent == null))
+                if ((_UserEvents == null))
                 {
-                    _UserEvent = base.CreateObjectSet<UserEvent>("UserEvent");
+                    _UserEvents = base.CreateObjectSet<UserEvent>("UserEvents");
                 }
-                return _UserEvent;
+                return _UserEvents;
             }
         }
-        private ObjectSet<UserEvent> _UserEvent;
+        private ObjectSet<UserEvent> _UserEvents;
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Winner> Winner
+        public ObjectSet<Winner> Winners
         {
             get
             {
-                if ((_Winner == null))
+                if ((_Winners == null))
                 {
-                    _Winner = base.CreateObjectSet<Winner>("Winner");
+                    _Winners = base.CreateObjectSet<Winner>("Winners");
                 }
-                return _Winner;
+                return _Winners;
             }
         }
-        private ObjectSet<Winner> _Winner;
+        private ObjectSet<Winner> _Winners;
 
         #endregion
         #region AddTo Methods
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Category EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Categories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToCategory(Category category)
+        public void AddToCategories(Category category)
         {
-            base.AddObject("Category", category);
+            base.AddObject("Categories", category);
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Event EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Events EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToEvent(Event @event)
+        public void AddToEvents(Event @event)
         {
-            base.AddObject("Event", @event);
+            base.AddObject("Events", @event);
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the User EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Users EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToUser(User user)
+        public void AddToUsers(User user)
         {
-            base.AddObject("User", user);
+            base.AddObject("Users", user);
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the UserEvent EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the UserEvents EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToUserEvent(UserEvent userEvent)
+        public void AddToUserEvents(UserEvent userEvent)
         {
-            base.AddObject("UserEvent", userEvent);
+            base.AddObject("UserEvents", userEvent);
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Winner EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Winners EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToWinner(Winner winner)
+        public void AddToWinners(Winner winner)
         {
-            base.AddObject("Winner", winner);
+            base.AddObject("Winners", winner);
         }
 
         #endregion
@@ -292,7 +292,7 @@ namespace CapRaffle.Domain.Model
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_Event_Category", "Event")]
-        public EntityCollection<Event> Event
+        public EntityCollection<Event> Events
         {
             get
             {
@@ -314,7 +314,7 @@ namespace CapRaffle.Domain.Model
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_Winner_Category", "Winner")]
-        public EntityCollection<Winner> Winner
+        public EntityCollection<Winner> Winners
         {
             get
             {
@@ -636,7 +636,7 @@ namespace CapRaffle.Domain.Model
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_UserEvent_Event", "UserEvent")]
-        public EntityCollection<UserEvent> UserEvent
+        public EntityCollection<UserEvent> UserEvents
         {
             get
             {
@@ -658,7 +658,7 @@ namespace CapRaffle.Domain.Model
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_Winner_Event", "Winner")]
-        public EntityCollection<Winner> Winner
+        public EntityCollection<Winner> Winners
         {
             get
             {
@@ -762,7 +762,7 @@ namespace CapRaffle.Domain.Model
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_UserEvent_User", "UserEvent")]
-        public EntityCollection<UserEvent> UserEvent
+        public EntityCollection<UserEvent> UserEvents
         {
             get
             {
@@ -784,7 +784,7 @@ namespace CapRaffle.Domain.Model
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_Winner_User", "Winner")]
-        public EntityCollection<Winner> Winner
+        public EntityCollection<Winner> Winners
         {
             get
             {
