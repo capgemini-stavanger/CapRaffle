@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CapRaffleModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="CapRaffleModelStoreContainer">
+          <EntitySet Name="Category" EntityType="CapRaffleModel.Store.Category" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Event" EntityType="CapRaffleModel.Store.Event" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="User" EntityType="CapRaffleModel.Store.User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserEvent" EntityType="CapRaffleModel.Store.UserEvent" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Winner" EntityType="CapRaffleModel.Store.Winner" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Event_Category" Association="CapRaffleModel.Store.FK_Event_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserEvent_Event" Association="CapRaffleModel.Store.FK_UserEvent_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="UserEvent" EntitySet="UserEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserEvent_User" Association="CapRaffleModel.Store.FK_UserEvent_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserEvent" EntitySet="UserEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner_Category" Association="CapRaffleModel.Store.FK_Winner_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner_Event" Association="CapRaffleModel.Store.FK_Winner_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner_User" Association="CapRaffleModel.Store.FK_Winner_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+          <Property Name="Created" Type="datetime" Nullable="false" />
+          <Property Name="Creator" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="AvailableSpots" Type="int" Nullable="false" />
+          <Property Name="InformationUrl" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar" MaxLength="300" />
+          <Property Name="DeadLine" Type="datetime" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="Password" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="UserEvent">
+          <Key>
+            <PropertyRef Name="UserEmail" />
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="UserEmail" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="EventId" Type="int" Nullable="false" />
+          <Property Name="NumberOfSpots" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Winner">
+          <Key>
+            <PropertyRef Name="EventId" />
+            <PropertyRef Name="UserEmail" />
+          </Key>
+          <Property Name="EventId" Type="int" Nullable="false" />
+          <Property Name="UserEmail" Type="nvarchar" Nullable="false" MaxLength="150" />
+          <Property Name="NumberOfSpotsWon" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="CatogoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Event_Category">
+          <End Role="Category" Type="CapRaffleModel.Store.Category" Multiplicity="1" />
+          <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserEvent_Event">
+          <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="1" />
+          <End Role="UserEvent" Type="CapRaffleModel.Store.UserEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventId" />
+            </Principal>
+            <Dependent Role="UserEvent">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserEvent_User">
+          <End Role="User" Type="CapRaffleModel.Store.User" Multiplicity="1" />
+          <End Role="UserEvent" Type="CapRaffleModel.Store.UserEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="UserEvent">
+              <PropertyRef Name="UserEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner_Category">
+          <End Role="Category" Type="CapRaffleModel.Store.Category" Multiplicity="1" />
+          <End Role="Winner" Type="CapRaffleModel.Store.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="CatogoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner_Event">
+          <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="1" />
+          <End Role="Winner" Type="CapRaffleModel.Store.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventId" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner_User">
+          <End Role="User" Type="CapRaffleModel.Store.User" Multiplicity="1" />
+          <End Role="Winner" Type="CapRaffleModel.Store.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="UserEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CapRaffleModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="CapRaffleEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Category" EntityType="CapRaffleModel.Category" />
+          <EntitySet Name="Event" EntityType="CapRaffleModel.Event" />
+          <EntitySet Name="User" EntityType="CapRaffleModel.User" />
+          <EntitySet Name="UserEvent" EntityType="CapRaffleModel.UserEvent" />
+          <EntitySet Name="Winner" EntityType="CapRaffleModel.Winner" />
+          <AssociationSet Name="FK_Event_Category" Association="CapRaffleModel.FK_Event_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner_Category" Association="CapRaffleModel.FK_Winner_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserEvent_Event" Association="CapRaffleModel.FK_UserEvent_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="UserEvent" EntitySet="UserEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner_Event" Association="CapRaffleModel.FK_Winner_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserEvent_User" Association="CapRaffleModel.FK_UserEvent_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserEvent" EntitySet="UserEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Winner_User" Association="CapRaffleModel.FK_Winner_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <NavigationProperty Name="Event" Relationship="CapRaffleModel.FK_Event_Category" FromRole="Category" ToRole="Event" />
+          <NavigationProperty Name="Winner" Relationship="CapRaffleModel.FK_Winner_Category" FromRole="Category" ToRole="Winner" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" />
+          <Property Name="Creator" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="AvailableSpots" Type="Int32" Nullable="false" />
+          <Property Name="InformationUrl" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="300" Unicode="true" FixedLength="false" />
+          <Property Name="DeadLine" Type="DateTime" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="CapRaffleModel.FK_Event_Category" FromRole="Event" ToRole="Category" />
+          <NavigationProperty Name="UserEvent" Relationship="CapRaffleModel.FK_UserEvent_Event" FromRole="Event" ToRole="UserEvent" />
+          <NavigationProperty Name="Winner" Relationship="CapRaffleModel.FK_Winner_Event" FromRole="Event" ToRole="Winner" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Email" />
+          </Key>
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="Password" Type="String" MaxLength="150" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="UserEvent" Relationship="CapRaffleModel.FK_UserEvent_User" FromRole="User" ToRole="UserEvent" />
+          <NavigationProperty Name="Winner" Relationship="CapRaffleModel.FK_Winner_User" FromRole="User" ToRole="Winner" />
+        </EntityType>
+        <EntityType Name="UserEvent">
+          <Key>
+            <PropertyRef Name="UserEmail" />
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <Property Name="NumberOfSpots" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="CapRaffleModel.FK_UserEvent_Event" FromRole="UserEvent" ToRole="Event" />
+          <NavigationProperty Name="User" Relationship="CapRaffleModel.FK_UserEvent_User" FromRole="UserEvent" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Winner">
+          <Key>
+            <PropertyRef Name="EventId" />
+            <PropertyRef Name="UserEmail" />
+          </Key>
+          <Property Name="EventId" Type="Int32" Nullable="false" />
+          <Property Name="UserEmail" Type="String" Nullable="false" MaxLength="150" Unicode="true" FixedLength="false" />
+          <Property Name="NumberOfSpotsWon" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" />
+          <Property Name="CatogoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="CapRaffleModel.FK_Winner_Category" FromRole="Winner" ToRole="Category" />
+          <NavigationProperty Name="Event" Relationship="CapRaffleModel.FK_Winner_Event" FromRole="Winner" ToRole="Event" />
+          <NavigationProperty Name="User" Relationship="CapRaffleModel.FK_Winner_User" FromRole="Winner" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Event_Category">
+          <End Role="Category" Type="CapRaffleModel.Category" Multiplicity="1" />
+          <End Role="Event" Type="CapRaffleModel.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner_Category">
+          <End Role="Category" Type="CapRaffleModel.Category" Multiplicity="1" />
+          <End Role="Winner" Type="CapRaffleModel.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="CatogoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserEvent_Event">
+          <End Role="Event" Type="CapRaffleModel.Event" Multiplicity="1" />
+          <End Role="UserEvent" Type="CapRaffleModel.UserEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventId" />
+            </Principal>
+            <Dependent Role="UserEvent">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner_Event">
+          <End Role="Event" Type="CapRaffleModel.Event" Multiplicity="1" />
+          <End Role="Winner" Type="CapRaffleModel.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventId" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserEvent_User">
+          <End Role="User" Type="CapRaffleModel.User" Multiplicity="1" />
+          <End Role="UserEvent" Type="CapRaffleModel.UserEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="UserEvent">
+              <PropertyRef Name="UserEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Winner_User">
+          <End Role="User" Type="CapRaffleModel.User" Multiplicity="1" />
+          <End Role="Winner" Type="CapRaffleModel.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Email" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="UserEmail" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CapRaffleModelStoreContainer" CdmEntityContainer="CapRaffleEntities">
+          <EntitySetMapping Name="Category"><EntityTypeMapping TypeName="CapRaffleModel.Category"><MappingFragment StoreEntitySet="Category">
+            <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Event"><EntityTypeMapping TypeName="CapRaffleModel.Event"><MappingFragment StoreEntitySet="Event">
+            <ScalarProperty Name="EventId" ColumnName="EventId" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Created" ColumnName="Created" />
+            <ScalarProperty Name="Creator" ColumnName="Creator" />
+            <ScalarProperty Name="AvailableSpots" ColumnName="AvailableSpots" />
+            <ScalarProperty Name="InformationUrl" ColumnName="InformationUrl" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
+            <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="User"><EntityTypeMapping TypeName="CapRaffleModel.User"><MappingFragment StoreEntitySet="User">
+            <ScalarProperty Name="Email" ColumnName="Email" />
+            <ScalarProperty Name="Password" ColumnName="Password" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="UserEvent"><EntityTypeMapping TypeName="CapRaffleModel.UserEvent"><MappingFragment StoreEntitySet="UserEvent">
+            <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+            <ScalarProperty Name="EventId" ColumnName="EventId" />
+            <ScalarProperty Name="NumberOfSpots" ColumnName="NumberOfSpots" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Winner"><EntityTypeMapping TypeName="CapRaffleModel.Winner"><MappingFragment StoreEntitySet="Winner">
+            <ScalarProperty Name="EventId" ColumnName="EventId" />
+            <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+            <ScalarProperty Name="NumberOfSpotsWon" ColumnName="NumberOfSpotsWon" />
+            <ScalarProperty Name="Date" ColumnName="Date" />
+            <ScalarProperty Name="CatogoryId" ColumnName="CatogoryId" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="CapRaffle">
+        <EntityTypeShape EntityType="CapRaffleModel.Category" Width="1.5" PointX="0.75" PointY="4.125" Height="1.7879850260416665" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapRaffleModel.Event" Width="1.5" PointX="3" PointY="2.875" Height="3.3263964843749996" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapRaffleModel.User" Width="1.5" PointX="8.25" PointY="3.125" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapRaffleModel.UserEvent" Width="1.5" PointX="5.375" PointY="4.125" Height="1.9802864583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapRaffleModel.Winner" Width="1.5" PointX="5.25" PointY="0.75" Height="2.5571907552083317" IsExpanded="true" />
+        <AssociationConnector Association="CapRaffleModel.FK_Event_Category" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="5.0189925130208337" />
+          <ConnectorPoint PointX="3" PointY="5.0189925130208337" />
+        </AssociationConnector>
+        <AssociationConnector Association="CapRaffleModel.FK_Winner_Category" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.5" PointY="4.125" />
+          <ConnectorPoint PointX="1.5" PointY="2.0285953776041659" />
+          <ConnectorPoint PointX="5.25" PointY="2.0285953776041659" />
+        </AssociationConnector>
+        <AssociationConnector Association="CapRaffleModel.FK_UserEvent_Event" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="5.1151432291666667" />
+          <ConnectorPoint PointX="5.375" PointY="5.1151432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="CapRaffleModel.FK_Winner_Event" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="3.0910953776041659" />
+          <ConnectorPoint PointX="5.25" PointY="3.0910953776041659" />
+        </AssociationConnector>
+        <AssociationConnector Association="CapRaffleModel.FK_UserEvent_User" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.25" PointY="4.5189925130208328" />
+          <ConnectorPoint PointX="6.875" PointY="4.5189925130208328" />
+        </AssociationConnector>
+        <AssociationConnector Association="CapRaffleModel.FK_Winner_User" ManuallyRouted="false">
+          <ConnectorPoint PointX="9" PointY="3.125" />
+          <ConnectorPoint PointX="9" PointY="1.9374994999999997" />
+          <ConnectorPoint PointX="6.75" PointY="1.9374994999999997" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>
