@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using CapRaffle.Infrastructure;
 
 namespace CapRaffle
 {
@@ -35,6 +36,8 @@ namespace CapRaffle
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
+
+            ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
         }
     }
 }
