@@ -1,0 +1,15 @@
+﻿@model CapRaffle.Models.LogOnViewModel
+@{
+    ViewBag.Title = "LogOn CapRaffle";
+}
+<h2>
+    CapRaffle</h2>
+<p>
+    Please log in:</p>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.EditorForModel()
+    <p>
+        <input type="submit" value="Log in" /></p>
+}
