@@ -77,6 +77,51 @@ textarea
 /* Styles for main layout forms
 -----------------------------------------------------------*/
 
-DIV#header { color: #0099CC; border-bottom: 2px solid #002C71; font: bold 5em "Arial Narrow", "Franklin Gothic Medium", Arial; }
-DIV#content { border-left: 2px solid gray; margin-left: 9em; padding: 1em; }
-DIV#menu { float: left; width: 8em; padding-top: 0; }
+div#header  
+{
+    color: #0099CC; 
+    border-bottom: 2px solid #002C71; 
+    font: bold 5em "Arial Narrow", "Franklin Gothic Medium", Arial; 
+}
+
+div#content  
+{
+    border-left: 2px solid gray; 
+    margin-left: 15em; 
+    padding: 1em; 
+}
+
+div#menu  
+{
+    float: left; 
+    width: 15em; 
+    padding-top: 0; 
+}
+
+
+/* Styles for create and edit events page 
+-----------------------------------------------------------*/
+.event h6
+{
+    margin-top: 0px;
+}
+
+.eventheader
+{
+    margin-bottom: 0px;
+}
+
+.eventForm label
+{
+    font-weight: bold;
+}
+
+.eventForm .text-box 
+{
+    width: 250px;
+}
+
+.eventForm .multi-line
+{
+    height: 200px;
+}

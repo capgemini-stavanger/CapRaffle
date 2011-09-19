@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CapRaffle.Models;
 using CapRaffle.Domain.Model;
 using CapRaffle.Domain.Abstract;
 
@@ -20,17 +21,27 @@ namespace CapRaffle.Controllers
 
         public ActionResult Index()
         {
-            return View(repository.Events);
+            var model = new EventsListViewModel { Events = repository.Events.OrderByDescending(x => x.EventId) };
+            return View(model);
         }
 
         public ActionResult Create()
         {
-            return View();
+            var newevent = new Event();
+
+            //set proposed deadline to next full hour
+            var currentDatetime = DateTime.Now;
+            newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
+            
+            return View(newevent);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Event newEvent)
         {
+            newEvent.Created = DateTime.Now;
+            newEvent.Creator = "NotImplementedLogin";
             if (ModelState.IsValid)
             {
                 repository.SaveEvent(newEvent);
