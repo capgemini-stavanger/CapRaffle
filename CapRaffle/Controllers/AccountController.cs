@@ -97,7 +97,7 @@ namespace CapRaffle.Controllers
            
             if (ModelState.IsValid)
             {
-                if (accountRepository.Create(model.Email, model.Password))
+                if (accountRepository.Create(model.Email, model.Password, model.Name))
                 {
                     return Redirect("/Registered");
                 }

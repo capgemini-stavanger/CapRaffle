@@ -1,0 +1,15 @@
+﻿@model CapRaffle.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Registration</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    @Html.EditorForModel()
+    <p>
+        <input type="submit" value="Register" /></p>
+}

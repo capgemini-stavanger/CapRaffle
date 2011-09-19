@@ -19,7 +19,7 @@ namespace CapRaffle.UnitTests
         {
             mock = new Mock<IAccountRepository>();
             mock.Setup(m => m.Authenticate("test@capgemini.com", "pass1234")).Returns(true);
-            mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             mock.Setup(m => m.ChangePassword("test@capgemini.com", It.IsAny<string>())).Returns(true);
             mock.Setup(m => m.Delete("test@capgemini.com")).Returns(true);
             accountController = new AccountController(mock.Object);
