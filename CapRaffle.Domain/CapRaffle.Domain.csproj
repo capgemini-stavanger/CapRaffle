@@ -38,6 +38,7 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,8 @@
     <Compile Include="Abstract\ICategoryRepository.cs" />
     <Compile Include="Abstract\IEventRepository.cs" />
     <Compile Include="Implementation\EFDbEventRepository.cs" />
+    <Compile Include="Implementation\AccountRepository.cs" />
+    <Compile Include="Implementation\CategoryRepository.cs" />
     <Compile Include="Model\CapRaffle.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

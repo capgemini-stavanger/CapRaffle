@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CapRaffle.Domain.Model;
 
 namespace CapRaffle.Domain.Abstract
 {
     public interface IAccountRepository
     {
-        bool Authenticate(string Email, string password);
-        bool Create(string Email, string password);
-        bool ChangePassword(string Email, string password, string newPassword);
-        bool Delete(string Email);
+        IQueryable<User> Users { get; }
+
+        bool Authenticate(string email, string password);
+        bool Create(string email, string password, string name);
+        bool ChangePassword(string email, string newPassword);
+        bool Delete(string email);
     }
 }

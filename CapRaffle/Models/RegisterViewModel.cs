@@ -14,9 +14,11 @@ namespace CapRaffle.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Password repeated requierd")]
+        [Required(ErrorMessage = "Password requierd")]
         [DataType(DataType.Password)]
         public string PasswordAgain { get; set; }
 
+        [Required(ErrorMessage = "Please enter your name")]
+        public string Name { get; set; }
     }
 }

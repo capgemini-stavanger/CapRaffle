@@ -21,7 +21,7 @@ namespace CapRaffle.Domain.Model
             public string Name { get; set; }
 
             [DataType(DataType.MultilineText)]
-            [StringLength(290, ErrorMessage = "Description can not be more than 300 characters")]
+            [StringLength(300, ErrorMessage = "Description can not be more than 300 characters")]
             public string Description { get; set; }
 
             [Required(ErrorMessage = "Please enter number of available spots on the event")]
