@@ -29,7 +29,7 @@ namespace CapRaffle.Infrastructure
             //Add bindings here
             //eks: ninjectKernel.Bind<Interface>().To<ImplementationOfInterface>();
             ninjectKernel.Bind<IAccountRepository>().To<AccountRepository>();
-            
+            ninjectKernel.Bind<ICategoryRepository>().To<CategoryRepository>();
         }
     }
 }
