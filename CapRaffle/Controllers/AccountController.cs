@@ -18,6 +18,25 @@ namespace CapRaffle.Controllers
             accountRepository = accountRepos;
         }
 
+
+        public ActionResult ChangePassword(string email, string newPassword)
+        {
+            if (accountRepository.ChangePassword(email, newPassword))
+            {
+                TempData["message"] = string.Format("{0} has been saved", email); //Display in view.
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult LogOn(LogOnViewModel model)
         {

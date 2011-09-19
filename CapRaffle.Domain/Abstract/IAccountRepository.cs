@@ -9,7 +9,7 @@ namespace CapRaffle.Domain.Abstract
     {
         bool Authenticate(string Email, string password);
         bool Create(string Email, string password);
-        bool ChangePassword(string Email, string password, string newPassword);
+        bool ChangePassword(string Email, string newPassword);
         bool Delete(string Email);
     }
 }
