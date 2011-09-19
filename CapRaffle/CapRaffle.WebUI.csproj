@@ -159,6 +159,12 @@
     <Content Include="Views\Event\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Account\Register.cshtml" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
     <Content Include="Views\Category\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>

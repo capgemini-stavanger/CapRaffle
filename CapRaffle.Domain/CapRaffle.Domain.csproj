@@ -46,6 +46,7 @@
     <Compile Include="Abstract\IAccountRepository.cs" />
     <Compile Include="Abstract\ICategoryRepository.cs" />
     <Compile Include="Abstract\IEventRepository.cs" />
+    <Compile Include="Implementation\AccountRepository.cs" />
     <Compile Include="Implementation\CategoryRepository.cs" />
     <Compile Include="Model\CapRaffle.Designer.cs">
       <AutoGen>True</AutoGen>

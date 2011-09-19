@@ -18,5 +18,7 @@ namespace CapRaffle.Models
         [DataType(DataType.Password)]
         public string PasswordAgain { get; set; }
 
+        [Required(ErrorMessage = "Please enter your name")]
+        public string Name { get; set; }
     }
 }

@@ -19,6 +19,48 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
+        public ActionResult Delete(string email)
+        {
+            if (ModelState.IsValid)
+            {
+                if(accountRepository.Delete(email))
+                {
+                    TempData["message"] = string.Format("{0} has been saved", email); //Display in view.
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
+        }
+
+        public ActionResult Delete()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string email, string newPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                if (accountRepository.ChangePassword(email, newPassword))
+                {
+                    TempData["message"] = string.Format("{0} has been saved", email); //Display in view.
+                    return RedirectToAction("Index");
+                }
+                else return View();
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult LogOn(LogOnViewModel model)
         {
             if (ModelState.IsValid)
@@ -55,7 +97,7 @@ namespace CapRaffle.Controllers
            
             if (ModelState.IsValid)
             {
-                if (accountRepository.Create(model.Email, model.Password))
+                if (accountRepository.Create(model.Email, model.Password, model.Name))
                 {
                     return Redirect("/Registered");
                 }

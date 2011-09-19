@@ -19,7 +19,9 @@ namespace CapRaffle.UnitTests
         {
             mock = new Mock<IAccountRepository>();
             mock.Setup(m => m.Authenticate("test@capgemini.com", "pass1234")).Returns(true);
-            mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            mock.Setup(m => m.ChangePassword("test@capgemini.com", It.IsAny<string>())).Returns(true);
+            mock.Setup(m => m.Delete("test@capgemini.com")).Returns(true);
             accountController = new AccountController(mock.Object);
         }
 
@@ -93,6 +95,49 @@ namespace CapRaffle.UnitTests
             // Assert
             Assert.IsInstanceOf(typeof(ViewResult), res);
             Assert.IsFalse(((ViewResult)res).ViewData.ModelState.IsValid);
+        }
+
+        [Test]
+        public void Can_Change_Password()
+        {
+            // Arrange
+            string email = "test@capgemini.com";
+            string newPassword = "newPass123";
+
+            // Act
+            ActionResult res = accountController.ChangePassword(email, newPassword);
+
+            // Assert
+            mock.Verify(m => m.ChangePassword(email, newPassword));
+            Assert.IsNotInstanceOf(typeof(ViewResult), res);
+        }
+
+        [Test]
+        public void Can_Not_Change_Password()
+        {
+            // Arrange
+            string email = "test2@capgemini.com";
+            string newPassword = "newPass123";
+
+            // Act
+            ActionResult res = accountController.ChangePassword(email, newPassword);
+
+            // Assert
+            Assert.IsInstanceOf(typeof(ViewResult), res);
+        }
+
+        [Test]
+        public void Can_Delete_User()
+        {
+            // Arrange
+            string email = "test@capgemini.com";
+            
+            // Act
+            ActionResult res = accountController.Delete(email);
+
+            // Assert 
+            mock.Verify(m => m.Delete(email));
+            Assert.IsNotInstanceOf(typeof(ViewResult), res);
         }
     }
 }
