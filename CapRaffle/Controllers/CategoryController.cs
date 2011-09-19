@@ -17,11 +17,24 @@ namespace CapRaffle.Controllers
             repository = repo;
         }
 
-        public ViewResult Create(Category category)
-        {            
-            repository.SaveCategory(category);
+        [HttpPost]
+        public ViewResult Create(Category newCategory)
+        {
+            Category category = repository.Categories
+                .FirstOrDefault(c => c.Name == newCategory.Name);
 
+            if (category == null)
+            {
+                repository.SaveCategory(newCategory);
+                return View("Index");
+            }
+            
             return View();
+        }
+
+        public ViewResult Index()
+        {
+            return View("Index", repository.Categories);
         }
     }
 }
