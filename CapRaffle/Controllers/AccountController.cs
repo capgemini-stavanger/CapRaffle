@@ -18,13 +18,36 @@ namespace CapRaffle.Controllers
             accountRepository = accountRepos;
         }
 
+        [HttpPost]
+        public ActionResult Delete(string email)
+        {
+            if (ModelState.IsValid)
+            {
+                if(accountRepository.Delete(email))
+                {
+                    TempData["message"] = string.Format("{0} has been saved", email); //Display in view.
+                    return RedirectToAction("Index");
+                }
+            }
+            return View();
+        }
 
+        public ActionResult Delete()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public ActionResult ChangePassword(string email, string newPassword)
         {
-            if (accountRepository.ChangePassword(email, newPassword))
+            if (ModelState.IsValid)
             {
-                TempData["message"] = string.Format("{0} has been saved", email); //Display in view.
-                return RedirectToAction("Index");
+                if (accountRepository.ChangePassword(email, newPassword))
+                {
+                    TempData["message"] = string.Format("{0} has been saved", email); //Display in view.
+                    return RedirectToAction("Index");
+                }
+                else return View();
             }
             else
             {
