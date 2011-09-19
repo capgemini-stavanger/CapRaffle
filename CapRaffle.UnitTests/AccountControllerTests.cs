@@ -32,15 +32,17 @@ namespace CapRaffle.UnitTests
             RegisterViewModel model = new RegisterViewModel
             {
                 Email = "test@capgemini.com",
-                Password = "WeAreTheOnes"
+                Password = "WeAreTheOnes",
+                PasswordAgain = "WeAreTheOnes",
+                Name = "name"
             };
 
             // Act
             ActionResult res = accountController.Register(model);
 
             // Assert
+            mock.Verify(m => m.Create(model.Email, model.Password, model.Name));
             Assert.IsInstanceOf(typeof(RedirectResult), res);
-            Assert.AreEqual("/Registered", ((RedirectResult)res).Url);
         }
 
         [Test]
@@ -72,7 +74,7 @@ namespace CapRaffle.UnitTests
             };
 
             // Act
-            ActionResult res = accountController.LogOn(model);
+            ActionResult res = accountController.LogOn(model,"/Index");
 
             // Assert
             Assert.IsInstanceOf(typeof(RedirectResult), res);
@@ -90,7 +92,7 @@ namespace CapRaffle.UnitTests
             };
 
             // Act
-            ActionResult res = accountController.LogOn(model);
+            ActionResult res = accountController.LogOn(model,"/Index");
 
             // Assert
             Assert.IsInstanceOf(typeof(ViewResult), res);
