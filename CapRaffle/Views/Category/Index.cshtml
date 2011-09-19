@@ -1,0 +1,23 @@
+﻿@model CapRaffle.Models.CategoryListViewModel
+
+@{
+    ViewBag.Title = "Categories";
+}
+
+<h2>Categories</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+
+@foreach (var item in Model.Categories)
+{
+    <tr>
+        <th>@item.CategoryId</th>        
+        <th>@item.Name</th>
+    </tr>
+}
+
+</table>

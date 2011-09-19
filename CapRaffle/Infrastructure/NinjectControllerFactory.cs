@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Ninject;
 using CapRaffle.Domain.Abstract;
+using CapRaffle.Domain.Implementation;
 
 namespace CapRaffle.Infrastructure
 {
@@ -28,7 +29,7 @@ namespace CapRaffle.Infrastructure
             //Add bindings here
             //eks: ninjectKernel.Bind<Interface>().To<ImplementationOfInterface>();
 
-            
+            ninjectKernel.Bind<ICategoryRepository>().To<CategoryRepository>();
         }
     }
 }

@@ -9,6 +9,7 @@ using CapRaffle.Controllers;
 using CapRaffle.Domain.Model;
 using MvcContrib.TestHelper;
 using System.Web.Mvc;
+using CapRaffle.Models;
 
 namespace CapRaffle.UnitTests
 {
@@ -58,8 +59,11 @@ namespace CapRaffle.UnitTests
         {
             var result = controller.Index();
 
+            var categoryListViewModel = result.Model as CategoryListViewModel;
+
             mock.Verify(m => m.Categories, Times.Once());
-            result.AssertViewRendered().ForView("Index");
+            result.AssertViewRendered().ForView(string.Empty);
+            Assert.AreEqual(2, categoryListViewModel.Categories.Count());
         }
     }
 }
