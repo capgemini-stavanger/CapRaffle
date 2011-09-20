@@ -49,6 +49,16 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
+        public void Can_Get_Correct_Create_View()
+        {
+            //Arrange
+            //Act
+            var result = controller.Create();
+            //Assert
+            result.AssertViewRendered().ForView("EventForm");
+        }
+
+        [Test]
         public void Can_Create_New_Events()
         {
             //Arrange
@@ -72,7 +82,7 @@ namespace CapRaffle.UnitTests
             var result = controller.Create(newevent);
             
             //Assert            
-            result.AssertViewRendered().ForView(string.Empty);
+            result.AssertViewRendered().ForView("EventForm");
             mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
         }
 
@@ -89,6 +99,20 @@ namespace CapRaffle.UnitTests
             Assert.IsTrue(events.Count == 5);
             Assert.AreEqual(events.First().EventId, 5);
             Assert.AreEqual(events.Last().EventId, 1);
+        }
+
+        [Test]
+        public void Can_Save_Valid_Changes()
+        {
+            //Arrange
+
+            //Act
+            ActionResult result = controller.Edit(newevent.EventId);
+
+            //Assert
+            result.AssertViewRendered().ForView(string.Empty);
+            mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
+
         }
 
 

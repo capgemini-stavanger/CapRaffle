@@ -17,7 +17,6 @@ namespace CapRaffle.Domain.Model
             public int EventId { get; set; }
 
             [Required(ErrorMessage = "Please enter a name for the event")]
-
             public string Name { get; set; }
 
             [DataType(DataType.MultilineText)]

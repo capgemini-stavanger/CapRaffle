@@ -157,14 +157,11 @@
     <Content Include="Views\Event\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Event\Create.cshtml" />
+    <Content Include="Views\Event\EventForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
-
-
-
   <ItemGroup>
     <Content Include="Views\Category\Create.cshtml" />
   </ItemGroup>

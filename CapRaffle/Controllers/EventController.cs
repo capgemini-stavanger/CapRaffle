@@ -32,8 +32,8 @@ namespace CapRaffle.Controllers
             //set proposed deadline to next full hour
             var currentDatetime = DateTime.Now;
             newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
-            
-            return View(newevent);
+            ViewBag.action = "Create";
+            return View("EventForm", newevent);
         }
 
         [HttpPost]
@@ -47,6 +47,19 @@ namespace CapRaffle.Controllers
                 repository.SaveEvent(newEvent);
                 return RedirectToAction("Index");
             }
+            return View("EventForm");
+        }
+
+        public ActionResult Edit(int id)
+        {
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Event changedEvent)
+        {
             return View();
         }
     }
