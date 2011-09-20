@@ -61,6 +61,13 @@ namespace CapRaffle.Controllers
                 this.Success("The event has been created.");
                 return RedirectToAction("Index");
             }
+
+            IEnumerable<SelectListItem> categories = categoryRepository.Categories.ToList().Select(x =>
+                new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
+                );
+
+            categories.FirstOrDefault().Selected = true;
+            model.Categories = categories;
             return View("EventForm", model);
         }
 
