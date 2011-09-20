@@ -17,45 +17,57 @@ namespace CapRaffle.Controllers
         {
             repository = repo;
         }
-
-        public ViewResult Create()
-        {
-            return View(new Category());
-        }
-
-        [HttpPost]
-        public ActionResult Create(Category newCategory)
-        {            
-            if (ModelStateAndCategoryNameIsValid(newCategory))
-            {
-                Category category = repository.Categories
-                    .FirstOrDefault(c => c.Name == newCategory.Name);
-
-                if (category == null)
-                {
-                    repository.SaveCategory(newCategory);
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "A category with that name already exists.");
-                    return View();
-                }
-            }            
-            return View();
-        }
-
-        private bool ModelStateAndCategoryNameIsValid(Category category)
-        {
-            return ModelState.IsValid && !string.IsNullOrEmpty(newCategory.Name);
-        }
-
+  
         public ViewResult Index()
         {
             var model = new CategoryListViewModel { Categories = repository.Categories };
             model.Categories.OrderBy(p => p.Name);
 
             return View(model);
+        }
+
+        public ViewResult Create()
+        {
+            return View("Edit", new Category());
+        }
+        
+        public ViewResult Edit(int categoryId)
+        {
+            Category category = repository.Categories.FirstOrDefault(
+                f => f.CategoryId == categoryId);
+            return View(category);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(Category category)
+        {
+            if (ModelStateAndCategoryNameIsValid(category))
+            {
+                if (CategoryAlreadyExists(category))
+                {
+                    ModelState.AddModelError("", "A category with that name already exists.");
+                    return View(category);
+                }
+                else
+                {
+                    repository.SaveCategory(category);
+                    return RedirectToAction("Index");
+                }
+            }
+            return View(category);
+        }
+
+        private bool ModelStateAndCategoryNameIsValid(Category category)
+        {
+            return ModelState.IsValid && !string.IsNullOrEmpty(category.Name);
+        }
+
+        private bool CategoryAlreadyExists(Category category)
+        {
+            Category existingCategory = repository.Categories
+                    .FirstOrDefault(c => c.Name == category.Name);
+
+            return existingCategory != null && category.CategoryId == 0;
         }
     }
 }

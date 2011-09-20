@@ -25,8 +25,8 @@ namespace CapRaffle.UnitTests
             mock = new Mock<ICategoryRepository>();
             mock.Setup(m => m.Categories).Returns(new Category[] 
             {
-                new Category { Name = "Hockey" },
-                new Category { Name = "Other" }
+                new Category { CategoryId = 1, Name = "Hockey" },
+                new Category { CategoryId = 2, Name = "Other" }
             }.AsQueryable());
             
             controller = new CategoryController(mock.Object);
@@ -34,32 +34,43 @@ namespace CapRaffle.UnitTests
 
         [Test]
         public void Can_Create_New_Category()
-        {           
-            var newCategory = new Category { Name = "Soccer" };
+        {
+            ViewResult result = (ViewResult)controller.Create();
 
-            var result = controller.Create(newCategory);
-            
-            mock.Verify(m => m.SaveCategory(newCategory), Times.Once());
-            result.AssertActionRedirect().ToAction("Index");
+            result.AssertViewRendered().ForView("Edit");
+            Assert.IsInstanceOf(typeof(Category), result.Model);
         }
 
         [Test]
-        public void Can_Not_Create_Category_That_Already_Exists()
+        public void Can_Save_New_Category()
         {
-            var newCategory = new Category { Name = "Hockey" };
+            ViewResult target = (ViewResult)controller.Create();
 
-            var result = controller.Create(newCategory);
+            Category newCategory = target.Model as Category;
+            newCategory.Name = "Soccer";
+
+            var result = controller.Edit(newCategory);
+
+            mock.Verify(m => m.SaveCategory(newCategory), Times.Once());
+        }
+
+        [Test]
+        public void Can_Not_Save_Category_That_Already_Exists()
+        {
+            var category = new Category { Name = "Hockey" };
+
+            var result = controller.Edit(category);
 
             mock.Verify(m => m.SaveCategory(It.IsAny<Category>()), Times.Never());
             result.AssertViewRendered().ForView(string.Empty);
         }
 
         [Test]
-        public void Can_Not_Create_Category_With_Empty_Name()
+        public void Can_Not_Save_Category_With_Empty_Name()
         {
-            var newCategory = new Category { Name = null };
+            var category = new Category { Name = null };
 
-            var result = controller.Create(newCategory);
+            var result = controller.Edit(category);
 
             mock.Verify(m => m.SaveCategory(It.IsAny<Category>()), Times.Never());
             result.AssertViewRendered().ForView(string.Empty);
@@ -75,6 +86,38 @@ namespace CapRaffle.UnitTests
             mock.Verify(m => m.Categories, Times.Once());
             result.AssertViewRendered().ForView(string.Empty);
             Assert.AreEqual(2, categoryListViewModel.Categories.Count());
+        }
+
+        [Test]
+        public void Can_Edit_Existing_Category()
+        {
+            var target = controller.Index();
+            var categoryListViewModel = target.Model as CategoryListViewModel;
+
+
+            var categoryToEdit = categoryListViewModel.Categories.First();            
+            ViewResult result = (ViewResult)controller.Edit(categoryToEdit.CategoryId);
+
+            var categorySentToView = result.Model as Category;
+
+            result.AssertViewRendered().ForView(string.Empty);
+            Assert.AreEqual(categoryToEdit.Name, categorySentToView.Name);
+            Assert.AreEqual(categoryToEdit.CategoryId, categorySentToView.CategoryId);
+        }
+
+        [Test]
+        public void Can_Save_Edited_Category()
+        {
+            var target = controller.Index();
+            var categoryListViewModel = target.Model as CategoryListViewModel;
+
+            var categoryToEdit = categoryListViewModel.Categories.First();
+            categoryToEdit.Name = "Hockey edited";
+
+            var result = controller.Edit(categoryToEdit);
+
+            result.AssertActionRedirect().ToAction("Index");
+            mock.Verify(m => m.SaveCategory(categoryToEdit), Times.Once());
         }
     }
 }

@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
+using System.Data;
+using System.Data.Entity;
+using System.Data.Objects;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -18,7 +21,15 @@ namespace CapRaffle.Domain.Implementation
 
         public void SaveCategory(Category category)
         {
-            context.AddToCategories(category);
+            if (category.CategoryId == 0)
+            {
+                context.AddToCategories(category);
+            }
+            else
+            {
+                Category currentCategory = context.Categories.FirstOrDefault(c => c.CategoryId == category.CategoryId);
+                currentCategory.Name = category.Name;
+            }
             context.SaveChanges();
         }
     }
