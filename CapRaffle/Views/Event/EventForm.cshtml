@@ -1,0 +1,51 @@
+﻿@model CapRaffle.Models.EventViewModel
+
+@{
+    ViewBag.Title = ViewBag.action;
+}
+
+<script type="text/javascript">
+    $(function () {
+        $("#Deadline").datepicker({ dateFormat: 'dd.mm.yy'});
+    });
+</script>
+
+<h2>Create</h2>
+<div class="eventForm">
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    
+    @Html.HiddenFor(x => x.SelectedEvent.EventId)
+    <p>
+    @Html.LabelFor(x => x.SelectedEvent.Name)
+    <br />
+    @Html.EditorFor(x => x.SelectedEvent.Name)
+    </p><p>
+    @Html.LabelFor(x => x.SelectedEvent.Description)
+    <br />
+    @Html.EditorFor(x => x.SelectedEvent.Description)
+    </p><p>
+    @Html.LabelFor(x => x.SelectedEvent.AvailableSpots)
+    <br />
+    @Html.EditorFor(x => x.SelectedEvent.AvailableSpots)
+    </p><p>
+    @Html.LabelFor(x => x.SelectedEvent.CategoryId)
+    <br />
+    @Html.DropDownListFor(x => x.SelectedEvent.CategoryId, Model.Categories)
+    </p><p>
+    @Html.LabelFor(x => x.SelectedEvent.InformationUrl)
+    <br />
+    @Html.EditorFor(x => x.SelectedEvent.InformationUrl)
+    </p><p>
+    @Html.LabelFor(x => x.SelectedEvent.DeadLine)
+    <br />
+    @Html.EditorFor(x => x.SelectedEvent.DeadLine)
+    </p>
+    
+        
+    <p>
+        <input type="submit" value="Register event" /></p>
+}
+</div>

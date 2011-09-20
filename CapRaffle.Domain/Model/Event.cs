@@ -10,14 +10,13 @@ namespace CapRaffle.Domain.Model
     [MetadataType(typeof(EventMetaData))]
     public partial class Event
     {
-
+        
         public class EventMetaData
         {
             [HiddenInput(DisplayValue = false)]
             public int EventId { get; set; }
 
             [Required(ErrorMessage = "Please enter a name for the event")]
-
             public string Name { get; set; }
 
             [DataType(DataType.MultilineText)]

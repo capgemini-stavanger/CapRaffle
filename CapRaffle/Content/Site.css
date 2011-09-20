@@ -135,4 +135,16 @@ div#menu
 .eventForm .multi-line
 {
     height: 200px;
+<<<<<<< HEAD
 }
+=======
+}
+
+/* Styles for Event details view
+-----------------------------------------------------------*/
+
+.eventdetails label
+{
+    font-weight: bold;
+}
+>>>>>>> 6c825d233b4ad95fb3c4cc836873b76248cfd03b
