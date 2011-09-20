@@ -25,8 +25,8 @@ namespace CapRaffle.Controllers
 
         [HttpPost]
         public ActionResult Create(Category newCategory)
-        {
-            if (ModelState.IsValid)
+        {            
+            if (ModelStateAndCategoryNameIsValid(newCategory))
             {
                 Category category = repository.Categories
                     .FirstOrDefault(c => c.Name == newCategory.Name);
@@ -45,9 +45,15 @@ namespace CapRaffle.Controllers
             return View();
         }
 
+        private bool ModelStateAndCategoryNameIsValid(Category category)
+        {
+            return ModelState.IsValid && !string.IsNullOrEmpty(newCategory.Name);
+        }
+
         public ViewResult Index()
         {
             var model = new CategoryListViewModel { Categories = repository.Categories };
+            model.Categories.OrderBy(p => p.Name);
 
             return View(model);
         }
