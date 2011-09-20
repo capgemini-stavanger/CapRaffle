@@ -111,6 +111,29 @@ div#menu
     float: right;
 }
 
+/* Style for title.
+-----------------------------------------------------------*/
+.title a:link    
+{
+    text-decoration:  none;
+    color: #0099CC;
+} 
+.title a:visited 
+{
+    color: #0099CC;
+    text-decoration:  none;
+} 
+.title a:hover   
+{
+    color: #0099CC;
+    text-decoration:  none;
+} 
+.title a:active  
+{
+    color: #0099CC;
+    text-decoration:  none;
+} 
+
 
 /* Styles for create and edit events page 
 -----------------------------------------------------------*/

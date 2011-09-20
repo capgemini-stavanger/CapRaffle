@@ -27,11 +27,11 @@
                 @Html.ActionLink("Log in", "LogOn", "Account")
             }
         </div>
-        <div class="title">CapRaffle</div>
+        <div class="title"> @Html.ActionLink("CapRaffle", "index", "Event") </div>
         
     </div>
     <div id="menu">
-        Links for the different menus.
+
         <ul style="list-style-type: none; padding-left: 5px;">
         <li>@Html.ActionLink("Event list", "index", "event") </li>
         <li>@Html.ActionLink("Create new event", "create", "event")</li>
