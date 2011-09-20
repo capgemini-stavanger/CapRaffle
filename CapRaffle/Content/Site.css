@@ -125,3 +125,11 @@ div#menu
 {
     height: 200px;
 }
+
+/* Styles for Event details view
+-----------------------------------------------------------*/
+
+.eventdetails label
+{
+    font-weight: bold;
+}

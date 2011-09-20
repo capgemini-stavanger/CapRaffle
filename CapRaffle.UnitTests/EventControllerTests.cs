@@ -76,7 +76,9 @@ namespace CapRaffle.UnitTests
             controller = new EventController(mock.Object, categoryMock.Object);
             controller.ControllerContext = new ControllerContext(mockHttpContext.Object.HttpContext, new RouteData(), controller);
         }
-
+        
+        #region create
+        
         [Test]
         public void Can_Get_Correct_Create_View()
         {
@@ -115,6 +117,8 @@ namespace CapRaffle.UnitTests
             mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
         }
 
+        #endregion
+
         [Test]
         public void Index_Get_Sorted_List_Of_Events()
         {
@@ -129,22 +133,23 @@ namespace CapRaffle.UnitTests
             Assert.IsTrue(events.Count == 5);
             Assert.AreEqual(events.First().EventId, 5);
             Assert.AreEqual(events.Last().EventId, 1);
+            result.AssertViewRendered().ForView(string.Empty);
         }
 
         [Test]
-        public void Can_Save_Valid_Changes()
+        public void Detail_Page_Show_Correct_View()
         {
             //Arrange
-
+            
+            
             //Act
-            ActionResult result = controller.Edit(newevent.EventId);
-
+            ViewResult result = (ViewResult)controller.Details(1);
+            
+            
             //Assert
             result.AssertViewRendered().ForView(string.Empty);
-            mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
-
+            
         }
-
 
     }
 

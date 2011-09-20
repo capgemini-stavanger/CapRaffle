@@ -8,7 +8,7 @@
 @foreach (var e in Model.Events)
 {
     <div class="event">
-        <h3 class="eventheader">@e.Name </h3>
+        <h3 class="eventheader">@Html.ActionLink(e.Name, "Details", new { id = e.EventId }) </h3>
         <h6 style="">Created by: @e.Creator on @e.Created.ToString("dd MMM yyyy") under @e.Category.Name</h6>
         <p>@e.Description</p>
         <p>@(e.InformationUrl == null ? "" : "More information about the event: " + e.InformationUrl)</p>

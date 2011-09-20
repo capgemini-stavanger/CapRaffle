@@ -64,17 +64,11 @@ namespace CapRaffle.Controllers
             return View("EventForm", model);
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Details(int id)
         {
-
-
-            return View();
+            var model = new EventViewModel { SelectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault() };
+            return View(model);
         }
 
-        [HttpPost]
-        public ActionResult Edit(Event changedEvent)
-        {
-            return View();
-        }
     }
 }
