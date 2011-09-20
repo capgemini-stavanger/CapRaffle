@@ -38,27 +38,44 @@ namespace CapRaffle.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
-        public ActionResult ChangePassword(string email, string newPassword)
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
+            if (model.Password != model.PasswordAgain)
+            {
+                ModelState.AddModelError("", "Password did not match"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
+            }
+
+            User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (userExist == null)
+            {
+                ModelState.AddModelError("", "Email not found");
+            }
+
             if (ModelState.IsValid)
             {
-                if (accountRepository.ChangePassword(email, newPassword))
+                if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
-                    TempData["message"] = string.Format("{0} has been saved", email); //Display in view.
-                    return RedirectToAction("Index");
+                    TempData["message"] = string.Format("Password for {0} has been saved", model.Email);
+                    return View(model);
                 }
-                else return View();
+                else return View(model);
             }
             else
             {
-                return View();
+                return View(model);
             }
         }
 
+        [Authorize]
         public ActionResult ChangePassword()
         {
-            return View();
+            ChangePasswordViewModel user = new ChangePasswordViewModel
+            {
+                Email = HttpContext.User.Identity.Name
+            };
+            return View(user);
         }
 
         [HttpPost]
@@ -68,7 +85,7 @@ namespace CapRaffle.Controllers
             {
                 if (accountRepository.Authenticate(model.Email, model.Password))
                 {
-                    return Redirect(returnUrl ?? Url.Action("Index"));
+                    return Redirect(returnUrl ?? Url.Action("/"));
                 }
                 else
                 {
@@ -122,6 +139,11 @@ namespace CapRaffle.Controllers
         public ActionResult Register()
         {
             return View();
+        }
+
+        public ActionResult Index()
+        {
+           return Redirect("/");
         }
     }
 }

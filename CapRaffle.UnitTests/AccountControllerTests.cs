@@ -103,14 +103,17 @@ namespace CapRaffle.UnitTests
         public void Can_Change_Password()
         {
             // Arrange
-            string email = "test@capgemini.com";
-            string newPassword = "newPass123";
+            ChangePasswordViewModel model = new ChangePasswordViewModel
+            {
+                Email = "test@capgemini.com",
+                Password = "newPass123"
+            };
 
             // Act
-            ActionResult res = accountController.ChangePassword(email, newPassword);
+            ActionResult res = accountController.ChangePassword(model);
 
             // Assert
-            mock.Verify(m => m.ChangePassword(email, newPassword));
+            mock.Verify(m => m.ChangePassword(model.Email, model.Password));
             Assert.IsNotInstanceOf(typeof(ViewResult), res);
         }
 
@@ -118,11 +121,14 @@ namespace CapRaffle.UnitTests
         public void Can_Not_Change_Password()
         {
             // Arrange
-            string email = "test2@capgemini.com";
-            string newPassword = "newPass123";
+            ChangePasswordViewModel model = new ChangePasswordViewModel
+            {
+                Email = "test2@capgemini.com",
+                Password = "newPass123"
+            };
 
             // Act
-            ActionResult res = accountController.ChangePassword(email, newPassword);
+            ActionResult res = accountController.ChangePassword(model);
 
             // Assert
             Assert.IsInstanceOf(typeof(ViewResult), res);
