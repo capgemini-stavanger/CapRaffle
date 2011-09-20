@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace CapRaffle.Models
 {
@@ -16,7 +17,8 @@ namespace CapRaffle.Models
 
         [Required(ErrorMessage = "Password requierd")]
         [DataType(DataType.Password)]
-        [Display(Name = "Repeat password")]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string PasswordAgain { get; set; }
 
         [Required(ErrorMessage = "Please enter your name")]

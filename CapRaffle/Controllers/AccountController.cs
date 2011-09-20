@@ -23,11 +23,6 @@ namespace CapRaffle.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            if (model.Password != model.PasswordAgain)
-            {
-                ModelState.AddModelError("", "Password did not match"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
-            }
-
             User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);
             if (userExist == null)
             {
@@ -92,11 +87,6 @@ namespace CapRaffle.Controllers
             if (!model.Email.Contains("@capgemini.com"))
             {
                 ModelState.AddModelError("", "Email must end with @capgemini.com"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
-            }
-
-            if (model.Password != model.PasswordAgain)
-            {
-                ModelState.AddModelError("", "Password did not match");
             }
 
             User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);
