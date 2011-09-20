@@ -47,7 +47,7 @@ namespace CapRaffle.Controllers
 
         private bool ModelStateAndCategoryNameIsValid(Category category)
         {
-            return ModelState.IsValid && !string.IsNullOrEmpty(newCategory.Name);
+            return ModelState.IsValid && !string.IsNullOrEmpty(category.Name);
         }
 
         public ViewResult Index()

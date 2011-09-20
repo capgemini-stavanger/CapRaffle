@@ -27,6 +27,7 @@ namespace CapRaffle.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             var newevent = new Event();
@@ -49,11 +50,12 @@ namespace CapRaffle.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(EventViewModel model)
         {
             
             model.SelectedEvent.Created = DateTime.Now;
-            model.SelectedEvent.Creator = "NotImplementedLogin";
+            model.SelectedEvent.Creator = HttpContext.User.Identity.Name;
             if (ModelState.IsValid)
             {
                 eventRepository.SaveEvent(model.SelectedEvent);
