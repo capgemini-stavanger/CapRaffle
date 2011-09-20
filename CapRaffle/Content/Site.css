@@ -98,6 +98,17 @@ div#menu
     padding-top: 0; 
 }
 
+/* Style for top right text.
+-----------------------------------------------------------*/
+.topright
+{
+    font: .25em "Arial Narrow", "Franklin Gothic Medium", Arial; 
+    /*margin: .5em; */
+    margin-top: 45px;
+    text-align:right;
+    float: right;
+}
+
 
 /* Styles for create and edit events page 
 -----------------------------------------------------------*/

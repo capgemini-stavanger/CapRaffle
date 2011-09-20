@@ -27,7 +27,6 @@ namespace CapRaffle.Domain.Implementation
                 if (user.Password.Equals(passwd))
                 {
                     FormsAuthentication.SetAuthCookie(email, false);
-                    
                     return true;
                 }
             }
@@ -59,6 +58,11 @@ namespace CapRaffle.Domain.Implementation
                 return true;
             }
             return false;
+        }
+
+        public void SignOut()
+        {
+            FormsAuthentication.SignOut();
         }
 
         private static string CreateSalt(string email)

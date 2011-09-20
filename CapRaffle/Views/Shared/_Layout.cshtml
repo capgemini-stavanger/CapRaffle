@@ -13,7 +13,16 @@
 
 <body>
     <div id="header">
+    
+        <div class="topright"> 
+            @Html.ViewContext.HttpContext.User.Identity.Name
+            @if (Html.ViewContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                @Html.ActionLink("Sign out", "SignOut", "Account")
+            }
+        </div>
         <div class="title">CapRaffle</div>
+        
     </div>
     <div id="menu">
         Links for the different menus.
