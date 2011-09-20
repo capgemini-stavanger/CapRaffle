@@ -18,6 +18,7 @@ namespace CapRaffle.UnitTests
     public class EventControllerTests
     {
         Mock<IEventRepository> mock;
+        Mock<ICategoryRepository> categoryMock;
         Event newevent;
         EventController controller;
 
@@ -32,6 +33,15 @@ namespace CapRaffle.UnitTests
                 new Event { EventId = 4, Name = "event 4", Created = DateTime.Now, Creator = "creator 4", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 4 },
                 new Event { EventId = 5, Name = "event 5", Created = DateTime.Now, Creator = "creator 5", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 5 }
             }.AsQueryable());
+
+            categoryMock = new Mock<ICategoryRepository>();
+            categoryMock.Setup(m => m.Categories).Returns(new Category[] {
+                new Category { CategoryId = 1, Name = "Category1" },
+                new Category { CategoryId = 1, Name = "Category1" },
+                new Category { CategoryId = 1, Name = "Category1" },
+                new Category { CategoryId = 1, Name = "Category1" },
+                new Category { CategoryId = 1, Name = "Category1" }
+            }.AsQueryable());
             
 
             newevent = new Event
@@ -45,7 +55,7 @@ namespace CapRaffle.UnitTests
                 CategoryId = 10
             };
 
-            controller = new EventController(mock.Object);
+            controller = new EventController(mock.Object, categoryMock.Object);
         }
 
         [Test]

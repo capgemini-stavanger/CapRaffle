@@ -10,7 +10,7 @@ namespace CapRaffle.Domain.Model
     [MetadataType(typeof(EventMetaData))]
     public partial class Event
     {
-
+        
         public class EventMetaData
         {
             [HiddenInput(DisplayValue = false)]

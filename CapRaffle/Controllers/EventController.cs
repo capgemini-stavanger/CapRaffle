@@ -11,43 +11,55 @@ namespace CapRaffle.Controllers
 {
     public class EventController : Controller
     {
-        private IEventRepository repository;
+        private IEventRepository eventRepository;
+        private ICategoryRepository categoryRepository;
 
-        public EventController(IEventRepository repository)
+        public EventController(IEventRepository eventRepository, ICategoryRepository categoryRepository)
         {
-            this.repository = repository;
+            this.eventRepository = eventRepository;
+            this.categoryRepository = categoryRepository;
         }
 
 
         public ActionResult Index()
         {
-            var model = new EventsListViewModel { Events = repository.Events.OrderByDescending(x => x.EventId) };
+            var model = new EventsListViewModel { Events = eventRepository.Events.OrderByDescending(x => x.EventId) };
             return View(model);
         }
 
         public ActionResult Create()
         {
             var newevent = new Event();
-
             //set proposed deadline to next full hour
             var currentDatetime = DateTime.Now;
             newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
+
+            IEnumerable<SelectListItem> categories = categoryRepository.Categories.ToList().Select( x => 
+                new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
+                );
+
+            categories.FirstOrDefault().Selected = true;
+
+            var model = new EventViewModel { SelectedEvent = newevent, Categories = categories };
+
+            
             ViewBag.action = "Create";
-            return View("EventForm", newevent);
+            return View("EventForm", model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Event newEvent)
+        public ActionResult Create(EventViewModel model)
         {
-            newEvent.Created = DateTime.Now;
-            newEvent.Creator = "NotImplementedLogin";
+            
+            model.SelectedEvent.Created = DateTime.Now;
+            model.SelectedEvent.Creator = "NotImplementedLogin";
             if (ModelState.IsValid)
             {
-                repository.SaveEvent(newEvent);
+                eventRepository.SaveEvent(model.SelectedEvent);
                 return RedirectToAction("Index");
             }
-            return View("EventForm");
+            return View("EventForm", model);
         }
 
         public ActionResult Edit(int id)

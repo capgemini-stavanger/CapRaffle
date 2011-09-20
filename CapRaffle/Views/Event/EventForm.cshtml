@@ -1,10 +1,10 @@
-﻿@model CapRaffle.Domain.Model.Event
+﻿@model CapRaffle.Models.EventViewModel
 
 @{
     ViewBag.Title = ViewBag.action;
 }
 
-<script>
+<script type="text/javascript">
     $(function () {
         $("#Deadline").datepicker({ dateFormat: 'dd.mm.yy'});
     });
@@ -16,33 +16,32 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
-
     
-    @Html.HiddenFor(x => x.EventId)
+    @Html.HiddenFor(x => x.SelectedEvent.EventId)
     <p>
-    @Html.LabelFor(x => x.Name)
+    @Html.LabelFor(x => x.SelectedEvent.Name)
     <br />
-    @Html.EditorFor(x => x.Name)
+    @Html.EditorFor(x => x.SelectedEvent.Name)
     </p><p>
-    @Html.LabelFor(x => x.Description)
+    @Html.LabelFor(x => x.SelectedEvent.Description)
     <br />
-    @Html.EditorFor(x => x.Description)
+    @Html.EditorFor(x => x.SelectedEvent.Description)
     </p><p>
-    @Html.LabelFor(x => x.AvailableSpots)
+    @Html.LabelFor(x => x.SelectedEvent.AvailableSpots)
     <br />
-    @Html.EditorFor(x => x.AvailableSpots)
+    @Html.EditorFor(x => x.SelectedEvent.AvailableSpots)
     </p><p>
-    @Html.LabelFor(x => x.CategoryId)
+    @Html.LabelFor(x => x.SelectedEvent.CategoryId)
     <br />
-    @Html.EditorFor(x => x.CategoryId)
+    @Html.DropDownListFor(x => x.SelectedEvent.CategoryId, Model.Categories)
     </p><p>
-    @Html.LabelFor(x => x.InformationUrl)
+    @Html.LabelFor(x => x.SelectedEvent.InformationUrl)
     <br />
-    @Html.EditorFor(x => x.InformationUrl)
+    @Html.EditorFor(x => x.SelectedEvent.InformationUrl)
     </p><p>
-    @Html.LabelFor(x => x.DeadLine)
+    @Html.LabelFor(x => x.SelectedEvent.DeadLine)
     <br />
-    @Html.EditorFor(x => x.DeadLine)
+    @Html.EditorFor(x => x.SelectedEvent.DeadLine)
     </p>
     
         

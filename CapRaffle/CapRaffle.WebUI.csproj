@@ -75,6 +75,7 @@
     <Compile Include="Models\EventsListViewModel.cs" />
     <Compile Include="Models\CategoryListViewModel.cs" />
     <Compile Include="Models\CategoryViewModel.cs" />
+    <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\LogOnViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
