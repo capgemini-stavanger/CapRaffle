@@ -1,5 +1,16 @@
-﻿@{
-    ViewBag.Title = "Create";
+﻿@model CapRaffle.Domain.Model.Category
+
+@{
+    ViewBag.Title = "Add a new category";
 }
 
-<h2>Create</h2>
+<h2>Add a new category</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.ValidationSummary(true)  
+    @Html.EditorForModel()
+
+    <input type="submit" value="Save" />
+    @Html.ActionLink("Cancel and return to list", "Index")
+}
