@@ -690,10 +690,12 @@ namespace CapRaffle.Domain.Model
         /// Create a new User object.
         /// </summary>
         /// <param name="email">Initial value of the Email property.</param>
-        public static User CreateUser(global::System.String email)
+        /// <param name="name">Initial value of the Name property.</param>
+        public static User CreateUser(global::System.String email, global::System.String name)
         {
             User user = new User();
             user.Email = email;
+            user.Name = name;
             return user;
         }
 
@@ -754,7 +756,7 @@ namespace CapRaffle.Domain.Model
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
         public global::System.String Name
         {
@@ -766,7 +768,7 @@ namespace CapRaffle.Domain.Model
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, false);
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }

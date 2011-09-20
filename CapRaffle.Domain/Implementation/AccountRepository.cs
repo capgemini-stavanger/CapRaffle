@@ -27,6 +27,7 @@ namespace CapRaffle.Domain.Implementation
                 if (user.Password.Equals(passwd))
                 {
                     FormsAuthentication.SetAuthCookie(email, false);
+                    
                     return true;
                 }
             }
@@ -48,6 +49,15 @@ namespace CapRaffle.Domain.Implementation
 
         public bool ChangePassword(string email, string newPassword)
         {
+            email = email.ToLower();
+            User user = Users.FirstOrDefault(u => u.Email == email);
+            if (user != null)
+            {
+                String passwd = CreatePasswordHash(newPassword, CreateSalt(email));
+                user.Password = passwd;
+                context.SaveChanges();
+                return true;
+            }
             return false;
         }
 
