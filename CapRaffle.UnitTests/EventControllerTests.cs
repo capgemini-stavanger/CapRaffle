@@ -137,18 +137,19 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
-        public void Detail_Page_Show_Correct_View()
+        public void Can_Return_Correct_Event_On_Details_Action()
         {
             //Arrange
             
             
             //Act
             ViewResult result = (ViewResult)controller.Details(1);
-            
+            EventViewModel model = (EventViewModel)result.Model;
             
             //Assert
             result.AssertViewRendered().ForView(string.Empty);
-            
+            Assert.AreEqual(1, model.SelectedEvent.EventId);
+            Assert.AreEqual(null, model.Categories);
         }
 
     }
