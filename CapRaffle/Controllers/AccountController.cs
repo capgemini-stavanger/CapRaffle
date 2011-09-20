@@ -86,8 +86,6 @@ namespace CapRaffle.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {

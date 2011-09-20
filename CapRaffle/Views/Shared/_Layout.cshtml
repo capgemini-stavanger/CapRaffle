@@ -22,6 +22,10 @@
             {
                 @Html.ActionLink("Sign out", "SignOut", "Account")
             }
+            else
+            {
+                @Html.ActionLink("Log in", "LogOn", "Account")
+            }
         </div>
         <div class="title">CapRaffle</div>
         
@@ -33,15 +37,24 @@
         <li>@Html.ActionLink("Create new event", "create", "event")</li>
         <li>@Html.ActionLink("Category list", "index", "category") </li>
         <li>@Html.ActionLink("Create new category", "create", "category")</li>
-        <li>@Html.ActionLink("Change password", "ChangePassword", "Account")</li>
-        <li>@Html.ActionLink("Log in", "LogOn", "Account") </li>
-        <li>@Html.ActionLink("Register new account", "Register", "Account")</li>
+        
+        @if (Html.ViewContext.HttpContext.User.Identity.IsAuthenticated)
+        {
+            <li>@Html.ActionLink("Change password", "ChangePassword", "Account")</li>
+            <li>@Html.ActionLink("Sign out", "SignOut", "Account")</li>
+        }
+        else
+        {
+            <li>@Html.ActionLink("Log in", "LogOn", "Account") </li>
+            <li>@Html.ActionLink("Register new account", "Register", "Account")</li>
+        }
+
         </ul>
     </div>
     <div id="content">
         @Html.Raw(TempData["Info"] != null ? "<div class='info'>" + TempData["Info"] + "</div>" : "")
         
-        @Html.Raw(TempData["Success"] != null ? "<div class='success'>" + TempData["Success"] + "</div>"  : "")
+        @Html.Raw(TempData["Success"] != null ? "<div class='success'>" + TempData["Success"] + "</div>" : "")
 
         @Html.Raw(TempData["Warning"] != null ? "<div class='warning'>" + TempData["Warning"] + "</div>" : "")
         
