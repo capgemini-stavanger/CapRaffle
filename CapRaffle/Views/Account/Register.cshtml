@@ -13,3 +13,18 @@
     <p>
         <input type="submit" value="Register" /></p>
 }
+
+@if (false) {
+<script src="../../Scripts/jquery-1.5.1-vsdoc.js" type="text/javascript"></script>
+}
+
+<script type="text/javascript">
+    $('input[name=Email]').change(function () {
+        var name = $('input[name=Email]').val()+"";
+        name = name.replace("capgemini.com", "");
+        name = name.replace("-", " ");
+        name = name.replace(".", " ");
+        name = name.substring(0, name.length - 1);
+        $('input[name=Name').val(name);
+    }).change();
+</script>
