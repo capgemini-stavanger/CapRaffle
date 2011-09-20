@@ -61,11 +61,6 @@ namespace CapRaffle.Domain.Implementation
             return false;
         }
 
-        public bool Delete(string email)
-        {
-            return false;
-        }
-
         private static string CreateSalt(string email)
         {
             String start = email.Substring(0, 3);
