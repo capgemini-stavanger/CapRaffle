@@ -38,7 +38,7 @@ namespace CapRaffle.Controllers
             {
                 if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
-                    TempData["message"] = string.Format("Password for {0} has been saved", model.Email);
+                    this.Success(string.Format("Password for {0} has been saved", model.Email));
                     return View(model);
                 }
                 else return View(model);
@@ -98,7 +98,7 @@ namespace CapRaffle.Controllers
 
             if (model.Password != model.PasswordAgain)
             {
-                ModelState.AddModelError("", "Password did not match"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
+                ModelState.AddModelError("", "Password did not match");
             }
 
             User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);

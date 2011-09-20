@@ -20,11 +20,13 @@
 
 <script type="text/javascript">
     $('input[name=Email]').change(function () {
-        var name = $('input[name=Email]').val()+"";
-        name = name.replace("capgemini.com", "");
-        name = name.replace("-", " ");
-        name = name.replace(".", " ");
-        name = name.substring(0, name.length - 1);
-        $('input[name=Name').val(name);
+        var name = $('input[name=Email]').val() + "";
+        if ((name.indexOf(".") > 0) && (name.indexOf("capgemini.com") > 0) ) {
+            name = name.replace("capgemini.com", "");
+            name = name.replace("-", " ");
+            name = name.replace(".", " ");
+            name = name.substring(0, name.length - 1);
+            $('input[name=Name').val(name);
+        }
     }).change();
 </script>
