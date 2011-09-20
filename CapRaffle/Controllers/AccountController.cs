@@ -19,34 +19,10 @@ namespace CapRaffle.Controllers
             accountRepository = accountRepos;
         }
 
-        [HttpPost]
-        public ActionResult Delete(string email)
-        {
-            if (ModelState.IsValid)
-            {
-                if(accountRepository.Delete(email))
-                {
-                    TempData["message"] = string.Format("{0} has been deleted", email); //Display in view.
-                    return RedirectToAction("Index");
-                }
-            }
-            return View();
-        }
-
-        public ActionResult Delete()
-        {
-            return View();
-        }
-
         [Authorize]
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            if (model.Password != model.PasswordAgain)
-            {
-                ModelState.AddModelError("", "Password did not match"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
-            }
-
             User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);
             if (userExist == null)
             {
@@ -57,7 +33,7 @@ namespace CapRaffle.Controllers
             {
                 if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
-                    TempData["message"] = string.Format("Password for {0} has been saved", model.Email);
+                    this.Success(string.Format("Password for {0} has been saved", model.Email));
                     return View(model);
                 }
                 else return View(model);
@@ -105,19 +81,12 @@ namespace CapRaffle.Controllers
             return View();
         }
 
-
-
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {
             if (!model.Email.Contains("@capgemini.com"))
             {
                 ModelState.AddModelError("", "Email must end with @capgemini.com"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
-            }
-
-            if (model.Password != model.PasswordAgain)
-            {
-                ModelState.AddModelError("", "Password did not match"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
             }
 
             User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);
@@ -144,6 +113,12 @@ namespace CapRaffle.Controllers
         public ActionResult Index()
         {
            return Redirect("/");
+        }
+
+        public ActionResult SignOut()
+        {
+            accountRepository.SignOut();
+            return Redirect("/Account/LogOn");
         }
     }
 }

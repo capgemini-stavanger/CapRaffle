@@ -66,7 +66,9 @@ textarea
 .validation-summary-errors
 {
     font-weight: bold;
-    color: #ff0000;
+    color: #D63301;
+    background-color: #FFCCBA;
+    background-image: url('images/error.png');
 }
 
 .validation-summary-valid
@@ -98,6 +100,40 @@ div#menu
     padding-top: 0; 
 }
 
+/* Style for top right text.
+-----------------------------------------------------------*/
+.topright
+{
+    font: .25em "Arial Narrow", "Franklin Gothic Medium", Arial; 
+    /*margin: .5em; */
+    margin-top: 45px;
+    text-align:right;
+    float: right;
+}
+
+/* Style for title.
+-----------------------------------------------------------*/
+.title a:link    
+{
+    text-decoration:  none;
+    color: #0099CC;
+} 
+.title a:visited 
+{
+    color: #0099CC;
+    text-decoration:  none;
+} 
+.title a:hover   
+{
+    color: #0099CC;
+    text-decoration:  none;
+} 
+.title a:active  
+{
+    color: #0099CC;
+    text-decoration:  none;
+} 
+
 
 /* Styles for create and edit events page 
 -----------------------------------------------------------*/
@@ -124,4 +160,47 @@ div#menu
 .eventForm .multi-line
 {
     height: 200px;
+}
+
+/* Styles for Event details view
+-----------------------------------------------------------*/
+
+.eventdetails label
+{
+    font-weight: bold;
+}
+
+/* Styles for message boxes
+-----------------------------------------------------------*/
+
+body{
+    font-family:Arial, Helvetica, sans-serif; 
+    font-size:13px;
+}
+.info, .success, .warning, .error, .validation-summary-errors {
+    border: 1px solid;
+    margin: 10px 0px;
+    padding:15px 10px 15px 50px;
+    background-repeat: no-repeat;
+    background-position: 10px center;
+}
+.info {
+    color: #00529B;
+    background-color: #BDE5F8;
+    background-image: url('images/info.png');
+}
+.success {
+    color: #4F8A10;
+    background-color: #DFF2BF;
+    background-image:url('images/success.png');
+}
+.warning {
+    color: #9F6000;
+    background-color: #FEEFB3;
+    background-image: url('images/warning.png');
+}
+.error {
+    color: #D8000C;
+    background-color: #FFBABA;
+    background-image: url('images/error.png');
 }

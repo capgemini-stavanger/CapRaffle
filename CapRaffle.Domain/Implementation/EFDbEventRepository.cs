@@ -14,9 +14,9 @@ namespace CapRaffle.Domain.Implementation
 
         public IQueryable<Event> Events { get { return context.Events; } }   
 
-        public void DeleteEvent(Event deleteEvent)
+        public void DeleteEvent(Event selectedEvent)
         {
-            context.Events.DeleteObject(deleteEvent);
+            context.Events.DeleteObject(selectedEvent);
             context.SaveChanges();
         }
 

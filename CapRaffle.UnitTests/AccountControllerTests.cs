@@ -4,6 +4,8 @@ using CapRaffle.Domain.Abstract;
 using CapRaffle.Models;
 using Moq;
 using NUnit.Framework;
+using System.Linq;
+using CapRaffle.Domain.Model;
 
 namespace CapRaffle.UnitTests
 {
@@ -21,7 +23,14 @@ namespace CapRaffle.UnitTests
             mock.Setup(m => m.Authenticate("test@capgemini.com", "pass1234")).Returns(true);
             mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             mock.Setup(m => m.ChangePassword("test@capgemini.com", It.IsAny<string>())).Returns(true);
-            mock.Setup(m => m.Delete("test@capgemini.com")).Returns(true);
+
+            mock.Setup(m => m.Users).Returns(new User[] 
+            {
+                new User { Email="test@capgemini.com", Name="Test" },
+                new User { Email="test2@capgemini.com", Name="Test2" }
+            }.AsQueryable());
+            
+
             accountController = new AccountController(mock.Object);
         }
 
@@ -31,7 +40,7 @@ namespace CapRaffle.UnitTests
             //Arrange
             RegisterViewModel model = new RegisterViewModel
             {
-                Email = "test@capgemini.com",
+                Email = "test3@capgemini.com",
                 Password = "WeAreTheOnes",
                 PasswordAgain = "WeAreTheOnes",
                 Name = "name"
@@ -106,15 +115,18 @@ namespace CapRaffle.UnitTests
             ChangePasswordViewModel model = new ChangePasswordViewModel
             {
                 Email = "test@capgemini.com",
-                Password = "newPass123"
+                Password = "newPass123",
+                PasswordAgain = "newPass123"
             };
+
+            
 
             // Act
             ActionResult res = accountController.ChangePassword(model);
 
             // Assert
             mock.Verify(m => m.ChangePassword(model.Email, model.Password));
-            Assert.IsNotInstanceOf(typeof(ViewResult), res);
+            Assert.IsInstanceOf(typeof(ViewResult), res);
         }
 
         [Test]
@@ -124,7 +136,8 @@ namespace CapRaffle.UnitTests
             ChangePasswordViewModel model = new ChangePasswordViewModel
             {
                 Email = "test2@capgemini.com",
-                Password = "newPass123"
+                Password = "newPass123",
+                PasswordAgain = "newPass123"
             };
 
             // Act
@@ -135,17 +148,14 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
-        public void Can_Delete_User()
+        public void Can_Sign_Off()
         {
-            // Arrange
-            string email = "test@capgemini.com";
-            
-            // Act
-            ActionResult res = accountController.Delete(email);
+            //Act
+            ActionResult res = accountController.SignOut();
 
-            // Assert 
-            mock.Verify(m => m.Delete(email));
-            Assert.IsNotInstanceOf(typeof(ViewResult), res);
+            //Assert
+            Assert.IsInstanceOf(typeof(RedirectResult), res);
+            mock.Verify(m => m.SignOut());
         }
     }
 }
