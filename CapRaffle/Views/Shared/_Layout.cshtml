@@ -37,6 +37,14 @@
         </ul>
     </div>
     <div id="content">
+        @Html.Raw(TempData["Info"] != null ? "<div class='info'>" + TempData["Info"] + "</div>" : "")
+        
+        @Html.Raw(TempData["Success"] != null ? "<div class='success'>" + TempData["Success"] + "</div>"  : "")
+
+        @Html.Raw(TempData["Warning"] != null ? "<div class='warning'>" + TempData["Warning"] + "</div>" : "")
+        
+        @Html.Raw(TempData["Error"] != null ? "<div class='error'>" + TempData["Error"] + "</div>" : "")
+        
         @RenderBody()
     </div>
 </body>

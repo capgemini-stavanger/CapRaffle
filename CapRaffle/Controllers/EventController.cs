@@ -42,7 +42,6 @@ namespace CapRaffle.Controllers
             categories.FirstOrDefault().Selected = true;
 
             var model = new EventViewModel { SelectedEvent = newevent, Categories = categories };
-
             
             ViewBag.action = "Create";
             return View("EventForm", model);
@@ -59,6 +58,7 @@ namespace CapRaffle.Controllers
             if (ModelState.IsValid)
             {
                 eventRepository.SaveEvent(model.SelectedEvent);
+                this.Success("The event has been created.");
                 return RedirectToAction("Index");
             }
             return View("EventForm", model);
@@ -73,12 +73,12 @@ namespace CapRaffle.Controllers
             if (selectedEvent.Creator.Equals(HttpContext.User.Identity.Name))
             {
                 eventRepository.DeleteEvent(selectedEvent);
-                //set deleted message here
+                this.Success("The Event has been deleted.");
                 return RedirectToAction("Index");
             }
             else
             {
-                //Set error message here
+                this.Error("You can only delete events you created.");
                 return RedirectToAction("Details", new { id = id });
             }
             
