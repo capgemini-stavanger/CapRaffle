@@ -40,7 +40,7 @@ namespace CapRaffle.UnitTests
             var result = controller.Create(newCategory);
             
             mock.Verify(m => m.SaveCategory(newCategory), Times.Once());
-            result.AssertViewRendered().ForView("Index");
+            result.AssertActionRedirect().ToAction("Index");
         }
 
         [Test]
