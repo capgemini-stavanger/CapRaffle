@@ -10,7 +10,7 @@ namespace CapRaffle.Domain.Abstract
     {
         IQueryable<Event> Events { get; }
 
-        void DeleteEvent(int id);
+        void DeleteEvent(Event deleteEvent);
 
         void SaveEvent(Event changedEvent);
     }

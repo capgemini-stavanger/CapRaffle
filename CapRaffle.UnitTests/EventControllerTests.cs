@@ -10,11 +10,12 @@ using CapRaffle.Controllers;
 using System.Web.Mvc;
 using Event = CapRaffle.Domain.Model.Event;
 using MvcContrib.TestHelper;
+using CapRaffle.Models;
 
 namespace CapRaffle.UnitTests
 {
     [TestFixture]
-    public class EventRepositoryTests
+    public class EventControllerTests
     {
         Mock<IEventRepository> mock;
         Event newevent;
@@ -56,12 +57,13 @@ namespace CapRaffle.UnitTests
             var result = controller.Create(newevent);
 
             //Assert
-            result.AssertActionRedirect().ToAction("Index");
             mock.Verify(m => m.SaveEvent(newevent));
+            result.AssertActionRedirect().ToAction("Index");
+            
         }
 
         [Test]
-        public void Cannot_Save_Invalid_Changes()
+        public void Can_Not_Save_Invalid_Changes_On_Events()
         {
             //Arrange
             controller.ModelState.AddModelError("error", "error");
@@ -73,6 +75,22 @@ namespace CapRaffle.UnitTests
             result.AssertViewRendered().ForView(string.Empty);
             mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
         }
+
+        [Test]
+        public void Index_Get_Sorted_List_Of_Events()
+        {
+            //Arrange
+            //Act
+            ViewResult result = (ViewResult) controller.Index();
+            var events = ((EventsListViewModel)result.Model).Events.ToList();
+            
+
+            //Assert
+            Assert.IsTrue(events.Count == 5);
+            Assert.AreEqual(events.First().EventId, 5);
+            Assert.AreEqual(events.Last().EventId, 1);
+        }
+
 
     }
 
