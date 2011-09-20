@@ -98,6 +98,17 @@ div#menu
     padding-top: 0; 
 }
 
+/* Style for top right text.
+-----------------------------------------------------------*/
+.topright
+{
+    font: .25em "Arial Narrow", "Franklin Gothic Medium", Arial; 
+    /*margin: .5em; */
+    margin-top: 45px;
+    text-align:right;
+    float: right;
+}
+
 
 /* Styles for create and edit events page 
 -----------------------------------------------------------*/
@@ -124,6 +135,9 @@ div#menu
 .eventForm .multi-line
 {
     height: 200px;
+<<<<<<< HEAD
+}
+=======
 }
 
 /* Styles for Event details view
@@ -133,3 +147,4 @@ div#menu
 {
     font-weight: bold;
 }
+>>>>>>> 6c825d233b4ad95fb3c4cc836873b76248cfd03b

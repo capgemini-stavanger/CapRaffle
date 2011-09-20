@@ -126,5 +126,11 @@ namespace CapRaffle.Controllers
         {
            return Redirect("/");
         }
+
+        public ActionResult SignOut()
+        {
+            accountRepository.SignOut();
+            return Redirect("/Account/LogOn");
+        }
     }
 }
