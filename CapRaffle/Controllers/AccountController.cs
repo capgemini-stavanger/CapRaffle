@@ -19,25 +19,6 @@ namespace CapRaffle.Controllers
             accountRepository = accountRepos;
         }
 
-        [HttpPost]
-        public ActionResult Delete(string email)
-        {
-            if (ModelState.IsValid)
-            {
-                if(accountRepository.Delete(email))
-                {
-                    TempData["message"] = string.Format("{0} has been deleted", email); //Display in view.
-                    return RedirectToAction("Index");
-                }
-            }
-            return View();
-        }
-
-        public ActionResult Delete()
-        {
-            return View();
-        }
-
         [Authorize]
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
