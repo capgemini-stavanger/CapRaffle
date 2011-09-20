@@ -55,6 +55,17 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
+        public void Can_Not_Create_Category_With_Empty_Name()
+        {
+            var newCategory = new Category { Name = null };
+
+            var result = controller.Create(newCategory);
+
+            mock.Verify(m => m.SaveCategory(It.IsAny<Category>()), Times.Never());
+            result.AssertViewRendered().ForView(string.Empty);
+        }
+
+        [Test]
         public void Can_Display_All_Categories_From_Repository()
         {
             var result = controller.Index();
