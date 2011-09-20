@@ -30,7 +30,7 @@ namespace CapRaffle.UnitTests
             //Arrange
             var mockHttpContext = new Mock<ControllerContext>();
 
-            mockHttpContext.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("n1\\test");
+            mockHttpContext.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("creator 2");
             mockHttpContext.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
 
             mock = new Mock<IEventRepository>();
@@ -150,6 +150,32 @@ namespace CapRaffle.UnitTests
             result.AssertViewRendered().ForView(string.Empty);
             Assert.AreEqual(1, model.SelectedEvent.EventId);
             Assert.AreEqual(null, model.Categories);
+        }
+
+        [Test]
+        public void User_Can_Delete_Events_The_User_Created()
+        {
+            //Arrange
+
+            //Act
+            var result = controller.Delete(2);
+            
+
+            //Assert
+            result.AssertActionRedirect().ToAction("Index");
+            mock.Verify(m => m.DeleteEvent(It.IsAny<Event>()), Times.Once());
+        }
+
+        [Test]
+        public void User_Can_Not_Delete_Others_Event()
+        {
+            //Arrange
+            //Act
+            var result = controller.Delete(4);
+
+            //Assert
+            result.AssertActionRedirect().ToAction("Details");
+            mock.Verify(m => m.DeleteEvent(It.IsAny<Event>()), Times.Never());
         }
 
     }

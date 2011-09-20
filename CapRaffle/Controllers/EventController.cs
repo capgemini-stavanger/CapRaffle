@@ -64,6 +64,26 @@ namespace CapRaffle.Controllers
             return View("EventForm", model);
         }
 
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            var selectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault();
+            if (selectedEvent.Creator.Equals(HttpContext.User.Identity.Name))
+            {
+                eventRepository.DeleteEvent(selectedEvent);
+                //set deleted message here
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                //Set error message here
+                return RedirectToAction("Details", new { id = id });
+            }
+            
+        }
+
         public ActionResult Details(int id)
         {
             var model = new EventViewModel { SelectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault() };

@@ -4,8 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-    <div class="eventdetails">
-        <div class="event">
+    <div class="event">
         <h3 class="eventheader">@Model.SelectedEvent.Name</h3>
         <h6 style="">Created by: @Model.SelectedEvent.Creator on @Model.SelectedEvent.Created.ToString("dd MMM yyyy") under @Model.SelectedEvent.Category.Name</h6>
         <p>@Model.SelectedEvent.Description</p>
@@ -13,4 +12,14 @@
         <h4>Number of available spots: @Model.SelectedEvent.AvailableSpots</h4>
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
     </div>
-    </div>
+
+    @if (@HttpContext.Current.User.Identity.Name.Equals(Model.SelectedEvent.Creator))
+    {   
+        using (Html.BeginForm("Delete", "Event"))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("id", Model.SelectedEvent.EventId)
+        
+            <input type="submit" value="Delete event" />
+        }
+    }
