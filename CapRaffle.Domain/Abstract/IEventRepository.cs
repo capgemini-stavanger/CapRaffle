@@ -13,5 +13,9 @@ namespace CapRaffle.Domain.Abstract
         void DeleteEvent(Event selectedEvent);
 
         void SaveEvent(Event changedEvent);
+
+        void SaveParticipant(UserEvent participant);
+
+        void DeleteParticipant(UserEvent participant);
     }
 }
