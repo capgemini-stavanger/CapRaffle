@@ -85,7 +85,7 @@ namespace CapRaffle.UnitTests
 
             mock.Verify(m => m.Categories, Times.Once());
             result.AssertViewRendered().ForView(string.Empty);
-            Assert.AreEqual(2, categoryListViewModel.Categories.Count());
+            Assert.AreEqual(mock.Object.Categories.Count(), categoryListViewModel.Categories.Count());
         }
 
         [Test]

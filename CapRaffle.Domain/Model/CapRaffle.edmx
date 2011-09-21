@@ -42,6 +42,7 @@
           </Key>
           <Property Name="CategoryId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -200,6 +201,7 @@
           <Property Name="Name" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <NavigationProperty Name="Events" Relationship="CapRaffleModel.FK_Event_Category" FromRole="Category" ToRole="Event" />
           <NavigationProperty Name="Winners" Relationship="CapRaffleModel.FK_Winner_Category" FromRole="Category" ToRole="Winner" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" DefaultValue="true" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -332,7 +334,8 @@
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CapRaffleModelStoreContainer" CdmEntityContainer="CapRaffleContext">
           <EntitySetMapping Name="Categories"><EntityTypeMapping TypeName="CapRaffleModel.Category"><MappingFragment StoreEntitySet="Category">
-            <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
             <ScalarProperty Name="Name" ColumnName="Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Events"><EntityTypeMapping TypeName="CapRaffleModel.Event"><MappingFragment StoreEntitySet="Event">
