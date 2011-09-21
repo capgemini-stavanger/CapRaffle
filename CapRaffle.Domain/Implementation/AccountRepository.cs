@@ -65,6 +65,12 @@ namespace CapRaffle.Domain.Implementation
             FormsAuthentication.SignOut();
         }
 
+        public User GetUserByEmail(string email)
+        {
+            email = email.ToLower();
+            return Users.FirstOrDefault(u => u.Email == email);
+        }
+
         private static string CreateSalt(string email)
         {
             String start = email.Substring(0, 3);

@@ -23,7 +23,7 @@ namespace CapRaffle.UnitTests
             mock.Setup(m => m.Authenticate("test@capgemini.com", "pass1234")).Returns(true);
             mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             mock.Setup(m => m.ChangePassword("test@capgemini.com", It.IsAny<string>())).Returns(true);
-            
+            mock.Setup(m => m.GetUserByEmail("test@capgemini.com")).Returns(new User() { Email = "testc@capgemini.com" });
             mock.Setup(m => m.Users).Returns(new User[] 
             {
                 new User { Email="test@capgemini.com", Name="Test" },
@@ -206,6 +206,18 @@ namespace CapRaffle.UnitTests
             //Assert
             Assert.IsInstanceOf(typeof(RedirectResult), res);
             Assert.AreEqual("/", ((RedirectResult)res).Url);
+        }
+
+        [Test]
+        public void Get_Valid_User_By_Email()
+        {
+            //Arrange
+            string email = "test@capgemini.com";
+
+            //Act
+            ActionResult res = accountController.EmailExists(email);
+            //Assert
+            Assert.IsInstanceOf(typeof(JsonResult), res);
         }
     }
 }

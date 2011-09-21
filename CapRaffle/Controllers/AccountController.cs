@@ -99,7 +99,7 @@ namespace CapRaffle.Controllers
         public ActionResult EmailExists(string email)
         {
             bool isValid = true;
-            User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == email);
+            User userExist = accountRepository.GetUserByEmail(email);
             if (userExist != null) isValid = false;
             return Json(isValid, JsonRequestBehavior.AllowGet); 
         }
