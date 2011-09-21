@@ -58,6 +58,7 @@ namespace CapRaffle.Controllers
 
             
             model.Categories = categorySelectList();
+            ViewBag.action = "Create";
             return View("EventForm", model);
         }
 
@@ -98,7 +99,7 @@ namespace CapRaffle.Controllers
             }
 
             var model = new EventViewModel { SelectedEvent = selectedEvent, Categories = categorySelectList() };
-
+            ViewBag.action = "Edit";
             return View("EventForm", model);
         }
 
@@ -115,13 +116,14 @@ namespace CapRaffle.Controllers
             }
 
             model.Categories = categorySelectList();
+            ViewBag.action = "Edit";
             return View("EventForm", model);
         }
 
 
 
         private IEnumerable<SelectListItem> categorySelectList() {
-            var categories = categoryRepository.Categories.ToList().Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
+            var categories = categoryRepository.Categories.ToList().Where(x => x.IsActive).Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
             categories.FirstOrDefault().Selected = true;
             return categories;
         }

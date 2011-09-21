@@ -1,21 +1,21 @@
 ﻿@model CapRaffle.Models.EventViewModel
 
 @{
-    ViewBag.Title = ViewBag.action;
+    ViewBag.Title = ViewBag.action + " event";
 }
 
 <script type="text/javascript">
     $(function () {
-        $("#Deadline").datepicker({ dateFormat: 'dd.mm.yy'});
+        $("#SelectedEvent_DeadLine").datepicker({ dateFormat: 'dd.mm.yy'});
     });
 </script>
 
-<h2>Create</h2>
+<h2>@ViewBag.action event</h2>
 <div class="eventForm">
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    @Html.ValidationSummary(true)
     
     @Html.HiddenFor(x => x.SelectedEvent.EventId)
     @Html.HiddenFor(x => x.SelectedEvent.Creator)
@@ -24,30 +24,36 @@
     @Html.LabelFor(x => x.SelectedEvent.Name)
     <br />
     @Html.EditorFor(x => x.SelectedEvent.Name)
+    @Html.ValidationMessageFor(x => x.SelectedEvent.Name)
     </p><p>
     @Html.LabelFor(x => x.SelectedEvent.Description)
     <br />
     @Html.EditorFor(x => x.SelectedEvent.Description)
+    @Html.ValidationMessageFor(x => x.SelectedEvent.Description)
     </p><p>
     @Html.LabelFor(x => x.SelectedEvent.AvailableSpots)
     <br />
     @Html.EditorFor(x => x.SelectedEvent.AvailableSpots)
+    @Html.ValidationMessageFor(x => x.SelectedEvent.AvailableSpots)
     </p><p>
     @Html.LabelFor(x => x.SelectedEvent.CategoryId)
     <br />
     @Html.DropDownListFor(x => x.SelectedEvent.CategoryId, Model.Categories)
+    @Html.ValidationMessageFor(x => x.SelectedEvent.CategoryId)
     </p><p>
     @Html.LabelFor(x => x.SelectedEvent.InformationUrl)
     <br />
     @Html.EditorFor(x => x.SelectedEvent.InformationUrl)
+    @Html.ValidationMessageFor(x => x.SelectedEvent.InformationUrl)
     </p><p>
     @Html.LabelFor(x => x.SelectedEvent.DeadLine)
     <br />
     @Html.EditorFor(x => x.SelectedEvent.DeadLine)
+    @Html.ValidationMessageFor(x => x.SelectedEvent.DeadLine)
     </p>
     
         
     <p>
-        <input type="submit" value="Register event" /></p>
+        <input type="submit" value="Submit" /></p>
 }
 </div>

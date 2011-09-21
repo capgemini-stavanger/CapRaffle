@@ -25,7 +25,7 @@ namespace CapRaffle.Domain.Model
 
             [Required(ErrorMessage = "Please enter number of available spots on the event")]
             [Display(Name = "Available spots")]
-            [Range(1, int.MaxValue)]
+            [Range(1, int.MaxValue, ErrorMessage= "Available spots must be 1 or larger")]
             public int AvailableSpots { get; set; }
 
             [Required(ErrorMessage = "Please choose a category for this event")]
@@ -36,6 +36,7 @@ namespace CapRaffle.Domain.Model
             public string InformationUrl { get; set; }
 
             [Required(ErrorMessage = "Please enter a deadline for rsvp on this event")]
+            [Display(Name="Deadline")]
             public DateTime DeadLine { get; set; }
         }
     }
