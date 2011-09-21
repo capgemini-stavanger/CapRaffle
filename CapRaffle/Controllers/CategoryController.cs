@@ -9,6 +9,7 @@ using CapRaffle.Models;
 
 namespace CapRaffle.Controllers
 {
+    [Authorize]
     public class CategoryController : Controller
     {
         private ICategoryRepository repository;
