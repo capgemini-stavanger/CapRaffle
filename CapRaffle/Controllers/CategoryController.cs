@@ -17,32 +17,44 @@ namespace CapRaffle.Controllers
         {
             repository = repo;
         }
+  
+        public ViewResult Index()
+        {
+            var model = new CategoryListViewModel { Categories = repository.Categories };
+            model.Categories.OrderBy(p => p.Name);
+
+            return View(model);
+        }
 
         public ViewResult Create()
         {
-            return View(new Category());
+            return View("Edit", new Category());
+        }
+        
+        public ViewResult Edit(int categoryId)
+        {
+            Category category = repository.Categories.FirstOrDefault(
+                f => f.CategoryId == categoryId);
+            return View(category);
         }
 
         [HttpPost]
-        public ActionResult Create(Category newCategory)
-        {            
-            if (ModelStateAndCategoryNameIsValid(newCategory))
+        public ActionResult Edit(Category category)
+        {
+            if (ModelStateAndCategoryNameIsValid(category))
             {
-                Category category = repository.Categories
-                    .FirstOrDefault(c => c.Name == newCategory.Name);
-
-                if (category == null)
+                if (CategoryAlreadyExists(category))
                 {
-                    repository.SaveCategory(newCategory);
-                    return RedirectToAction("Index");
+                    ModelState.AddModelError("", "A category with that name already exists.");
+                    return View(category);
                 }
                 else
                 {
-                    ModelState.AddModelError("", "A category with that name already exists.");
-                    return View();
+                    repository.SaveCategory(category);
+                    return RedirectToAction("Index");
                 }
-            }            
-            return View();
+            }
+            return View(category);
         }
 
         private bool ModelStateAndCategoryNameIsValid(Category category)
@@ -50,12 +62,12 @@ namespace CapRaffle.Controllers
             return ModelState.IsValid && !string.IsNullOrEmpty(category.Name);
         }
 
-        public ViewResult Index()
+        private bool CategoryAlreadyExists(Category category)
         {
-            var model = new CategoryListViewModel { Categories = repository.Categories };
-            model.Categories.OrderBy(p => p.Name);
+            Category existingCategory = repository.Categories
+                    .FirstOrDefault(c => c.Name == category.Name);
 
-            return View(model);
+            return existingCategory != null && category.CategoryId == 0;
         }
     }
 }

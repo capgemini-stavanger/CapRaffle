@@ -14,5 +14,6 @@ namespace CapRaffle.Domain.Abstract
         bool Create(string email, string password, string name);
         bool ChangePassword(string email, string newPassword);
         void SignOut();
+        User GetUserByEmail(string email);
     }
 }

@@ -23,15 +23,19 @@ namespace CapRaffle.UnitTests
             mock.Setup(m => m.Authenticate("test@capgemini.com", "pass1234")).Returns(true);
             mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             mock.Setup(m => m.ChangePassword("test@capgemini.com", It.IsAny<string>())).Returns(true);
-
+            mock.Setup(m => m.GetUserByEmail("test@capgemini.com")).Returns(new User() { Email = "testc@capgemini.com" });
             mock.Setup(m => m.Users).Returns(new User[] 
             {
                 new User { Email="test@capgemini.com", Name="Test" },
                 new User { Email="test2@capgemini.com", Name="Test2" }
             }.AsQueryable());
-            
+
+            var mockContext = new Mock<ControllerContext>();
+            mockContext.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("test@capgemini.com");
+            mockContext.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
 
             accountController = new AccountController(mock.Object);
+            accountController.ControllerContext = mockContext.Object;
         }
 
         [Test]
@@ -65,7 +69,9 @@ namespace CapRaffle.UnitTests
             };
 
             // Act
+            accountController.ModelState.AddModelError("error", "Email must end with @capgemini.com");
             ActionResult res = accountController.Register(model);
+            
 
             // Assert
             Assert.IsInstanceOf(typeof(ViewResult), res);
@@ -128,6 +134,19 @@ namespace CapRaffle.UnitTests
             mock.Verify(m => m.ChangePassword(model.Email, model.Password));
             Assert.IsInstanceOf(typeof(ViewResult), res);
         }
+        
+        [Test]
+        public void Can_Start_Change_Password_With_Correct_Email()
+        {
+            // Arrange
+
+
+            // Act
+            ActionResult res = accountController.ChangePassword();
+
+            // Assert
+            Assert.IsInstanceOf(typeof(ViewResult), res);
+        }
 
         [Test]
         public void Can_Not_Change_Password()
@@ -156,6 +175,49 @@ namespace CapRaffle.UnitTests
             //Assert
             Assert.IsInstanceOf(typeof(RedirectResult), res);
             mock.Verify(m => m.SignOut());
+        }
+
+        [Test]
+        public void LogOn_Returns_View()
+        {
+            //Act
+            ActionResult res = accountController.LogOn();
+
+            //Assert
+            Assert.IsInstanceOf(typeof(ViewResult), res);
+        }
+
+        [Test]
+        public void Register_Returns_View()
+        {
+            //Act
+            ActionResult res = accountController.Register();
+
+            //Assert
+            Assert.IsInstanceOf(typeof(ViewResult), res);
+        }
+
+        [Test]
+        public void Index_redirects_to_main_index()
+        {
+            //Act
+            ActionResult res = accountController.Index();
+
+            //Assert
+            Assert.IsInstanceOf(typeof(RedirectResult), res);
+            Assert.AreEqual("/", ((RedirectResult)res).Url);
+        }
+
+        [Test]
+        public void Get_Valid_User_By_Email()
+        {
+            //Arrange
+            string email = "test@capgemini.com";
+
+            //Act
+            ActionResult res = accountController.EmailExists(email);
+            //Assert
+            Assert.IsInstanceOf(typeof(JsonResult), res);
         }
     }
 }
