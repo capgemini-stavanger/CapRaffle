@@ -65,7 +65,9 @@ namespace CapRaffle.UnitTests
             };
 
             // Act
+            accountController.ModelState.AddModelError("error", "Email must end with @capgemini.com");
             ActionResult res = accountController.Register(model);
+            
 
             // Assert
             Assert.IsInstanceOf(typeof(ViewResult), res);

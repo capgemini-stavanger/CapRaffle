@@ -23,12 +23,6 @@ namespace CapRaffle.Controllers
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
-            User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);
-            if (userExist == null)
-            {
-                ModelState.AddModelError("", "Email not found");
-            }
-
             if (ModelState.IsValid)
             {
                 if (accountRepository.ChangePassword(model.Email, model.Password))
@@ -36,12 +30,8 @@ namespace CapRaffle.Controllers
                     this.Success(string.Format("Password for {0} has been saved", model.Email));
                     return View(model);
                 }
-                else return View(model);
             }
-            else
-            {
-                return View(model);
-            }
+           return View(model);
         }
 
         [Authorize]
@@ -66,14 +56,9 @@ namespace CapRaffle.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Incorrect email or password");
-                    return View();
-
                 }
             }
-            else
-            {
-                return View();
-            }
+            return View();
         }
 
         public ActionResult LogOn()
@@ -84,17 +69,7 @@ namespace CapRaffle.Controllers
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {
-            if (!model.Email.Contains("@capgemini.com"))
-            {
-                ModelState.AddModelError("", "Email must end with @capgemini.com"); //Possibly not needed, the view should add the modelerror when the RegularExpression fails?
-            }
 
-            User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == model.Email);
-            if (userExist != null)
-            {
-                ModelState.AddModelError("", "Email is already registered");
-            }
-            
             if (ModelState.IsValid)
             {
                if (accountRepository.Create(model.Email, model.Password, model.Name))
@@ -119,6 +94,14 @@ namespace CapRaffle.Controllers
         {
             accountRepository.SignOut();
             return Redirect("/Account/LogOn");
+        }
+
+        public ActionResult EmailExists(string email)
+        {
+            bool isValid = true;
+            User userExist = accountRepository.Users.FirstOrDefault(u => u.Email == email);
+            if (userExist != null) isValid = false;
+            return Json(isValid, JsonRequestBehavior.AllowGet); 
         }
     }
 }

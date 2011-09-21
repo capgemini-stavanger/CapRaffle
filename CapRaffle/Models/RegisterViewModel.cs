@@ -7,8 +7,8 @@ namespace CapRaffle.Models
     {
 
         [Required(ErrorMessage = "Please enter your capgemini.com email address")]
-        [RegularExpression(".+\\@capgemini.com",
-        ErrorMessage = "Please enter a valid capgemini.com email address")]
+        [Remote("EmailExists", "Account", ErrorMessage = "Email already exists")]
+        [RegularExpression(".+\\@capgemini.com", ErrorMessage = "Please enter a valid capgemini.com email address")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password requierd")]
@@ -18,7 +18,7 @@ namespace CapRaffle.Models
         [Required(ErrorMessage = "Password requierd")]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match."),]
         public string PasswordAgain { get; set; }
 
         [Required(ErrorMessage = "Please enter your name")]
