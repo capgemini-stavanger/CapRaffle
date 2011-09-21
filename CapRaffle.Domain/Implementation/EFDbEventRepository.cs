@@ -4,6 +4,14 @@ using System.Linq;
 using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
+using System.Data;
+using System.Collections.Specialized;
+using System.Data.Objects;
+using System.Reflection;
+using System.Data.Objects.DataClasses;
+using System.Data.Entity;
+using System.Data.Entity.Design.PluralizationServices;
+using System.Globalization;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -25,6 +33,10 @@ namespace CapRaffle.Domain.Implementation
             if (changedEvent.EventId == 0)
             {
                 context.AddToEvents(changedEvent);
+            }
+            else
+            {
+                context.UpdateDetachedEntity<Event>(changedEvent, x => x.EventId);
             }
             context.SaveChanges();
         }
