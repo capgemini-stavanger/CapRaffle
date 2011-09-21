@@ -7,7 +7,16 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    @Html.EditorForModel()
+    <p>
+    @Html.LabelFor(x => x.Email)
+    <br />
+    @Html.EditorFor(x => x.Email)
+    </p>
+    <p>
+    @Html.LabelFor(x => x.Password)
+    <br />
+    @Html.EditorFor(x => x.Password)
+    </p>
     <p>
         <input type="submit" value="Log in" /></p>
 }

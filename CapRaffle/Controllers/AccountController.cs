@@ -66,15 +66,15 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
-        public ActionResult Register(RegisterViewModel model)
+        public ActionResult Register(User user)
         {
 
             if (ModelState.IsValid)
             {
-               if (accountRepository.Create(model.Email, model.Password, model.Name))
+               if (accountRepository.Create(user.Email, user.Password, user.Name))
                     {
-                        this.Success(string.Format("Account for {0} has been registered", model.Email));
-                        accountRepository.Authenticate(model.Email, model.Password);
+                        this.Success(string.Format("Account for {0} has been registered", user.Email));
+                        accountRepository.Authenticate(user.Email, user.Password);
                         return Redirect("/");
                     }
                 }
