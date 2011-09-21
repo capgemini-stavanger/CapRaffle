@@ -10,12 +10,10 @@ using System.Data.Objects;
 using System.Reflection;
 using System.Data.Objects.DataClasses;
 using System.Data.Entity;
-using System.Data.Entity.Design.PluralizationServices;
-using System.Globalization;
 
 namespace CapRaffle.Domain.Implementation
 {
-    public class EFDbEventRepository : IEventRepository
+    public class EventRepository : IEventRepository
     {
 
         CapRaffleContext context = new CapRaffleContext();
@@ -39,6 +37,28 @@ namespace CapRaffle.Domain.Implementation
                 context.UpdateDetachedEntity<Event>(changedEvent, x => x.EventId);
             }
             context.SaveChanges();
+
         }
+
+        public void DeleteParticipant(UserEvent participant)
+        {
+            context.UserEvents.DeleteObject(participant);
+            context.SaveChanges();
+        }
+
+        public void SaveParticipant(UserEvent participant)
+        {
+            if (context.UserEvents.Where(x => x.EventId == participant.EventId && x.User == participant.User).Count() == 0)
+            {
+                context.AddToUserEvents(participant);
+            }
+            else
+            {
+                context.UpdateDetachedEntity<UserEvent>(participant, x => x.EventId);
+            }
+            context.SaveChanges();
+        }
+
+        
     }
 }

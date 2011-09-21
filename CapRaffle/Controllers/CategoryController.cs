@@ -20,9 +20,8 @@ namespace CapRaffle.Controllers
   
         public ViewResult Index()
         {
-            var model = new CategoryListViewModel { Categories = repository.Categories };
-            model.Categories.OrderBy(p => p.Name);
-
+            var model = new CategoryListViewModel { Categories = repository.Categories.OrderBy(c => c.Name) };
+            
             return View(model);
         }
 
@@ -45,15 +44,17 @@ namespace CapRaffle.Controllers
             {
                 if (CategoryAlreadyExists(category))
                 {
-                    ModelState.AddModelError("", "A category with that name already exists.");
+                    this.Error("A category with that name already exists.");
+                    //ModelState.AddModelError("", "A category with that name already exists.");
                     return View(category);
                 }
                 else
                 {
                     repository.SaveCategory(category);
+                    this.Success("The category has been saved");
                     return RedirectToAction("Index");
                 }
-            }
+            }            
             return View(category);
         }
 

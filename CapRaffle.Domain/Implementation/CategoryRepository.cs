@@ -27,8 +27,7 @@ namespace CapRaffle.Domain.Implementation
             }
             else
             {
-                Category currentCategory = context.Categories.FirstOrDefault(c => c.CategoryId == category.CategoryId);
-                currentCategory.Name = category.Name;
+                context.UpdateDetachedEntity<Category>(category, x => x.CategoryId);
             }
             context.SaveChanges();
         }
