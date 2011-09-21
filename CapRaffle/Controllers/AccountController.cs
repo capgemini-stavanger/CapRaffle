@@ -74,7 +74,9 @@ namespace CapRaffle.Controllers
             {
                if (accountRepository.Create(model.Email, model.Password, model.Name))
                     {
-                        return Redirect("/Account/LogOn");
+                        this.Success(string.Format("Account for {0} has been registered", model.Email));
+                        accountRepository.Authenticate(model.Email, model.Password);
+                        return Redirect("/");
                     }
                 }
             return View();
