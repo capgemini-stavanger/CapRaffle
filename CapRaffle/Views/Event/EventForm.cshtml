@@ -18,6 +18,8 @@
     @Html.ValidationSummary()
     
     @Html.HiddenFor(x => x.SelectedEvent.EventId)
+    @Html.HiddenFor(x => x.SelectedEvent.Creator)
+    @Html.HiddenFor(x => x.SelectedEvent.Created)
     <p>
     @Html.LabelFor(x => x.SelectedEvent.Name)
     <br />

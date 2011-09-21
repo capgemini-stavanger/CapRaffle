@@ -19,8 +19,7 @@ namespace CapRaffle.Domain.Implementation
 
         public bool Authenticate(string email, string password)
         {
-            email = email.ToLower();
-            User user = Users.FirstOrDefault(u => u.Email == email);
+            User user = GetUserByEmail(email);
             if (user != null)
             {
                 String passwd = CreatePasswordHash(password, CreateSalt(email));
@@ -48,8 +47,7 @@ namespace CapRaffle.Domain.Implementation
 
         public bool ChangePassword(string email, string newPassword)
         {
-            email = email.ToLower();
-            User user = Users.FirstOrDefault(u => u.Email == email);
+            User user = GetUserByEmail(email);
             if (user != null)
             {
                 String passwd = CreatePasswordHash(newPassword, CreateSalt(email));
@@ -63,6 +61,12 @@ namespace CapRaffle.Domain.Implementation
         public void SignOut()
         {
             FormsAuthentication.SignOut();
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            email = email.ToLower();
+            return Users.FirstOrDefault(u => u.Email == email);
         }
 
         private static string CreateSalt(string email)

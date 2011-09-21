@@ -159,7 +159,6 @@ namespace CapRaffle.UnitTests
 
             //Act
             var result = controller.Delete(2);
-            
 
             //Assert
             result.AssertActionRedirect().ToAction("Index");
@@ -178,6 +177,55 @@ namespace CapRaffle.UnitTests
             mock.Verify(m => m.DeleteEvent(It.IsAny<Event>()), Times.Never());
         }
 
+        [Test]
+        public void User_Can_Edit_Events_The_User_Created()
+        {
+            //Arrange
+            //Act
+            var result = (ViewResult) controller.Edit(2);
+            
+            //Assert
+            result.AssertViewRendered().ForView("EventForm");
+        }
+
+        [Test]
+        public void User_Can_Not_Edit_Others_Event()
+        {
+            //Act
+            var result = controller.Edit(4);
+
+            //Assert
+            Assert.IsNotNull(controller.TempData["Info"]);
+            result.AssertActionRedirect().ToAction("Details");
+        }
+
+        [Test]
+        public void User_Can_Submit_Valid_Changes_On_Event()
+        {
+            //Arrange
+            selectedEvent.SelectedEvent.DeadLine.AddHours(2);
+            //Act
+            var result = controller.Edit(selectedEvent);
+
+            //Assert
+            Assert.IsNotNull(controller.TempData["Success"]);
+            result.AssertActionRedirect().ToAction("Details");
+            mock.Verify(m => m.SaveEvent(selectedEvent.SelectedEvent), Times.Once());
+        }
+
+        [Test]
+        public void User_Can_Not_Submit_Invalid_Changes_On_Event()
+        {
+            //Arrange
+            controller.ModelState.AddModelError("error", "error");
+
+            //Act
+            var result = controller.Edit(selectedEvent);
+
+            //Assert
+            result.AssertViewRendered().ForView("EventForm");
+            mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
+        }
     }
 
 
