@@ -26,7 +26,8 @@ namespace CapRaffle.UnitTests
             mock.Setup(m => m.Categories).Returns(new Category[] 
             {
                 new Category { CategoryId = 1, Name = "Hockey" },
-                new Category { CategoryId = 2, Name = "Other" }
+                new Category { CategoryId = 2, Name = "A category" },
+                new Category { CategoryId = 3, Name = "Other" }
             }.AsQueryable());
             
             controller = new CategoryController(mock.Object);
@@ -77,7 +78,7 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
-        public void Can_Display_All_Categories_From_Repository()
+        public void Can_Display_All_Categories_From_Repository_Alphabetical()
         {
             var result = controller.Index();
 
@@ -86,6 +87,7 @@ namespace CapRaffle.UnitTests
             mock.Verify(m => m.Categories, Times.Once());
             result.AssertViewRendered().ForView(string.Empty);
             Assert.AreEqual(mock.Object.Categories.Count(), categoryListViewModel.Categories.Count());
+            Assert.AreEqual("A category", categoryListViewModel.Categories.First().Name); 
         }
 
         [Test]

@@ -1,21 +1,17 @@
 ﻿@model CapRaffle.Domain.Model.Category
 
 @{
-    if (string.IsNullOrEmpty(Model.Name)) {
-        ViewBag.Title = "Add a new category";
-    } 
-    else 
-    {
-        ViewBag.Title = "Edit: " + Model.Name;
-    }
+    ViewBag.Title = "Create new or edit existing category";
 }
 
 <h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.ValidationSummary(true)  
-    @Html.EditorForModel()
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(x => x.CategoryId)
+    <p>Category name: @Html.TextBoxFor(x => x.Name) </p>
+    <p>Category is active: @Html.CheckBoxFor(x => x.IsActive)</p>
     
     <input type="submit" value="Save" />
     @Html.ActionLink("Cancel and return to list", "Index")
