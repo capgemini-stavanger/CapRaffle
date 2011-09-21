@@ -28,7 +28,6 @@ namespace CapRaffle.Controllers
                 if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
                     this.Success(string.Format("Password for {0} has been saved", model.Email));
-                    return View(model);
                 }
             }
            return View(model);
