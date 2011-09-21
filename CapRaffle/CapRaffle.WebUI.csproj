@@ -78,7 +78,7 @@
     <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\LogOnViewModel.cs" />
-    <Compile Include="Models\MessageBox.cs" />
+    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

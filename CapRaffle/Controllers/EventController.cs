@@ -35,13 +35,7 @@ namespace CapRaffle.Controllers
             var currentDatetime = DateTime.Now;
             newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
 
-            IEnumerable<SelectListItem> categories = categoryRepository.Categories.ToList().Select( x => 
-                new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
-                );
-
-            categories.FirstOrDefault().Selected = true;
-
-            var model = new EventViewModel { SelectedEvent = newevent, Categories = categories };
+            var model = new EventViewModel { SelectedEvent = newevent, Categories = categorySelectList() };
             
             ViewBag.action = "Create";
             return View("EventForm", model);
@@ -62,12 +56,8 @@ namespace CapRaffle.Controllers
                 return RedirectToAction("Index");
             }
 
-            IEnumerable<SelectListItem> categories = categoryRepository.Categories.ToList().Select(x =>
-                new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
-                );
-
-            categories.FirstOrDefault().Selected = true;
-            model.Categories = categories;
+            
+            model.Categories = categorySelectList();
             return View("EventForm", model);
         }
 
@@ -97,5 +87,43 @@ namespace CapRaffle.Controllers
             return View(model);
         }
 
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+            var selectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault();
+            if (!selectedEvent.Creator.Equals(HttpContext.User.Identity.Name))
+            {
+                this.Info("You can only edit your own events.");
+                return RedirectToAction("Details", new { id = id });
+            }
+
+            var model = new EventViewModel { SelectedEvent = selectedEvent, Categories = categorySelectList() };
+
+            return View("EventForm", model);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        [Authorize]
+        public ActionResult Edit(EventViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                eventRepository.SaveEvent(model.SelectedEvent);
+                this.Success("Changes on event has been saved");
+                return RedirectToAction("Details", new { id = model.SelectedEvent.EventId });
+            }
+
+            model.Categories = categorySelectList();
+            return View("EventForm", model);
+        }
+
+
+
+        private IEnumerable<SelectListItem> categorySelectList() {
+            var categories = categoryRepository.Categories.ToList().Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
+            categories.FirstOrDefault().Selected = true;
+            return categories;
+        }
     }
 }
