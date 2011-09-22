@@ -42,7 +42,7 @@ namespace CapRaffle.UnitTests
         public void Can_Register_With_Capgemini_Email()
         {
             //Arrange
-            RegisterViewModel model = new RegisterViewModel
+            User model = new User
             {
                 Email = "test3@capgemini.com",
                 Password = "WeAreTheOnes",
@@ -62,7 +62,7 @@ namespace CapRaffle.UnitTests
         public void Can_Not_Register_Without_Valid_Email()
         {
             //Arrange
-            RegisterViewModel model = new RegisterViewModel
+            User model = new User
             {
                 Email = "test",
                 Password = "12"

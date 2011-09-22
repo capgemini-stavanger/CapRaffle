@@ -1,5 +1,4 @@
-﻿@model CapRaffle.Models.RegisterViewModel
-
+﻿@model CapRaffle.Domain.Model.User
 @{
     ViewBag.Title = "Register";
 }
@@ -9,13 +8,31 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    @Html.EditorForModel()
     <p>
-        <input type="submit" value="Register" /></p>
-}
-
-@if (false) {
-<script src="../../Scripts/jquery-1.5.1-vsdoc.js" type="text/javascript"></script>
+    @Html.LabelFor(x => x.Email)
+    <br />
+    @Html.EditorFor(x => x.Email)
+    @Html.ValidationMessageFor(x => x.Email)
+    </p>
+    <p>
+    @Html.LabelFor(x => x.Name)
+    <br />
+    @Html.EditorFor(x => x.Name)
+    @Html.ValidationMessageFor(x => x.Name)
+    </p>
+    <p>
+    @Html.LabelFor(x => x.Password)
+    <br />
+    @Html.EditorFor(x => x.Password)
+    @Html.ValidationMessageFor(x => x.Password)
+    </p>
+    <p>
+    @Html.LabelFor(x => x.PasswordAgain)
+    <br />
+    @Html.EditorFor(x => x.PasswordAgain)
+    @Html.ValidationMessageFor(x => x.PasswordAgain)
+    </p>
+    <p><input type="submit" value="Register" /></p>
 }
 
 <script type="text/javascript">
