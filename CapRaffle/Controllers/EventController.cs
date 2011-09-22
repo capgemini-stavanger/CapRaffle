@@ -47,8 +47,6 @@ namespace CapRaffle.Controllers
         public ActionResult Create(EventViewModel model)
         {
             
-            model.SelectedEvent.Created = DateTime.Now;
-            model.SelectedEvent.Creator = HttpContext.User.Identity.Name;
             if (ModelState.IsValid)
             {
                 eventRepository.SaveEvent(model.SelectedEvent);

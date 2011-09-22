@@ -16,6 +16,13 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
+
+    if (string.IsNullOrEmpty(Model.SelectedEvent.Creator)) {
+        Model.SelectedEvent.Creator = HttpContext.Current.User.Identity.Name;
+        Model.SelectedEvent.Created = DateTime.Now;
+    }
+    
+    
     
     @Html.HiddenFor(x => x.SelectedEvent.EventId)
     @Html.HiddenFor(x => x.SelectedEvent.Creator)

@@ -72,6 +72,7 @@
     <Compile Include="AccountControllerTests.cs" />
     <Compile Include="CategoryControllerTests.cs" />
     <Compile Include="EventControllerTests.cs" />
+    <Compile Include="ParticipantControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

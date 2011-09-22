@@ -48,7 +48,7 @@ namespace CapRaffle.Domain.Implementation
 
         public void SaveParticipant(UserEvent participant)
         {
-            if (context.UserEvents.Where(x => x.EventId == participant.EventId && x.User == participant.User).Count() == 0)
+            if (context.UserEvents.Where(x => x.EventId == participant.EventId && x.UserEmail.Equals(participant.UserEmail)).Count() == 0)
             {
                 context.AddToUserEvents(participant);
             }
