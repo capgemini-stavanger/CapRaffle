@@ -3,6 +3,15 @@
 @{
     ViewBag.Title = "Details";
 }
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#addParticipant").submit(function () {
+                a
+            });
+        });
+    </script>
+
+
 
     <div class="event">
         <h3 class="eventheader">@Model.SelectedEvent.Name</h3>
@@ -13,14 +22,38 @@
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
     </div>
 
-    @if (@HttpContext.Current.User.Identity.Name.Equals(Model.SelectedEvent.Creator))
-    {   
-        using (Html.BeginForm("Delete", "Event"))
-        {
-            @Html.AntiForgeryToken()
-            @Html.Hidden("id", Model.SelectedEvent.EventId)
+    <div class="Eventadministration">
+        @if (@HttpContext.Current.User.Identity.Name.Equals(Model.SelectedEvent.Creator))
+        {   
+            using (Html.BeginForm("Delete", "Event"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.Hidden("id", Model.SelectedEvent.EventId)
         
-            <input type="submit" value="Delete event" />
+                <input type="submit" value="Delete event" />
+            }
+            @Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })
         }
-        @Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })
-    }
+    </div>
+
+    <br />
+    <div class="Participants">
+        @if (@HttpContext.Current.User.Identity.IsAuthenticated)
+        {
+            using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "AddParticipant" }))
+            {
+                @Html.AntiForgeryToken()   
+                @Html.HiddenFor(x => x.SelectedEvent.EventId)
+                <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
+            
+                <label for="NumberOfSpots">Choose number of spots</label>
+                <input type="text" name="NumberOfSpots" />
+            
+                <input type="submit" value="Register for this event" />
+            }
+        }
+        else
+        {
+            <p>Sign in if you want to register for this event</p>
+        }
+    </div>
