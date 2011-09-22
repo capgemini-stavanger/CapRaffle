@@ -12,14 +12,16 @@ namespace CapRaffle.Domain.Abstract
 
         IQueryable<UserEvent> Participants { get; }
 
-        IQueryable<UserEvent> EventParticipants(int eventId); 
+        IQueryable<UserEvent> EventParticipants(int eventId);
 
         void DeleteEvent(Event selectedEvent);
 
         void SaveEvent(Event changedEvent);
 
+        void DeleteParticipant(UserEvent participant);
+
         void SaveParticipant(UserEvent participant);
 
-        void DeleteParticipant(UserEvent participant);
+        void SaveWinner(Winner winner);
     }
 }

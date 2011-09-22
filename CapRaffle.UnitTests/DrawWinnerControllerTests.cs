@@ -73,16 +73,37 @@ namespace CapRaffle.UnitTests
         [Test]
         public void Has_All_Participants_For_Current_Event()
         {
-            ViewResult result = (ViewResult)controller.Index(selectedEvent.SelectedEvent.EventId);
+            ViewResult result = (ViewResult)controller.Index(SelectedEventId());
 
             IQueryable<UserEvent> participants = result.Model as IQueryable<UserEvent>;
 
-            var correctNumberOfParticipants = eventMock.Object.Participants
-                .Where(x => x.EventId == selectedEvent.SelectedEvent.EventId).Count();
+            var correctNumberOfParticipants = SelectedEventParticipants().Count();
 
             Assert.AreEqual(correctNumberOfParticipants, participants.Count());
             result.AssertViewRendered().ForView(string.Empty);
-            eventMock.Verify(m => m.EventParticipants(selectedEvent.SelectedEvent.EventId), Times.Once());
+            eventMock.Verify(m => m.EventParticipants(SelectedEventId()), Times.Once());
+        }
+
+        [Test]
+        public void Can_Draw_Winner()
+        {
+            PartialViewResult result = (PartialViewResult)controller
+                .DrawWinner(SelectedEventParticipants().AsQueryable());
+
+            Assert.IsInstanceOf(typeof(Winner), result.Model);
+            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.AtLeastOnce());
+            result.AssertPartialViewRendered().ForView(string.Empty);
+        }
+
+        private IEnumerable<UserEvent> SelectedEventParticipants()
+        {
+            return eventMock.Object.Participants
+                .Where(x => x.EventId == SelectedEventId());
+        }
+
+        private int SelectedEventId()
+        {
+            return selectedEvent.SelectedEvent.EventId;
         }
     }
 }
