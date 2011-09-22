@@ -170,6 +170,17 @@ div#menu
     font-weight: bold;
 }
 
+.right 
+{
+    float: right;
+}
+
+button a 
+{
+    text-decoration: none;
+    color: Black;
+}
+
 /* Styles for message boxes
 -----------------------------------------------------------*/
 

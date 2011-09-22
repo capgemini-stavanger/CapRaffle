@@ -3,16 +3,64 @@
 @{
     ViewBag.Title = "Details";
 }
+
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#addParticipant").submit(function () {
-                a
+            $(".participants form").submit(function (e) {
+                $.post($(this).attr("action"),
+                    $(this).serialize(),
+                    function (data) {
+                        location.reload();
+                    });
+                e.preventDefault();
             });
         });
     </script>
-
-
-
+    <div class="right">
+        <div class="participants">
+        <h2>Participants</h2>
+            <table>
+                <tr><th>Name</th><th>Number of spots</th></tr>
+                @foreach (var participant in Model.SelectedEvent.UserEvents)
+                {
+                    <tr><td>@participant.User.Name</td><td>@participant.NumberOfSpots</td></tr>
+                }
+            </table>
+            @if (@HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "addParticipant" }))
+                {
+                    @Html.AntiForgeryToken()   
+                    @Html.HiddenFor(x => x.SelectedEvent.EventId)
+                    <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
+            
+                    <label for="NumberOfSpots">Choose number of spots</label>
+                    @Html.DropDownList("NumberOfSpots", Model.numberofSpots)    
+                <!--<input type="text" name="NumberOfSpots" />-->
+            
+                    <input type="submit" value="@(Model.UserIsParticipant ? "Update number of spots" : "Register for this event")" />
+                }
+            }
+            else
+            {
+                <p>Sign in if you want to register for this event</p>
+            }
+        </div>
+        <div class="eventadministration">
+            @if (@HttpContext.Current.User.Identity.Name.Equals(Model.SelectedEvent.Creator))
+            {   
+                <h2>Event administration</h2>
+                using (Html.BeginForm("Delete", "Event"))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.Hidden("id", Model.SelectedEvent.EventId)
+        
+                    <input type="submit" value="Delete event" />
+                }
+                <button>@Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })</button>
+            }
+        </div>
+    </div>
     <div class="event">
         <h3 class="eventheader">@Model.SelectedEvent.Name</h3>
         <h6 style="">Created by: @Model.SelectedEvent.Creator on @Model.SelectedEvent.Created.ToString("dd MMM yyyy") under @Model.SelectedEvent.Category.Name</h6>
@@ -22,38 +70,8 @@
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
     </div>
 
-    <div class="Eventadministration">
-        @if (@HttpContext.Current.User.Identity.Name.Equals(Model.SelectedEvent.Creator))
-        {   
-            using (Html.BeginForm("Delete", "Event"))
-            {
-                @Html.AntiForgeryToken()
-                @Html.Hidden("id", Model.SelectedEvent.EventId)
-        
-                <input type="submit" value="Delete event" />
-            }
-            @Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })
-        }
-    </div>
+    
 
     <br />
-    <div class="Participants">
-        @if (@HttpContext.Current.User.Identity.IsAuthenticated)
-        {
-            using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "AddParticipant" }))
-            {
-                @Html.AntiForgeryToken()   
-                @Html.HiddenFor(x => x.SelectedEvent.EventId)
-                <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
-            
-                <label for="NumberOfSpots">Choose number of spots</label>
-                <input type="text" name="NumberOfSpots" />
-            
-                <input type="submit" value="Register for this event" />
-            }
-        }
-        else
-        {
-            <p>Sign in if you want to register for this event</p>
-        }
-    </div>
+    
+

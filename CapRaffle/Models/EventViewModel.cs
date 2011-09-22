@@ -15,5 +15,9 @@ namespace CapRaffle.Models
         //Dropdownlist in create and edit views
         public IEnumerable<SelectListItem> Categories { get; set; }
 
+
+        public bool UserIsParticipant { get; set; }
+
+        public IEnumerable<SelectListItem> numberofSpots { get; set; }
     }
 }

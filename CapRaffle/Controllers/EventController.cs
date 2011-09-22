@@ -82,7 +82,14 @@ namespace CapRaffle.Controllers
 
         public ActionResult Details(int id)
         {
-            var model = new EventViewModel { SelectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault() };
+            var selectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault();
+            var UserIsParticipant = selectedEvent.UserEvents.Where(x => x.UserEmail == HttpContext.User.Identity.Name).Count() > 0;
+            var model = new EventViewModel 
+            { 
+                SelectedEvent = selectedEvent, 
+                UserIsParticipant = UserIsParticipant, 
+                numberofSpots = NumberofSpotsList(selectedEvent.AvailableSpots) 
+            };
             return View(model);
         }
 
@@ -118,7 +125,17 @@ namespace CapRaffle.Controllers
             return View("EventForm", model);
         }
 
-
+        private IEnumerable<SelectListItem> NumberofSpotsList(int numberOfSpots)
+        {
+            var selectedItemList = new List<SelectListItem>();
+            for (int i = 1; i <= numberOfSpots; i++)
+            {
+                var selected = i == 1 ? true : false;
+                selectedItemList.Add(new SelectListItem { Text = i.ToString(), Value = i.ToString(), Selected = selected });
+                
+            }
+            return selectedItemList;
+        }
 
         private IEnumerable<SelectListItem> categorySelectList() {
             var categories = categoryRepository.Categories.ToList().Where(x => x.IsActive).Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
