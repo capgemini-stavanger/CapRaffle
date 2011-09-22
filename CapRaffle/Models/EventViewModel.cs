@@ -18,6 +18,8 @@ namespace CapRaffle.Models
 
         public bool UserIsParticipant { get; set; }
 
+        public UserEvent LoggedInParticipant { get; set; }
+
         public IEnumerable<SelectListItem> numberofSpots { get; set; }
     }
 }

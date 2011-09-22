@@ -14,6 +14,23 @@
                     });
                 e.preventDefault();
             });
+
+            $("#removeparticipation").click(function (e) {
+                @if (Model.UserIsParticipant) {
+                    <text>
+                    var postdata = { UserEmail: '@Model.LoggedInParticipant.UserEmail', NumberOfSpots: '@Model.LoggedInParticipant.NumberOfSpots', EventId: '@Model.LoggedInParticipant.EventId' };
+                    </text>
+                }
+                
+                $.ajax({
+                    url: '@Url.Action("Delete", "Participant")',
+                    type: 'POST',
+                    data: postdata,
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+            });
         });
     </script>
     <div class="right">
@@ -39,6 +56,10 @@
                 <!--<input type="text" name="NumberOfSpots" />-->
             
                     <input type="submit" value="@(Model.UserIsParticipant ? "Update number of spots" : "Register for this event")" />
+                }
+                if (Model.UserIsParticipant)
+                {
+                    <button id="removeparticipation">Delete participation</button>
                 }
             }
             else
