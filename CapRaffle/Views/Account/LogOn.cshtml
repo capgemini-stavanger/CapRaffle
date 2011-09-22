@@ -2,8 +2,7 @@
 @{
     ViewBag.Title = "CapRaffle";
 }
-<p>
-    Please log in:</p>
+<p>Please log in:</p>
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
@@ -18,6 +17,23 @@
     @Html.EditorFor(x => x.Password)
     </p>
     <p>
-        <input type="submit" value="Log in" /></p>
+        <input type="submit" id="login" value="Log in" onclick="submitForm(this)"/>
+        <input type="submit" id="forgotPassword" value="Forgot password" onclick="submitForm(this)"/>
+    </p>
 }
 @Html.ActionLink("Register here", "Register")
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#login").click(function () {
+            var form = $(this).parents('form:first');
+            form.attr('action', '/Account/LogOn');
+        });
+
+        $("#forgotPassword").click(function () {
+            var form = $(this).parents('form:first');
+            form.attr('action', '/Account/ForgotPassword');
+        });
+    }); 
+</script>

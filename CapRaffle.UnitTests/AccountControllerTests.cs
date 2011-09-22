@@ -198,7 +198,7 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
-        public void Index_redirects_to_main_index()
+        public void Index_Redirects_To_Main_Index()
         {
             //Act
             ActionResult res = accountController.Index();
@@ -218,6 +218,24 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.EmailExists(email);
             //Assert
             Assert.IsInstanceOf(typeof(JsonResult), res);
+        }
+
+        [Test]
+        public void Forgot_Password_Working()
+        {
+            // Arrange
+            LogOnViewModel model = new LogOnViewModel
+            {
+                Email = "test@capgemini.com",
+                Password = "wrongpassword"
+            };
+            
+            // Act
+            ActionResult res = accountController.ForgotPassword(model);
+
+            // Assert
+            mock.Verify(m => m.ForgotPassword(model.Email));
+            Assert.IsInstanceOf(typeof(RedirectResult), res);
         }
     }
 }
