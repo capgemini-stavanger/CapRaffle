@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DrawWinnerController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Global.asax.cs">
@@ -75,7 +76,6 @@
     <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\EventsListViewModel.cs" />
     <Compile Include="Models\CategoryListViewModel.cs" />
-    <Compile Include="Models\CategoryViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\LogOnViewModel.cs" />
     <Compile Include="Models\Extensions.cs" />
@@ -170,9 +170,6 @@
     <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Category\Create.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Category\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Category\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DrawWinner\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
