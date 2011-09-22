@@ -12,16 +12,13 @@ namespace CapRaffle.Controllers
     {
         private IEventRepository eventRepository;
         private ICategoryRepository categoryRepository;
+        
+        private static Random randomGenerator = new Random();
 
         public DrawWinnerController(IEventRepository eventRepo, ICategoryRepository categoryRepo)
         {
             eventRepository = eventRepo;
             categoryRepository = categoryRepo;
-        }
-
-        public ActionResult Index()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -30,6 +27,21 @@ namespace CapRaffle.Controllers
             IQueryable<UserEvent> eventParticipants = eventRepository.EventParticipants(eventId);
 
             return View(eventParticipants);
+        }
+
+        public PartialViewResult DrawWinner(IQueryable<UserEvent> eventParticipants)
+        {
+            int winnerNumber = randomGenerator.Next(eventParticipants.Count());
+            UserEvent drawnParticipant = eventParticipants.ElementAt(winnerNumber);
+            Winner winner = new Winner 
+                {
+                    EventId = drawnParticipant.EventId,
+                    UserEmail = drawnParticipant.UserEmail,
+                    Date = DateTime.Now,
+                    NumberOfSpotsWon = drawnParticipant.NumberOfSpots
+                };
+            eventRepository.SaveWinner(winner);
+            return PartialView(winner);
         }
     }
 }
