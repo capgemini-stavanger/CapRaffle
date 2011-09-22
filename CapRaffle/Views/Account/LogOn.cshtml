@@ -17,8 +17,8 @@
     @Html.EditorFor(x => x.Password)
     </p>
     <p>
-        <input type="submit" id="login" value="Log in" onclick="submitForm(this)"/>
-        <input type="submit" id="forgotPassword" value="Forgot password" onclick="submitForm(this)"/>
+        <input type="submit" id="login" value="Log in"/>
+        <input type="submit" id="forgotPassword" value="Forgot password"/>
     </p>
 }
 @Html.ActionLink("Register here", "Register")
@@ -27,12 +27,12 @@
 <script type="text/javascript">
     $(function () {
         $("#login").click(function () {
-            var form = $(this).parents('form:first');
+            var form = $(this).parent('form');
             form.attr('action', '/Account/LogOn');
         });
 
         $("#forgotPassword").click(function () {
-            var form = $(this).parents('form:first');
+            var form = $(this).parent('form');
             form.attr('action', '/Account/ForgotPassword');
         });
     }); 

@@ -237,5 +237,21 @@ namespace CapRaffle.UnitTests
             mock.Verify(m => m.ForgotPassword(model.Email));
             Assert.IsInstanceOf(typeof(RedirectResult), res);
         }
+        [Test]
+        public void Forgot_Password_Not_Working_When_User_Dont_Exist()
+        {
+            // Arrange
+            LogOnViewModel model = new LogOnViewModel
+            {
+                Email = "test222@capgemini.com",
+                Password = "wrongpassword"
+            };
+            
+            // Act
+            ActionResult res = accountController.ForgotPassword(model);
+
+            // Assert
+            Assert.IsInstanceOf(typeof(RedirectResult), res);
+        }
     }
 }

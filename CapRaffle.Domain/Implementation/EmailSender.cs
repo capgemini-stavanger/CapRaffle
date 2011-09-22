@@ -20,31 +20,16 @@ namespace CapRaffle.Domain.Implementation
     public class EmailSender : IEmailSender
     {
         EmailSettings emailSettings;
-
+        SmtpClient smtpClient;
         public EmailSender()
         {
             emailSettings = new EmailSettings();
+            SetUpSmtpClient();
         }
 
         public void ForgotPassword(string email, string newPassword)
         {
-            using (var smtpClient = new SmtpClient())
-            {
-
-                smtpClient.EnableSsl = emailSettings.UseSsl;
-                smtpClient.Host = emailSettings.ServerName;
-                smtpClient.Port = emailSettings.ServerPort;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials
-                = new NetworkCredential(emailSettings.Username, emailSettings.Password);
-
-                if (emailSettings.WriteAsFile)
-                {
-                    smtpClient.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-                    smtpClient.PickupDirectoryLocation = emailSettings.FileLocation;
-                    smtpClient.EnableSsl = false;
-                }
-
+            if (smtpClient != null) {
                 string body = string.Format("Your new CapRaffle password is: {0}", newPassword);
 
                 MailMessage mailMessage = new MailMessage(
@@ -59,6 +44,24 @@ namespace CapRaffle.Domain.Implementation
                     mailMessage.BodyEncoding = Encoding.ASCII;
                 }
                 smtpClient.Send(mailMessage);
+            }
+        }
+
+        private  void SetUpSmtpClient()
+        {
+            smtpClient = new SmtpClient();
+            smtpClient.EnableSsl = emailSettings.UseSsl;
+            smtpClient.Host = emailSettings.ServerName;
+            smtpClient.Port = emailSettings.ServerPort;
+            smtpClient.UseDefaultCredentials = false;
+            smtpClient.Credentials
+            = new NetworkCredential(emailSettings.Username, emailSettings.Password);
+
+            if (emailSettings.WriteAsFile)
+            {
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+                smtpClient.PickupDirectoryLocation = emailSettings.FileLocation;
+                smtpClient.EnableSsl = false;
             }
         }
     }
