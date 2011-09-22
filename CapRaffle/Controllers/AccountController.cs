@@ -29,9 +29,10 @@ namespace CapRaffle.Controllers
                 if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
                     this.Success(string.Format("Password for {0} has been saved", model.Email));
+                    return Redirect("/");
                 }
             }
-           return View(model);
+            return View(User);
         }
 
         [Authorize]
@@ -56,6 +57,7 @@ namespace CapRaffle.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Incorrect email or password");
+                    TempData["ForgotPassword"] = "ForgotPassword";
                 }
             }
             return View();

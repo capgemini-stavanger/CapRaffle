@@ -132,7 +132,7 @@ namespace CapRaffle.UnitTests
 
             // Assert
             mock.Verify(m => m.ChangePassword(model.Email, model.Password));
-            Assert.IsInstanceOf(typeof(ViewResult), res);
+            Assert.IsInstanceOf(typeof(RedirectResult), res);
         }
         
         [Test]
@@ -161,6 +161,7 @@ namespace CapRaffle.UnitTests
 
             // Act
             ActionResult res = accountController.ChangePassword(model);
+            accountController.ModelState.AddModelError("error", "Invalid email");
 
             // Assert
             Assert.IsInstanceOf(typeof(ViewResult), res);
