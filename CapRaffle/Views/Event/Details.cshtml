@@ -34,7 +34,7 @@
                     @Html.HiddenFor(x => x.SelectedEvent.EventId)
                     <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
             
-                    <label for="NumberOfSpots">Choose number of spots</label>
+                    <label for="NumberOfSpots">@(Model.UserIsParticipant ? "Update" : "Choose") number of spots</label>
                     @Html.DropDownList("NumberOfSpots", Model.numberofSpots)    
                 <!--<input type="text" name="NumberOfSpots" />-->
             
