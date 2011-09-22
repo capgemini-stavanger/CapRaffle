@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Models;
+using System.Reflection;
 
 namespace CapRaffle.Controllers
 {
@@ -28,9 +29,10 @@ namespace CapRaffle.Controllers
                 if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
                     this.Success(string.Format("Password for {0} has been saved", model.Email));
+                    return Redirect("/");
                 }
             }
-           return View(model);
+            return View(User);
         }
 
         [Authorize]
@@ -55,6 +57,7 @@ namespace CapRaffle.Controllers
                 else
                 {
                     ModelState.AddModelError("", "Incorrect email or password");
+                    TempData["ForgotPassword"] = "ForgotPassword";
                 }
             }
             return View();
@@ -68,7 +71,6 @@ namespace CapRaffle.Controllers
         [HttpPost]
         public ActionResult Register(User user)
         {
-
             if (ModelState.IsValid)
             {
                if (accountRepository.Create(user.Email, user.Password, user.Name))
@@ -103,6 +105,25 @@ namespace CapRaffle.Controllers
             User userExist = accountRepository.GetUserByEmail(email);
             if (userExist != null) isValid = false;
             return Json(isValid, JsonRequestBehavior.AllowGet); 
+        }
+
+        [HttpPost]
+        public ActionResult ForgotPassword(LogOnViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User userExist = accountRepository.GetUserByEmail(model.Email);
+                if (userExist != null)
+                {
+                    accountRepository.ForgotPassword(model.Email);
+                    this.Success(string.Format("New password sent to {0}", model.Email));
+                }
+                else
+                {
+                    this.Error(string.Format("Email not found: {0}", model.Email));
+                }
+            }
+            return Redirect("/Account/LogOn");
         }
     }
 }

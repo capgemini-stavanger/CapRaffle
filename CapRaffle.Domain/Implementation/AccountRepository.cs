@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Web.Security;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
-using System.Web.Security;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -69,14 +67,23 @@ namespace CapRaffle.Domain.Implementation
             return Users.FirstOrDefault(u => u.Email == email);
         }
 
-        private static string CreateSalt(string email)
+        public void ForgotPassword(string email)
+        {
+            IEmailSender emailSender = new EmailSender();
+
+            string newPassword = GeneratePassword();
+            ChangePassword(email, newPassword);
+            emailSender.ForgotPassword(email, newPassword);
+        }
+
+        private string CreateSalt(string email)
         {
             String start = email.Substring(0, 3);
             String end = email.Substring(2, 2);
             return String.Concat(start, end);
         }
 
-        private static string CreatePasswordHash(string password, string salt)
+        private string CreatePasswordHash(string password, string salt)
         {
             string saltAndPassword = String.Concat(password, salt);
             string hashedPassword =
@@ -84,6 +91,19 @@ namespace CapRaffle.Domain.Implementation
              saltAndPassword, "sha1");
 
             return hashedPassword;
+        }
+
+        private string GeneratePassword()
+        {
+            string allowedChars = "abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ0123456789!@$?_-";
+            char[] chars = new char[8];
+            Random rd = new Random();
+
+            for (int i = 0; i < 8; i++)
+            {
+                chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
+            }
+            return new string(chars);
         }
     }
 }
