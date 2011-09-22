@@ -61,6 +61,7 @@
     <Compile Include="Model\EFExtension.cs" />
     <Compile Include="Model\Event.cs" />
     <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

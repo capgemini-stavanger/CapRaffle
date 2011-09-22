@@ -1,0 +1,19 @@
+﻿@model IQueryable<CapRaffle.Domain.Model.UserEvent>
+
+<table>
+    <tr>
+        <th>User</th>
+        <th>Wanted number of spots</th>
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <th>@item.UserEmail</th>
+        <th>@item.NumberOfSpots</th>
+    </tr>
+}
+</table>
+
+<p>Now you are ready to draw a winner.</p>
+

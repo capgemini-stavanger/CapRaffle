@@ -18,7 +18,7 @@ namespace CapRaffle.Models
 
         [Required(ErrorMessage = "Confirm requierd")]
         [DataType(DataType.Password)]
-        [Display(Name="Repeat password")]
+        [Display(Name="Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string PasswordAgain { get; set; }
     }

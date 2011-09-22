@@ -18,7 +18,14 @@ namespace CapRaffle.Domain.Implementation
 
         CapRaffleContext context = new CapRaffleContext();
 
-        public IQueryable<Event> Events { get { return context.Events; } }   
+        public IQueryable<Event> Events { get { return context.Events; } }
+
+        public IQueryable<UserEvent> Participants { get { return context.UserEvents; } }
+
+        public IQueryable<UserEvent> EventParticipants(int eventId)
+        {
+            return context.UserEvents.Where(x => x.EventId == eventId).AsQueryable();
+        }
 
         public void DeleteEvent(Event selectedEvent)
         {
@@ -58,7 +65,5 @@ namespace CapRaffle.Domain.Implementation
             }
             context.SaveChanges();
         }
-
-        
     }
 }

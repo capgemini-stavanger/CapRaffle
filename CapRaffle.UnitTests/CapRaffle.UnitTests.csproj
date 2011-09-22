@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="AccountControllerTests.cs" />
     <Compile Include="CategoryControllerTests.cs" />
+    <Compile Include="DrawWinnerControllerTests.cs" />
     <Compile Include="EventControllerTests.cs" />
     <Compile Include="ParticipantControllerTests.cs" />
   </ItemGroup>

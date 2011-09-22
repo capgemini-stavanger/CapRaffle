@@ -8,15 +8,15 @@
 
 <table>
     <tr>
-        <th>ID</th>
-        <th>Name</th>
+        <th align="left">Name</th>
+        <th>Is active</th>
     </tr>
 
 @foreach (var item in Model.Categories)
 {
     <tr>
-        <th>@item.CategoryId</th>        
-        <th>@Html.ActionLink(item.Name, "Edit", new { item.CategoryId })</th>
+        <th align="left">@Html.ActionLink(item.Name, "Edit", new { item.CategoryId })</th>
+        <th>@Html.CheckBoxFor(x => item.IsActive, new { @disabled = "disabled" })</th>        
     </tr>
 }
 
