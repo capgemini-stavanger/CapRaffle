@@ -28,6 +28,7 @@ namespace CapRaffle.Controllers
 
         public ViewResult Create()
         {
+            ViewBag.action = "Create";
             return View("Edit", new Category());
         }
         
@@ -35,6 +36,7 @@ namespace CapRaffle.Controllers
         {
             Category category = repository.Categories.FirstOrDefault(
                 f => f.CategoryId == categoryId);
+            ViewBag.action = "Edit";
             return View(category);
         }
 
