@@ -148,6 +148,7 @@ namespace CapRaffle.UnitTests
             
             //Assert
             result.AssertViewRendered().ForView(string.Empty);
+            Assert.IsNull(model.LoggedInParticipant);
             Assert.AreEqual(1, model.SelectedEvent.EventId);
             Assert.AreEqual(null, model.Categories);
         }
