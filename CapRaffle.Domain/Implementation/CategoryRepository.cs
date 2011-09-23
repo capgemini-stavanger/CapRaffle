@@ -27,7 +27,14 @@ namespace CapRaffle.Domain.Implementation
             }
             else
             {
-                context.UpdateDetachedEntity<Category>(category, x => x.CategoryId);
+                try
+                {
+                    context.UpdateDetachedEntity<Category>(category, x => x.CategoryId);
+                }
+                catch (Exception)
+                {
+                    context.ApplyCurrentValues<Category>(category.EntityKey.EntitySetName, category);
+                }
             }
             context.SaveChanges();
         }
