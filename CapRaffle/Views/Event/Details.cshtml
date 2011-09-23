@@ -57,6 +57,17 @@
                 },
                 minLength: 2
             });
+            $('button#DrawWinner').click(function () {
+                var view = $("#view option:selected").text();
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Action("DrawWinner", "DrawWinner")',
+                    data: 'eventId=@Model.SelectedEvent.EventId&view='+view,
+                    success: function(data){ 
+                        $('.drawWinner').html(data)
+                    }
+                })
+            });
         });
     </script>
     <div class="right">
@@ -78,7 +89,7 @@
                     <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
             
                     <label for="NumberOfSpots">@(Model.UserIsParticipant ? "Update" : "Choose") number of spots</label>
-                    @Html.DropDownList("NumberOfSpots", Model.numberofSpots)    
+                    @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots)    
                 <!--<input type="text" name="NumberOfSpots" />-->
             
                     <input type="submit" value="@(Model.UserIsParticipant ? "Update number of spots" : "Register for this event")" />
@@ -112,7 +123,7 @@
                     @Html.AntiForgeryToken()
                     <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
                     <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
-                    @Html.DropDownList("NumberOfSpots", Model.numberofSpots) 
+                    @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
                     <input id="adminAddParticipant" type="submit" value="Add participant" />
                 }
             }
@@ -128,23 +139,9 @@
     </div>
 
     <br />
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('button#DrawWinner').click(function () {
-                //alert("FUNKER")
-                $.ajax({
-                    type: 'post',
-                    url: '@Url.Action("DrawWinner", "DrawWinner")',
-                    data: 'eventId=@Model.SelectedEvent.EventId',
-                    success: function(data){ 
-                        $('.drawWinner').append(data)
-                    }
-                })
-            });
-        });
-    </script>
     <div class="bottom">
         <div class="drawWinner">
+            @Html.DropDownList("view", Model.RaffleTypes)
             <button id="DrawWinner">Draw winners</button>
         </div>
    </div>

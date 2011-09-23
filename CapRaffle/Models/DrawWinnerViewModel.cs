@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CapRaffle.Domain.Model;
+using System.Web.Mvc;
 
 namespace CapRaffle.Models
 {
@@ -11,5 +12,6 @@ namespace CapRaffle.Models
         public int NumberOfSpotsLeft { get; set; }
 
         public List<Winner> Winners { get; set; }
+
     }
 }

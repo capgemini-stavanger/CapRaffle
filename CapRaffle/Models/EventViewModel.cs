@@ -15,11 +15,12 @@ namespace CapRaffle.Models
         //Dropdownlist in create and edit views
         public IEnumerable<SelectListItem> Categories { get; set; }
 
+        public IEnumerable<SelectListItem> RaffleTypes { get; set; }
 
         public bool UserIsParticipant { get; set; }
 
         public UserEvent LoggedInParticipant { get; set; }
 
-        public IEnumerable<SelectListItem> numberofSpots { get; set; }
+        public IEnumerable<SelectListItem> NumberOfSpots { get; set; }
     }
 }
