@@ -48,7 +48,7 @@
                 using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "addParticipant" }))
                 {
                     @Html.AntiForgeryToken()   
-                    @Html.HiddenFor(x => x.SelectedEvent.EventId)
+                    <input type="hidden" name="UserEmail" value="@HttpContext.Current.User.Identity.Name" />
                     <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
             
                     <label for="NumberOfSpots">@(Model.UserIsParticipant ? "Update" : "Choose") number of spots</label>

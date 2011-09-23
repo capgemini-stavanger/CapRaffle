@@ -22,7 +22,6 @@ namespace CapRaffle.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Create(UserEvent participant)
         {
-            participant.UserEmail = HttpContext.User.Identity.Name;
             repository.SaveParticipant(participant);
             return this.Json(true);
         }
