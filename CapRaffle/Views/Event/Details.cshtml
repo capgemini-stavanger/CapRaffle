@@ -70,8 +70,30 @@
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
     </div>
 
-    
-
     <br />
-    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('button#DrawWinner').click(function () {
+                //alert("FUNKER")
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Action("DrawWinner", "DrawWinner")',
+                    data: 'eventId=@Model.SelectedEvent.EventId',
+                    success: function(data){ 
+                        $('.drawWinner').append(data)
+                    }
+                })
+                //$('#drawWinner').load(this.href);
+                //return false;
+            });
+        });
+    </script>
+    <div class="bottom">
+        <div class="drawWinner">
+            <button id="DrawWinner">Draw winners</button>
+            
+            <!--Html.RenderPartial("DrawWinner", "DrawWinner", new { @Model.SelectedEvent.EventId })-->
+        </div>
+   </div>
+   
 

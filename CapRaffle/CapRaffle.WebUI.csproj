@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Models\ChangePasswordViewModel.cs" />
+    <Compile Include="Models\DrawWinnerViewModel.cs" />
     <Compile Include="Models\EventsListViewModel.cs" />
     <Compile Include="Models\CategoryListViewModel.cs" />
     <Compile Include="Models\EventViewModel.cs" />
@@ -183,6 +184,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DrawWinner\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DrawWinner\DrawWinner.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\DrawWinner.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
