@@ -31,7 +31,7 @@ namespace CapRaffle.UnitTests
 
             eventMock = new Mock<IEventRepository>();
             eventMock.Setup(m => m.Events).Returns(new Event[] {
-                new Event { EventId = 1, Name = "event 1", Created = DateTime.Now, Creator = "creator 1", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 1 },
+                new Event { EventId = 1, Name = "event 1", Created = DateTime.Now, Creator = "creator 1", AvailableSpots = 4, DeadLine = DateTime.Now, CategoryId = 1 },
                 new Event { EventId = 2, Name = "event 2", Created = DateTime.Now, Creator = "creator 2", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 2 },
                 new Event { EventId = 3, Name = "event 3", Created = DateTime.Now, Creator = "creator 3", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 3 },
                 new Event { EventId = 4, Name = "event 4", Created = DateTime.Now, Creator = "creator 4", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 4 },
@@ -71,27 +71,16 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
-        public void Has_All_Participants_For_Current_Event()
-        {
-            PartialViewResult result = (PartialViewResult)controller.Index(SelectedEventId());
-
-            IQueryable<UserEvent> participants = result.Model as IQueryable<UserEvent>;
-
-            var correctNumberOfParticipants = SelectedEventParticipants().Count();
-
-            Assert.AreEqual(correctNumberOfParticipants, participants.Count());
-            result.AssertPartialViewRendered().ForView(string.Empty);
-            eventMock.Verify(m => m.EventParticipants(SelectedEventId()), Times.Once());
-        }
-
-        [Test]
-        public void Can_Draw_Winner()
+        public void Can_Draw_Winners_For_All_Available_Spots()
         {
             PartialViewResult result = (PartialViewResult)controller
                 .DrawWinner(SelectedEventId());
 
-            Assert.IsInstanceOf(typeof(Winner), result.Model);
-            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.Once());
+            DrawWinnerViewModel viewModel = (DrawWinnerViewModel)result.Model;
+
+            Assert.IsInstanceOf(typeof(DrawWinnerViewModel), result.Model);
+            Assert.AreEqual(0, viewModel.NumberOfSpotsLeft);
+            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.AtLeastOnce());
             result.AssertPartialViewRendered().ForView(string.Empty);
         }
 

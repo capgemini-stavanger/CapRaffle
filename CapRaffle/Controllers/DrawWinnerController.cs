@@ -9,6 +9,7 @@ using CapRaffle.Models;
 
 namespace CapRaffle.Controllers
 {
+    [Authorize]
     public class DrawWinnerController : Controller
     {
         private IEventRepository eventRepository;
@@ -23,41 +24,64 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult Index(int eventId)
-        {
-            IQueryable<UserEvent> eventParticipants = eventRepository.EventParticipants(eventId);
-
-            return PartialView(eventParticipants);
-        }
-
-        [HttpPost]
         public PartialViewResult DrawWinner(int eventId)
         {
-            IQueryable<UserEvent> eventParticipants = eventRepository.EventParticipants(eventId);
+            var model = PerformDrawing(new List<UserEvent>(eventRepository.EventParticipants(eventId)), eventId);
 
-            int categoryId = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
+            return PartialView(model);
+        }
+        
+        private DrawWinnerViewModel PerformDrawing(List<UserEvent> eventParticipants, int eventId)
+        {
+            DrawWinnerViewModel viewModel = new DrawWinnerViewModel
+            {
+                Winners = new List<Winner>(),
+                NumberOfSpotsLeft = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).AvailableSpots
+            };            
 
-            int winnerNumber = randomGenerator.Next(eventParticipants.Count());
-            UserEvent drawnParticipant = eventParticipants.ToList().ElementAt(winnerNumber);
-            Winner winner = new Winner 
+            while (viewModel.NumberOfSpotsLeft > 0)
+            {
+                int winnerNumber = randomGenerator.Next(eventParticipants.Count());
+                UserEvent drawnParticipant = eventParticipants.ToList().ElementAt(winnerNumber);
+                
+                int numberOfSpotsGiven = CalculateNumberOfSpotsToGive(
+                    viewModel.NumberOfSpotsLeft, 
+                    drawnParticipant.NumberOfSpots
+                    );                
+                int categoryId = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
+
+                Winner winner = new Winner
                 {
                     EventId = drawnParticipant.EventId,
                     UserEmail = drawnParticipant.UserEmail,
                     Date = DateTime.Now,
-                    NumberOfSpotsWon = drawnParticipant.NumberOfSpots,
-                    CatogoryId = categoryId
+                    NumberOfSpotsWon = numberOfSpotsGiven,
+                    CatogoryId = categoryId                     
                 };
-            eventRepository.SaveWinner(winner);
 
-            DrawWinnerViewModel viewModel = new DrawWinnerViewModel
-            {
-                Winners = new List<Winner>
-                {
-                    winner
-                }
-            };
+                eventParticipants.RemoveAt(winnerNumber);
+                eventRepository.SaveWinner(winner);
+                
+                viewModel.Winners.Add(winner);
+                viewModel.NumberOfSpotsLeft -= winner.NumberOfSpotsWon;              
+            }
 
-            return PartialView(viewModel);
+            return viewModel;
         }
+
+        private int CalculateNumberOfSpotsToGive(int spotsLeft, int wantedSpots)
+        {
+ 	        int spotsToGive = 0;
+            if (wantedSpots > spotsLeft) spotsToGive = spotsLeft;
+            if (wantedSpots <= spotsLeft) spotsToGive = wantedSpots;
+            return spotsToGive;
+        }
+    }
+
+    //Not in use yet.
+    public class DrawingRules
+    {
+        public static int MaxNumberOfSpotsPerPerson;
+        public static bool GiveLessSpotsThanWantedIfWinner;        
     }
 }
