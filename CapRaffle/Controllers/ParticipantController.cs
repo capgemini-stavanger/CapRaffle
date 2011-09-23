@@ -57,7 +57,7 @@ namespace CapRaffle.Controllers
         [Authorize]
         public JsonResult GetUsers(string email)
         {
-            return this.Json(repository.Users.Where(x => x.Email.StartsWith(email)).Select(x => x.Email));
+            return this.Json(repository.Users.Where(x => x.Email.StartsWith(email)).Select(x => x.Email).ToList());
         }
     }
 }

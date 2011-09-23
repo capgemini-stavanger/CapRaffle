@@ -79,18 +79,31 @@ namespace CapRaffle.UnitTests
             mock.Verify(m => m.DeleteParticipant(participant), Times.Once());
         }
 
-        //[Test]
-        //public void Can_Get_Users()
-        //{
-        //    //Arrange
-            
-        //    //Act
-        //    JsonResult result = controller.GetUsers("aa");
+        [Test]
+        public void Can_Not_Delete_Others_Participation()
+        {
+            //Arrange
+            participant.UserEmail = "test@testeland.no";
+            //Act
+            JsonResult result = controller.Delete(participant);
 
-        //    //Assert
-        //    var data = result.Data;
+            //Assert
+            Assert.AreEqual(false, result.Data);
+            mock.Verify(m => m.DeleteParticipant(participant), Times.Never());
+        }
 
-        //    Assert.AreEqual(1, data[0].ToString());
-        //}
+        [Test]
+        public void can_get_JSON_Result_With_Users()
+        {
+            //arrange
+
+            //act
+            JsonResult result = controller.GetUsers("aa");
+            List<string> list = (List<string>)result.Data;
+
+            //assert
+            Assert.IsNotNull(result.Data);
+            Assert.AreEqual(1, list.Count);
+        }
     }
 }
