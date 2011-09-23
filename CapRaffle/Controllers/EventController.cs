@@ -54,7 +54,6 @@ namespace CapRaffle.Controllers
                 return RedirectToAction("Index");
             }
 
-            
             model.Categories = categorySelectList();
             ViewBag.action = "Create";
             return View("EventForm", model);

@@ -73,14 +73,14 @@ namespace CapRaffle.UnitTests
         [Test]
         public void Has_All_Participants_For_Current_Event()
         {
-            ViewResult result = (ViewResult)controller.Index(SelectedEventId());
+            PartialViewResult result = (PartialViewResult)controller.Index(SelectedEventId());
 
             IQueryable<UserEvent> participants = result.Model as IQueryable<UserEvent>;
 
             var correctNumberOfParticipants = SelectedEventParticipants().Count();
 
             Assert.AreEqual(correctNumberOfParticipants, participants.Count());
-            result.AssertViewRendered().ForView(string.Empty);
+            result.AssertPartialViewRendered().ForView(string.Empty);
             eventMock.Verify(m => m.EventParticipants(SelectedEventId()), Times.Once());
         }
 
@@ -88,10 +88,10 @@ namespace CapRaffle.UnitTests
         public void Can_Draw_Winner()
         {
             PartialViewResult result = (PartialViewResult)controller
-                .DrawWinner(SelectedEventParticipants().AsQueryable());
+                .DrawWinner(SelectedEventId());
 
             Assert.IsInstanceOf(typeof(Winner), result.Model);
-            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.AtLeastOnce());
+            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.Once());
             result.AssertPartialViewRendered().ForView(string.Empty);
         }
 

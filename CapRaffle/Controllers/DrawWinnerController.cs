@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
+using CapRaffle.Models;
 
 namespace CapRaffle.Controllers
 {
@@ -22,26 +23,41 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(int eventId)
+        public PartialViewResult Index(int eventId)
         {
             IQueryable<UserEvent> eventParticipants = eventRepository.EventParticipants(eventId);
 
-            return View(eventParticipants);
+            return PartialView(eventParticipants);
         }
 
-        public PartialViewResult DrawWinner(IQueryable<UserEvent> eventParticipants)
+        [HttpPost]
+        public PartialViewResult DrawWinner(int eventId)
         {
+            IQueryable<UserEvent> eventParticipants = eventRepository.EventParticipants(eventId);
+
+            int categoryId = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
+
             int winnerNumber = randomGenerator.Next(eventParticipants.Count());
-            UserEvent drawnParticipant = eventParticipants.ElementAt(winnerNumber);
+            UserEvent drawnParticipant = eventParticipants.ToList().ElementAt(winnerNumber);
             Winner winner = new Winner 
                 {
                     EventId = drawnParticipant.EventId,
                     UserEmail = drawnParticipant.UserEmail,
                     Date = DateTime.Now,
-                    NumberOfSpotsWon = drawnParticipant.NumberOfSpots
+                    NumberOfSpotsWon = drawnParticipant.NumberOfSpots,
+                    CatogoryId = categoryId
                 };
             eventRepository.SaveWinner(winner);
-            return PartialView(winner);
+
+            DrawWinnerViewModel viewModel = new DrawWinnerViewModel
+            {
+                Winners = new List<Winner>
+                {
+                    winner
+                }
+            };
+
+            return PartialView(viewModel);
         }
     }
 }

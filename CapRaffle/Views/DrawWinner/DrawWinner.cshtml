@@ -1,0 +1,15 @@
+﻿@model CapRaffle.Models.DrawWinnerViewModel
+
+<table>
+    <tr>
+        <th>Here are the results:</th>
+    </tr>
+@foreach (var item in Model.Winners)
+{
+    <tr>
+        <th>@item.UserEmail</th>
+        <th>@item.NumberOfSpotsWon</th>
+    </tr>
+}
+</table>
+<p>Number of spots left: @Model.NumberOfSpotsLeft</p>
