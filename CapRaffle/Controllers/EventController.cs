@@ -88,7 +88,8 @@ namespace CapRaffle.Controllers
                 SelectedEvent = selectedEvent, 
                 UserIsParticipant = participant != null, 
                 LoggedInParticipant = participant,
-                numberofSpots = NumberofSpotsList(selectedEvent.AvailableSpots) 
+                NumberOfSpots = NumberofSpotsList(selectedEvent.AvailableSpots),
+                RaffleTypes = getRaffleTypes()
             };
             return View(model);
         }
@@ -141,6 +142,14 @@ namespace CapRaffle.Controllers
             var categories = categoryRepository.Categories.ToList().Where(x => x.IsActive).Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
             categories.FirstOrDefault().Selected = true;
             return categories;
+        }
+
+        private IEnumerable<SelectListItem> getRaffleTypes()
+        {
+            var raffleTypes = new List<SelectListItem>();
+            raffleTypes.Add(new SelectListItem { Text = "Default", Value="Default", Selected = true });
+            raffleTypes.Add(new SelectListItem { Text = "DrawFlightBoard", Value="DrawFlightBoard" });
+            return raffleTypes;
         }
     }
 }

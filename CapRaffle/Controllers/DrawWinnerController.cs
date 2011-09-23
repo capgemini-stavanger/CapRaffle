@@ -24,11 +24,11 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult DrawWinner(int eventId)
+        public PartialViewResult DrawWinner(int eventId, string view)
         {
             var model = PerformDrawing(new List<UserEvent>(eventRepository.EventParticipants(eventId)), eventId);
 
-            return PartialView(model);
+            return PartialView(view, model);
         }
         
         private DrawWinnerViewModel PerformDrawing(List<UserEvent> eventParticipants, int eventId)
@@ -77,6 +77,8 @@ namespace CapRaffle.Controllers
             return spotsToGive;
         }
     }
+
+    
 
     //Not in use yet.
     public class DrawingRules

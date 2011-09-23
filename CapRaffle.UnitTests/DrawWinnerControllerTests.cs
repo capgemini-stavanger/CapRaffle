@@ -74,7 +74,7 @@ namespace CapRaffle.UnitTests
         public void Can_Draw_Winners_For_All_Available_Spots()
         {
             PartialViewResult result = (PartialViewResult)controller
-                .DrawWinner(SelectedEventId());
+                .DrawWinner(SelectedEventId(), "Default");
 
             DrawWinnerViewModel viewModel = (DrawWinnerViewModel)result.Model;
 

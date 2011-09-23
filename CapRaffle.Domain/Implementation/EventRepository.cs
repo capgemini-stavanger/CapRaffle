@@ -22,6 +22,8 @@ namespace CapRaffle.Domain.Implementation
 
         public IQueryable<UserEvent> Participants { get { return context.UserEvents; } }
 
+        public IQueryable<User> Users { get { return context.Users; } }
+
         public IQueryable<UserEvent> EventParticipants(int eventId)
         {
             return context.UserEvents.Where(x => x.EventId == eventId).AsQueryable();
