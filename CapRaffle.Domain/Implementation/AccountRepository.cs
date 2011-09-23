@@ -32,6 +32,8 @@ namespace CapRaffle.Domain.Implementation
 
         public bool Create(string email, string password, string name)
         {
+            if (string.IsNullOrEmpty(password)) password = GeneratePassword();
+
             User user = new User();
             email = email.ToLower();
             String passwd = CreatePasswordHash(password, CreateSalt(email));

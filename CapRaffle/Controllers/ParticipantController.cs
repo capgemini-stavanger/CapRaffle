@@ -11,10 +11,12 @@ namespace CapRaffle.Controllers
     public class ParticipantController : Controller
     {
         private IEventRepository repository;
+        private IAccountRepository accountrepository;
 
-        public ParticipantController(IEventRepository eventRepository)
+        public ParticipantController(IEventRepository eventRepository, IAccountRepository accountrepository)
         {
             repository = eventRepository;
+            this.accountrepository = accountrepository;
         }
 
         [HttpPost]
@@ -22,6 +24,19 @@ namespace CapRaffle.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult Create(UserEvent participant)
         {
+            if (repository.Users.Where(x => x.Email.Equals(participant.UserEmail)).Count() == 0)
+            {
+                var name = participant.UserEmail;
+                if(name.Contains(".") || name.Contains("-") || name.Contains(".")) 
+                {
+                    name = participant.UserEmail.Replace("capgemini.com", "");
+                    name = name.Replace("-", " ");
+                    name = name.Replace(".", " ");
+                    name = name.Substring(0, name.Length - 1);
+                }
+                accountrepository.Create(participant.UserEmail, null, name);
+            }
+
             repository.SaveParticipant(participant);
             return this.Json(true);
         }
@@ -35,6 +50,14 @@ namespace CapRaffle.Controllers
 
             repository.DeleteParticipant(participant);
             return this.Json(true);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public JsonResult GetUsers(string email)
+        {
+            return this.Json(repository.Users.Where(x => x.Email.StartsWith(email)).Select(x => x.Email));
         }
     }
 }

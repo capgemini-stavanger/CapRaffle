@@ -10,6 +10,8 @@ namespace CapRaffle.Domain.Abstract
     {
         IQueryable<Event> Events { get; }
 
+        IQueryable<User> Users { get; }
+
         IQueryable<UserEvent> Participants { get; }
 
         IQueryable<UserEvent> EventParticipants(int eventId);

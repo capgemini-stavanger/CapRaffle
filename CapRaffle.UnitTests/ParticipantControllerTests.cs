@@ -39,9 +39,18 @@ namespace CapRaffle.UnitTests
                 new Event { EventId = 5, Name = "event 5", Created = DateTime.Now, Creator = "creator 5", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 5 }
             }.AsQueryable());
 
+            mock.Setup(m => m.Users).Returns(new User[] {
+                new User { Email = "test@testeland.no", Name = "test", Password = "suppersikkert" },
+                new User { Email = "atest@testeland.no", Name = "atest", Password = "suppersikkert" },
+                new User { Email = "aaatest@testeland.no", Name = "aaatest", Password = "suppersikkert" },
+                new User { Email = "btest@testeland.no", Name = "btest", Password = "suppersikkert" }
+            }.AsQueryable());
+
+            var accountmock = new Mock<IAccountRepository>();
+
             participant = new UserEvent { EventId = 1, UserEmail = "arne.aase@capgemini.com", NumberOfSpots = 1 };
 
-            controller = new ParticipantController(mock.Object);
+            controller = new ParticipantController(mock.Object, accountmock.Object);
             controller.ControllerContext = new ControllerContext(mockHttpContext.Object.HttpContext, new RouteData(), controller);
         }
 
@@ -69,5 +78,19 @@ namespace CapRaffle.UnitTests
             Assert.AreEqual(true, result.Data);
             mock.Verify(m => m.DeleteParticipant(participant), Times.Once());
         }
+
+        //[Test]
+        //public void Can_Get_Users()
+        //{
+        //    //Arrange
+            
+        //    //Act
+        //    JsonResult result = controller.GetUsers("aa");
+
+        //    //Assert
+        //    var data = result.Data;
+
+        //    Assert.AreEqual(1, data[0].ToString());
+        //}
     }
 }
