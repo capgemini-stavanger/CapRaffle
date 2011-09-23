@@ -82,11 +82,12 @@ namespace CapRaffle.Controllers
         public ActionResult Details(int id)
         {
             var selectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault();
-            var UserIsParticipant = selectedEvent.UserEvents.Where(x => x.UserEmail == HttpContext.User.Identity.Name).Count() > 0;
+            var participant = selectedEvent.UserEvents.Where(x => x.UserEmail == HttpContext.User.Identity.Name).FirstOrDefault();
             var model = new EventViewModel 
             { 
                 SelectedEvent = selectedEvent, 
-                UserIsParticipant = UserIsParticipant, 
+                UserIsParticipant = participant != null, 
+                LoggedInParticipant = participant,
                 numberofSpots = NumberofSpotsList(selectedEvent.AvailableSpots) 
             };
             return View(model);

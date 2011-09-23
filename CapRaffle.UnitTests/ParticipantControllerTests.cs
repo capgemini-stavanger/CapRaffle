@@ -19,6 +19,7 @@ namespace CapRaffle.UnitTests
     {
         Mock<IEventRepository> mock;
         ParticipantController controller;
+        UserEvent participant; 
 
         [SetUp]
         public void setup()
@@ -26,7 +27,7 @@ namespace CapRaffle.UnitTests
             //Arrange
             var mockHttpContext = new Mock<ControllerContext>();
 
-            mockHttpContext.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("creator 2");
+            mockHttpContext.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("arne.aase@capgemini.com");
             mockHttpContext.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
 
             mock = new Mock<IEventRepository>();
@@ -38,6 +39,8 @@ namespace CapRaffle.UnitTests
                 new Event { EventId = 5, Name = "event 5", Created = DateTime.Now, Creator = "creator 5", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 5 }
             }.AsQueryable());
 
+            participant = new UserEvent { EventId = 1, UserEmail = "arne.aase@capgemini.com", NumberOfSpots = 1 };
+
             controller = new ParticipantController(mock.Object);
             controller.ControllerContext = new ControllerContext(mockHttpContext.Object.HttpContext, new RouteData(), controller);
         }
@@ -46,13 +49,25 @@ namespace CapRaffle.UnitTests
         public void Can_Get_Json_Result()
         {
             //Arrange
-            var participant = new UserEvent { EventId = 1, UserEmail = "arne.aase@capgemini.com", NumberOfSpots = 1 };
+            
             //Act
             JsonResult result = controller.Create(participant);
 
             //Assert
             Assert.AreEqual(true, result.Data);
             mock.Verify(m => m.SaveParticipant(participant), Times.Once());
+        }
+
+        [Test]
+        public void Can_Delete_Own_Participation()
+        {
+            //Arrange
+            //Act
+            JsonResult result = controller.Delete(participant);
+            
+            //Assert
+            Assert.AreEqual(true, result.Data);
+            mock.Verify(m => m.DeleteParticipant(participant), Times.Once());
         }
     }
 }

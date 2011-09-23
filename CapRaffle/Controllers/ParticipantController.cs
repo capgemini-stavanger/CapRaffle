@@ -27,5 +27,15 @@ namespace CapRaffle.Controllers
             return this.Json(true);
         }
 
+        [HttpPost]
+        [Authorize]
+        public JsonResult Delete(UserEvent participant)
+        {
+            if (!HttpContext.User.Identity.Name.Equals(participant.UserEmail))
+                return this.Json(false);
+
+            repository.DeleteParticipant(participant);
+            return this.Json(true);
+        }
     }
 }

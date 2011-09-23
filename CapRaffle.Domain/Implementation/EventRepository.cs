@@ -49,6 +49,7 @@ namespace CapRaffle.Domain.Implementation
 
         public void DeleteParticipant(UserEvent participant)
         {
+            context.UpdateDetachedEntity<UserEvent>(participant, x => x.EventId);
             context.UserEvents.DeleteObject(participant);
             context.SaveChanges();
         }

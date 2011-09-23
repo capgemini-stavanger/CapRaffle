@@ -65,8 +65,9 @@ textarea
 
 .validation-summary-errors
 {
+    
     font-weight: bold;
-    color: #D63301;
+    color: #000000;
     background-color: #FF9999;
     background-image: url('images/error.png');
 }
