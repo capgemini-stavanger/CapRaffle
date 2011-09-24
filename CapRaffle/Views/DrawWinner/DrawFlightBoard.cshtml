@@ -1,0 +1,52 @@
+﻿@model CapRaffle.Models.DrawWinnerViewModel
+<script src="@Url.Content("~/Scripts/jquery.flightboard.min.js")" type="text/javascript"></script>
+<div id="basicBoard"></div>
+<br />
+<br />
+<br />
+<table style="display: none" id="hiddenTable"> 
+@foreach (var item in Model.Winners)
+{
+    <tr>
+        <td>
+            @item.UserEmail
+        </td>
+        <td>
+            @item.NumberOfSpotsWon spots
+        </td>
+    </tr>
+}
+</table>
+
+<script type="text/javascript">
+    var counter = 1;
+    var arrayLength;
+    $(function () {
+
+        var winners = 'CAPRAFFLE';
+        $('#hiddenTable tr').each(function () {
+            var winner = $(this).find("td:first").text();
+            winners += ' ';
+            winners += winner.toUpperCase().trim();
+        });
+        var array = winners.split(" ");
+        arrayLength = array.length;
+        $('#basicBoard').flightboard({
+            messages: array,
+            lettersImage: '/Content/images/flightBoardLarge.png',
+            shadingImages: ['/Content/images/flightBoardHigh.png', '/Content/images/flightBoardShad.png'],
+            speed: 750,
+            pause: 1000,
+            flips: [4, 6],
+            afterFlip: endedFlip,
+            maxLength: 30
+        });
+    });
+
+    function endedFlip(current) {
+        counter++;
+        if(counter >= arrayLength) {
+            document.getElementById('hiddenTable').style.display = "inline";
+        }
+    }
+</script>
