@@ -3,7 +3,7 @@
     ViewBag.Title = "CapRaffle";
 }
 <p>Please log in:</p>
-@using (Html.BeginForm())
+@using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { onsubmit = "", id = "LogInForm" }))
 {
     @Html.ValidationSummary(true)
     <p>
@@ -16,28 +16,37 @@
     <br />
     @Html.EditorFor(x => x.Password)
     </p>
-    <p>
-        <a class="button" href="#" id="login" onclick="this.blur();"><span>Log in</span></a>
+        <div class="buttons">
+            <button type="submit" class="positive" name="save">
+                <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                Log on
+            </button>
+        
         @if (TempData["ForgotPassword"] != null)
         {
-            <a class="button" href="#" id="forgotPassword" onclick="this.blur();"><span>Send a new password</span></a>
+            <button type="submit" class="regular" name="save">
+                <img src="@Url.Content("~/Content/images/help.png")" alt=""/>
+                Send a new password
+            </button>
         }
-    </p>
+        </div>
 }
-
+<br />
+<br />
 @Html.ActionLink("Register here", "Register")
 
 
 <script type="text/javascript">
+
     $(function () {
         $("#login").click(function () {
-            var form = $(this).parents('form:first');
+            var form = $('#LogInForm');
             form.attr('action', '/Account/LogOn');
             form.submit();
         });
 
         $("#forgotPassword").click(function () {
-            var form = $(this).parents('form:first');
+            var form = $('#LogInForm');
             form.attr('action', '/Account/ForgotPassword');
             form.submit();
         });
