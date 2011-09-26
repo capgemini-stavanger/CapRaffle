@@ -88,12 +88,23 @@
                     <label for="NumberOfSpots">@(Model.UserIsParticipant ? "Update" : "Choose") number of spots</label>
                     @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots)    
                 <!--<input type="text" name="NumberOfSpots" />-->
-            
-                    <input type="submit" value="@(Model.UserIsParticipant ? "Update number of spots" : "Register for this event")" />
+                        <div class="buttons">
+                            <button type="submit" class="positive" name="register">
+                            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                                @(Model.UserIsParticipant ? "Update" : "Register")
+                            </button>
+                        </div>
+                if (!Model.UserIsParticipant) { <br /> }
                 }
                 if (Model.UserIsParticipant)
                 {
-                    <button id="removeparticipation">Delete participation</button>
+                    <div class="buttons">
+                        <button class="nagative" type="submit" id="removeparticipation">
+                            <img src="@Url.Content("~/Content/images/cross.png")" alt=""/>
+                            Delete participation
+                        </button>
+                    </div>
+                <br />
                 }
             }
             else
@@ -110,21 +121,48 @@
                     @Html.AntiForgeryToken()
                     @Html.Hidden("id", Model.SelectedEvent.EventId)
         
-                    <input type="submit" value="Delete event" />
+                    <div class="buttons">
+                        <button type="submit" class="nagative" name="DeleteEvent">
+                            <img src="@Url.Content("~/Content/images/cross.png")" alt=""/>
+                            Delete event
+                        </button>
+                    </div>
                 }
-                <button>@Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })</button>
+                
+                <div class="buttons">
+                    <button type="submit" class="positive" name="edit" id="edit">
+                        <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
+                        @Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })
+                    </button>
+                </div>
+                
+                <button></button>
                 <br /><br />
-                @Html.DropDownList("view", Model.RaffleTypes)
-                <button id="DrawWinner">Draw winners</button>
                 <h4>Register User for this event</h4>
-                using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
-                {
+                   using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
+                   {
                     @Html.AntiForgeryToken()
                     <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
                     <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
                     @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
-                    <input id="adminAddParticipant" type="submit" value="Add participant" />
-                }
+                    <div class="buttons">
+                        <button type="submit" class="positive" name="register" id="adminAddParticipant">
+                            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                            Add participant
+                        </button>
+                    </div>
+                <br />
+                <br />
+                <h4> Draw winner for this event</h4>
+                @Html.DropDownList("view", Model.RaffleTypes)
+                <div class="buttons">
+                    <button id="DrawWinner" class="positive" name="DrawWinner">
+                        <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                        Draw winners
+                    </button>
+                    </div>
+                <br />
+                   }
             }
         </div>
     </div>
