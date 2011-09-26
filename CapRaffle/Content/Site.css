@@ -90,7 +90,7 @@ div#header
 div#content  
 {
     border-left: 2px solid gray; 
-    margin-left: 15em; 
+    margin-left: 14em; 
     padding: 1em; 
 }
 
@@ -353,4 +353,41 @@ button.regular, .buttons a.regular{
     background-color:#6299c5;
     border:1px solid #6299c5;
     color:#fff;
+}
+
+div#sexypanels
+{
+    float: left; 
+    width: 14em; 
+    padding-top: 0px;    
+}
+
+div#sexypanels li{
+    border-bottom: 1px solid white; /* white border beneath each menu item */
+    list-style-type: none;
+    padding-left: 0px;
+
+}
+
+div#sexypanels li a{
+    background: #fff url('images/sexypanelright.gif') no-repeat right top; /*color of menu by default*/
+    font: bold 13px "Lucida Grande", "Trebuchet MS", Verdana;
+    display: block;
+    color: #000;
+    width: auto;
+    padding: 5px 0; /* Vertical (top/bottom) padding for each menu link */
+    text-indent: 8px;
+    text-decoration: none;
+    border-bottom: 1px solid black; /*bottom border of menu link. Should be equal or darker to link's bgcolor*/
+}
+
+div#sexypanels li a:visited, .sexypanels li a:active{
+    color: #000;
+}
+
+div#sexypanels li a:hover
+{
+    background-color: #0099CC; /*color of menu onMouseover*/
+    color: white;
+    border-bottom: 1px solid black; /*bottom border of menu link during hover. Should be equal or darker to link's hover's bgcolor*/
 }

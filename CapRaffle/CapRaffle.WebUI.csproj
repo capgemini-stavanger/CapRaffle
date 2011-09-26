@@ -89,6 +89,7 @@
     <Content Include="Content\images\error.png" />
     <Content Include="Content\images\info.png" />
     <Content Include="Content\images\menu.gif" />
+    <Content Include="Content\images\sexypanelright.gif" />
     <Content Include="Content\images\success.png" />
     <Content Include="Content\images\textfield_key.png" />
     <Content Include="Content\images\Warning.png" />
