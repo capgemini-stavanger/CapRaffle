@@ -17,13 +17,14 @@
     @Html.EditorFor(x => x.Password)
     </p>
     <p>
-        <input type="submit" id="login" value="Log in"/>
+        <a class="button" href="#" id="login" onclick="this.blur();"><span>Log in</span></a>
         @if (TempData["ForgotPassword"] != null)
         {
-            <input type="submit" id="forgotPassword" value="Send a new password"/>
+            <a class="button" href="#" id="forgotPassword" onclick="this.blur();"><span>Send a new password</span></a>
         }
     </p>
 }
+
 @Html.ActionLink("Register here", "Register")
 
 
@@ -32,11 +33,13 @@
         $("#login").click(function () {
             var form = $(this).parents('form:first');
             form.attr('action', '/Account/LogOn');
+            form.submit();
         });
 
         $("#forgotPassword").click(function () {
             var form = $(this).parents('form:first');
             form.attr('action', '/Account/ForgotPassword');
+            form.submit();
         });
     }); 
 </script>
