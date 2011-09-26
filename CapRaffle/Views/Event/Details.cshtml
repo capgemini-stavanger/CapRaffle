@@ -6,11 +6,12 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
             $(".participants form").submit(function (e) {
                 $.post($(this).attr("action"),
                     $(this).serialize(),
                     function (data) {
-                        location.reload();
+                        $(".ParticipantsTable").html(data);
                     });
                 e.preventDefault();
             });
@@ -19,7 +20,7 @@
                 $.post($(this).attr("action"),
                     $(this).serialize(),
                     function (data) {
-                        location.reload();
+                        $(".ParticipantsTable").html(data);
                     });
                 e.preventDefault();
             });
@@ -73,13 +74,9 @@
     <div class="right">
         <div class="participants">
         <h2>Participants</h2>
-            <table>
-                <tr><th>Name</th><th>Number of spots</th></tr>
-                @foreach (var participant in Model.SelectedEvent.UserEvents)
-                {
-                    <tr><td>@participant.User.Name</td><td>@participant.NumberOfSpots</td></tr>
-                }
-            </table>
+            <div class="ParticipantsTable">
+                @Html.Action("GetParticipants", "Participant", new { eventId = Model.SelectedEvent.EventId })
+            </div>
             @if (@HttpContext.Current.User.Identity.IsAuthenticated)
             {
                 using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "addParticipant" }))
@@ -116,7 +113,9 @@
                     <input type="submit" value="Delete event" />
                 }
                 <button>@Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })</button>
-                
+                <br /><br />
+                @Html.DropDownList("view", Model.RaffleTypes)
+                <button id="DrawWinner">Draw winners</button>
                 <h4>Register User for this event</h4>
                 using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
                 {
@@ -141,8 +140,7 @@
     <br />
     <div class="bottom">
         <div class="drawWinner">
-            @Html.DropDownList("view", Model.RaffleTypes)
-            <button id="DrawWinner">Draw winners</button>
+            
         </div>
    </div>
    

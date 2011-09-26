@@ -22,7 +22,7 @@ namespace CapRaffle.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public JsonResult Create(UserEvent participant)
+        public ActionResult Create(UserEvent participant)
         {
             if (repository.Users.Where(x => x.Email.Equals(participant.UserEmail)).Count() == 0)
             {
@@ -38,7 +38,7 @@ namespace CapRaffle.Controllers
             }
 
             repository.SaveParticipant(participant);
-            return this.Json(true);
+            return RedirectToAction("GetParticipants", new { eventId = participant.EventId });
         }
 
         [HttpPost]
@@ -58,6 +58,13 @@ namespace CapRaffle.Controllers
         public JsonResult GetUsers(string email)
         {
             return this.Json(repository.Users.Where(x => x.Email.StartsWith(email)).Select(x => x.Email).ToList());
+        }
+
+
+        public PartialViewResult GetParticipants(int eventId)
+        {
+            var participants = repository.Participants.Where(x => x.EventId == eventId).ToList();
+            return PartialView("_GetParticipants", participants);
         }
     }
 }
