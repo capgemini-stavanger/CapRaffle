@@ -358,11 +358,12 @@ button.regular, .buttons a.regular{
 div#sexypanels
 {
     float: left; 
-    width: 14em; 
-    padding-top: 0px;    
+    width: 16em; 
+    margin-left:-40px;
 }
 
-div#sexypanels li{
+div#sexypanels li
+{
     border-bottom: 1px solid white; /* white border beneath each menu item */
     list-style-type: none;
     padding-left: 0px;
