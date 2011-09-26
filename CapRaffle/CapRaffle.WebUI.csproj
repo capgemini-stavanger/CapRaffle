@@ -85,7 +85,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\images\apply2.png" />
+    <Content Include="Content\images\asc.gif" />
+    <Content Include="Content\images\bg.gif" />
     <Content Include="Content\images\cross.png" />
+    <Content Include="Content\images\desc.gif" />
     <Content Include="Content\images\error.png" />
     <Content Include="Content\images\info.png" />
     <Content Include="Content\images\menu.gif" />
@@ -127,6 +130,7 @@
     <Content Include="Scripts\jquery-1.5.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
+    <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />

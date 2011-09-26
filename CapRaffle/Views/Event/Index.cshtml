@@ -3,17 +3,36 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Liste over Events</h2>
+<script src="@Url.Content("~/Scripts/jquery.tablesorter.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#eventTable").tablesorter();
+    }); 
+</script>
+<h2>List of Events</h2>
+<table id="eventTable" class="tablesorter"> 
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Available spots</th>
+        <th>Deadline</th>
+        <th>Created by</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var e in Model.Events)
+    {
 
-@foreach (var e in Model.Events)
-{
-    <div class="event">
-        <h3 class="eventheader">@Html.ActionLink(e.Name, "Details", new { id = e.EventId }) </h3>
-        <h6 style="">Created by: @e.Creator on @e.Created.ToString("dd MMM yyyy") under @e.Category.Name</h6>
-        <p>@e.Description</p>
-        <p>@(e.InformationUrl == null ? "" : "More information about the event: " + e.InformationUrl)</p>
-        <h4>Number of available spots: @e.AvailableSpots</h4>
-        <h4>Deadline: @e.DeadLine</h4>
-    </div>
+        <tr>
+            <td>@Html.ActionLink(e.Name, "Details", new { id = e.EventId })</td>
+            <td>@e.Category.Name</td>
+            <td>@e.AvailableSpots</td>
+            <td>@e.DeadLine</td>
+            <td>@e.Creator</td>
+        </tr>
+    
 
-}
+    }
+</tbody>
+</table> 
