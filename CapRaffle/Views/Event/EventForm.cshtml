@@ -59,8 +59,12 @@
     @Html.ValidationMessageFor(x => x.SelectedEvent.DeadLine)
     </p>
     
-        
+    <div class="buttons">
+        <button type="submit" class="positive" name="Submit">
+            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+            Submit
+        </button>
+    </div>    
     <p>
-        <input type="submit" value="Submit" /></p>
 }
 </div>

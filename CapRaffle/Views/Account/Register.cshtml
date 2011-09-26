@@ -32,7 +32,12 @@
     @Html.EditorFor(x => x.PasswordAgain)
     @Html.ValidationMessageFor(x => x.PasswordAgain)
     </p>
-    <p><input type="submit" value="Register" /></p>
+    <div class="buttons">
+        <button type="submit" class="positive" name="register">
+            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+            Register
+        </button>
+    </div>
 }
 
 <script type="text/javascript">

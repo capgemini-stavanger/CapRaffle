@@ -13,6 +13,13 @@
     <p>Category name: @Html.TextBoxFor(x => x.Name) </p>
     <p>Category is active: @Html.CheckBoxFor(x => x.IsActive)</p>
     
-    <input type="submit" value="Save" />
+    <div class="buttons">
+        <button type="submit" class="positive" name="save">
+            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+            Save
+        </button>
+    </div>
+    <br />
+    <br />
     @Html.ActionLink("Cancel and return to list", "Index")
 }
