@@ -1,0 +1,9 @@
+﻿@model IEnumerable<CapRaffle.Domain.Model.UserEvent>
+
+<table>
+    <tr><th>Name</th><th>Number of spots</th></tr>
+        @foreach (var participant in Model)
+        {
+            <tr><td>@participant.User.Name</td><td>@participant.NumberOfSpots</td></tr>
+        }
+</table>
