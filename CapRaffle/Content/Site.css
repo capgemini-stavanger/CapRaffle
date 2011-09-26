@@ -98,7 +98,19 @@ div#menu
 {
     float: left; 
     width: 15em; 
-    padding-top: 0; 
+    padding-top: 0;
+     
+}
+
+div#menu a
+{
+    text-decoration:none;
+    color:#000;
+}
+
+div#menu a:hover
+{
+    color:#708090;
 }
 
 /* Style for top right text.
