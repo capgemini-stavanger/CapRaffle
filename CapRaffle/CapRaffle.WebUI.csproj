@@ -74,7 +74,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
-    <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\DrawWinnerViewModel.cs" />
     <Compile Include="Models\EventsListViewModel.cs" />
     <Compile Include="Models\CategoryListViewModel.cs" />
@@ -172,9 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Category\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Event\Details.cshtml" />
