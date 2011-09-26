@@ -26,10 +26,10 @@
         var winners = 'CAPRAFFLE';
         $('#hiddenTable tr').each(function () {
             var winner = $(this).find("td:first").text();
-            winners += ' ';
+            winners += ',';
             winners += winner.toUpperCase().trim();
         });
-        var array = winners.split(" ");
+        var array = winners.split(",");
         arrayLength = array.length;
         $('#basicBoard').flightboard({
             messages: array,

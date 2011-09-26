@@ -148,7 +148,7 @@ namespace CapRaffle.Controllers
         {
             var raffleTypes = new List<SelectListItem>();
             raffleTypes.Add(new SelectListItem { Text = "Default", Value="Default", Selected = true });
-            raffleTypes.Add(new SelectListItem { Text = "DrawFlightBoard", Value="DrawFlightBoard" });
+            raffleTypes.Add(new SelectListItem { Text = "_DrawFlightBoard", Value = "_DrawFlightBoard" });
             return raffleTypes;
         }
     }
