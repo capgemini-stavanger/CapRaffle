@@ -38,5 +38,10 @@ namespace CapRaffle.Domain.Implementation
             }
             context.SaveChanges();
         }
+
+        public int PreviousWinsInCategoryByUser(int categoryId, string email)
+        {
+            return context.Winners.Where(x => x.CatogoryId == categoryId && x.UserEmail == email).Count();
+        }
     }
 }

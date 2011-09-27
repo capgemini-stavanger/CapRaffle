@@ -37,18 +37,20 @@ namespace CapRaffle.Controllers
             {
                 Winners = new List<Winner>(),
                 NumberOfSpotsLeft = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).AvailableSpots
-            };            
+            };
 
+            int catId = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
+            List<UserEvent> raffleTickets = GenerateRaffleTicketsList(eventParticipants, catId);
+         
             while (viewModel.NumberOfSpotsLeft > 0)
             {
-                int winnerNumber = randomGenerator.Next(eventParticipants.Count());
-                UserEvent drawnParticipant = eventParticipants.ToList().ElementAt(winnerNumber);
+                int winnerNumber = randomGenerator.Next(raffleTickets.Count());
+                UserEvent drawnParticipant = raffleTickets.ElementAt(winnerNumber);
                 
                 int numberOfSpotsGiven = CalculateNumberOfSpotsToGive(
                     viewModel.NumberOfSpotsLeft, 
                     drawnParticipant.NumberOfSpots
                     );                
-                int categoryId = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
 
                 Winner winner = new Winner
                 {
@@ -56,10 +58,10 @@ namespace CapRaffle.Controllers
                     UserEmail = drawnParticipant.UserEmail,
                     Date = DateTime.Now,
                     NumberOfSpotsWon = numberOfSpotsGiven,
-                    CatogoryId = categoryId                     
+                    CatogoryId = catId                     
                 };
 
-                eventParticipants.RemoveAt(winnerNumber);
+                raffleTickets.RemoveAt(winnerNumber); // TODO: remove all the users raffletickets
                 eventRepository.SaveWinner(winner);
                 
                 viewModel.Winners.Add(winner);
@@ -76,7 +78,27 @@ namespace CapRaffle.Controllers
             if (wantedSpots <= spotsLeft) spotsToGive = wantedSpots;
             return spotsToGive;
         }
+
+        private List<UserEvent> GenerateRaffleTicketsList(List<UserEvent> eventParticipants, int categoryId) 
+        {
+            List<UserEvent> raffleTicketsList = new List<UserEvent>();
+
+            foreach (UserEvent ue in eventParticipants)
+            {
+                int previousWins = categoryRepository.PreviousWinsInCategoryByUser(categoryId, ue.UserEmail);
+                int raffleTickets = 10 - previousWins;
+                if (raffleTickets < 1) raffleTickets = 1;
+
+                for (int i = 0; i <= raffleTickets; i++)
+                {
+                    raffleTicketsList.Add(ue);
+                }
+            }
+            return raffleTicketsList;
+        }
     }
+
+
 
     
 
