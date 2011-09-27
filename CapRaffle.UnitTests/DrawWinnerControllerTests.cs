@@ -81,7 +81,7 @@ namespace CapRaffle.UnitTests
             Assert.IsInstanceOf(typeof(DrawWinnerViewModel), result.Model);
             Assert.AreEqual(0, viewModel.NumberOfSpotsLeft);
             eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.AtLeastOnce());
-            result.AssertPartialViewRendered().ForView(string.Empty);
+            result.AssertPartialViewRendered().ForView("Default");
         }
 
         private IEnumerable<UserEvent> SelectedEventParticipants()
