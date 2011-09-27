@@ -35,13 +35,15 @@ namespace CapRaffle.UnitTests
                 new Event { EventId = 2, Name = "event 2", Created = DateTime.Now, Creator = "creator 2", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 2 },
                 new Event { EventId = 3, Name = "event 3", Created = DateTime.Now, Creator = "creator 3", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 3 },
                 new Event { EventId = 4, Name = "event 4", Created = DateTime.Now, Creator = "creator 4", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 4 },
-                new Event { EventId = 5, Name = "event 5", Created = DateTime.Now, Creator = "creator 5", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 5 }
+                new Event { EventId = 5, Name = "event 5", Created = DateTime.Now, Creator = "creator 5", AvailableSpots = 3, DeadLine = DateTime.Now, CategoryId = 5 }
             }.AsQueryable());
 
             eventMock.Setup(m => m.Participants).Returns(new UserEvent[] {
                 new UserEvent { EventId = 1, UserEmail = "a@capgemini.com", NumberOfSpots = 2 },
                 new UserEvent { EventId = 1, UserEmail = "b@capgemini.com", NumberOfSpots = 1 },
                 new UserEvent { EventId = 2, UserEmail = "a@capgemini.com", NumberOfSpots = 1 },
+                new UserEvent { EventId = 5, UserEmail = "a@capgemini.com", NumberOfSpots = 2 },
+                new UserEvent { EventId = 5, UserEmail = "b@capgemini.com", NumberOfSpots = 2 },
                 new UserEvent { EventId = 1, UserEmail = "c@capgemini.com", NumberOfSpots = 1 }
             }.AsQueryable());
 
@@ -75,6 +77,20 @@ namespace CapRaffle.UnitTests
         {
             PartialViewResult result = (PartialViewResult)controller
                 .DrawWinner(SelectedEventId(), "Default");
+
+            DrawWinnerViewModel viewModel = (DrawWinnerViewModel)result.Model;
+
+            Assert.IsInstanceOf(typeof(DrawWinnerViewModel), result.Model);
+            Assert.AreEqual(0, viewModel.NumberOfSpotsLeft);
+            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.AtLeastOnce());
+            result.AssertPartialViewRendered().ForView("Default");
+        }
+
+        [Test]
+        public void Can_Draw_Winners_When_Wanted_Spots_Is_Higher_Than_Remaining_Spots()
+        {
+            PartialViewResult result = (PartialViewResult)controller
+                .DrawWinner(5, "Default");
 
             DrawWinnerViewModel viewModel = (DrawWinnerViewModel)result.Model;
 
