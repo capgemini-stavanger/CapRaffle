@@ -195,7 +195,7 @@
     <Content Include="Views\DrawWinner\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\DrawWinner\DrawWinner.cshtml" />
+    <Content Include="Views\DrawWinner\_DrawWinner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DrawWinner\_DrawFlightBoard.cshtml" />
