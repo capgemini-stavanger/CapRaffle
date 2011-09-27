@@ -42,7 +42,7 @@ namespace CapRaffle.Controllers
             int catId = eventRepository.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
             List<UserEvent> raffleTickets = GenerateRaffleTicketsList(eventParticipants, catId);
          
-            while (viewModel.NumberOfSpotsLeft > 0)
+            while (viewModel.NumberOfSpotsLeft > 0 && raffleTickets.Count > 0)
             {
                 int winnerNumber = randomGenerator.Next(raffleTickets.Count());
                 UserEvent drawnParticipant = raffleTickets.ElementAt(winnerNumber);
