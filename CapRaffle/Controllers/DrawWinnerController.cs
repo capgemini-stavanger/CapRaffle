@@ -62,6 +62,10 @@ namespace CapRaffle.Controllers
                 };
 
                 raffleTickets.RemoveAt(winnerNumber); // TODO: remove all the users raffletickets
+
+                raffleTickets.RemoveAll(x => x.UserEmail == winner.UserEmail);
+ 
+
                 eventRepository.SaveWinner(winner);
                 
                 viewModel.Winners.Add(winner);
