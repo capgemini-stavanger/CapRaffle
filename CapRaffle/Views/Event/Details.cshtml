@@ -43,7 +43,7 @@
             });
             $("#adminUserEmailTextbox").autocomplete({
                 source: function (request, response) {
-                    $.ajax({
+                    $.ajax({    
                         type: 'POST',
                         url: '@Url.Action("GetUsers", "Participant")',
                         data: { email: request.term },
@@ -135,8 +135,6 @@
                         @Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })
                     </button>
                 </div>
-                
-                <button></button>
                 <br /><br />
                 <h4>Register User for this event</h4>
                    using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
@@ -147,8 +145,8 @@
                     @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
                     <div class="buttons">
                         <button type="submit" class="positive" name="register" id="adminAddParticipant">
-                            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
-                            Add participant
+                            <img src="@Url.Content("~/Content/images/plus.gif")" alt=""/>
+                            Add
                         </button>
                     </div>
                 <br />
