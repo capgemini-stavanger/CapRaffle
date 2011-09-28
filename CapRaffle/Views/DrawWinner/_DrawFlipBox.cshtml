@@ -1,0 +1,76 @@
+﻿@model CapRaffle.Models.DrawWinnerViewModel
+
+<script src="@Url.Content("~/Scripts/jquery.flip.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+
+    var array;
+    var flipColors = ['#ff9000', '#FFD700', '#0099CC', '#00FF00'];
+    var flips = ['tb', 'bt', 'lr', 'rl'];
+    var flip = 'tb';
+    var flipColor = 'ff9000';
+    var randomNumber;
+    var winnerIndex = 0;
+    var winner;
+
+    $(document).ready(function () {
+        var winners = "The winners:";
+        $('#hiddenTable tr').each(function () {
+            var winner = $(this).find("td:first").text();
+            winners += ',';
+            winners += winner.trim();
+        });
+        array = winners.split(",");
+    });
+
+    $("#flipbox").flip({
+        direction: 'tb',
+        content: 'Welcome to CapRaffle',
+        speed: 1000,
+        color: '#0099CC',
+        onEnd: function () {
+            iterateWinners();
+        }
+    });
+
+    function iterateWinners() {
+        if (winnerIndex <= array.length) {
+            console.log(winnerIndex + '  ' + array.length);
+            winner = array[winnerIndex];
+            winnerIndex += 1;
+            randomNumber = Math.floor(Math.random() * 4);
+            flip = flips[randomNumber];
+            flipColor = flipColors[randomNumber];
+            setTimeout('flipWinner()', 3001);
+        }
+    }
+
+    function flipWinner() {
+        $("#flipbox").flip({
+            direction: flip,
+            content: winner,
+            speed: 1300,
+            color: flipColor,
+            onEnd: function () {
+                if (winnerIndex == array.length) { document.getElementById('hiddenTable').style.display = "inline"; }
+                else { iterateWinners(); }
+            }
+        });
+    }
+</script>
+
+
+<div id="flipbox"></div>
+
+<table style="display: none" id="hiddenTable"> 
+@foreach (var item in Model.Winners)
+{
+    <tr>
+        <td>
+            @item.User.Name
+        </td>
+        <td>
+            @item.NumberOfSpotsWon spots
+        </td>
+    </tr>
+}
+</table>

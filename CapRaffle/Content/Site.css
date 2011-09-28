@@ -433,3 +433,14 @@ table.tablesorter thead tr .headerSortDown {
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp {
 background-color: #8dbdd8;
 }
+
+#flipbox {
+  width: 500px;
+  height: 200px;
+  line-height: 200px;
+  background-color: #ff9000;
+  font-family: 'ChunkFive Regular', Tahoma, Helvetica;
+  font-size: 2.5em;
+  color: #000;
+  text-align: center;
+}
