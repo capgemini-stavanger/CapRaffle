@@ -187,6 +187,9 @@
     </div>
 
     <br />
+    @foreach (var winner in Model.SelectedEvent.Winners) {
+        Html.RenderPartial("_DisplayWinner", winner);
+    }
     <div class="bottom">
         <div class="drawWinner">
             
