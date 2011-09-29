@@ -41,6 +41,8 @@
                     }
                 });
             });
+
+        
             $("#adminUserEmailTextbox").autocomplete({
                 source: function (request, response) {
                     $.ajax({    
@@ -132,14 +134,14 @@
                 }
                 
                 <div class="buttons">
-                    <button type="submit" class="positive" name="edit" id="edit">
+                    <button type="submit" class="positive" name="edit" id="edit" onclick="javascript:window.location=('@Url.Action("Edit", "Event", new { id = @Model.SelectedEvent.EventId })')">
                         <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
-                        @Html.ActionLink("Edit event", "Edit", new { id = @Model.SelectedEvent.EventId })
+                        Edit event
                     </button>
                 </div>
-                <br /><br />
+                <br /><br /><br />
                 <h4>Register User for this event</h4>
-                   using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
+                             using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
                    {
                     @Html.AntiForgeryToken()
                     <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
