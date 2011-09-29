@@ -183,8 +183,19 @@ namespace CapRaffle.UnitTests
         {
             //Arrange
             //Act
-            var result = (ViewResult) controller.Edit(2);
+            var result = (ViewResult)controller.CreateBasedOnOldEvent(2);
             
+            //Assert
+            result.AssertViewRendered().ForView("EventForm");
+        }
+
+        [Test]
+        public void User_Can_Create_New_Event_Based_On_Old_Event()
+        {
+            //Arrange
+            //Act
+            var result = (ViewResult)controller.Edit(2);
+
             //Assert
             result.AssertViewRendered().ForView("EventForm");
         }

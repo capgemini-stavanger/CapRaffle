@@ -12,7 +12,7 @@
 
 <h2>@ViewBag.action event</h2>
 <div class="eventForm">
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Event"))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)

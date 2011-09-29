@@ -59,6 +59,26 @@ namespace CapRaffle.Controllers
             return View("EventForm", model);
         }
 
+        [Authorize]
+        public ActionResult CreateBasedOnOldEvent(int id)
+        {
+            var selectedEvent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault();
+            var newevent = new Event();
+            if (selectedEvent != null)
+            {
+                var currentDatetime = DateTime.Now;
+                newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
+                newevent.AvailableSpots = selectedEvent.AvailableSpots;
+                newevent.InformationUrl = selectedEvent.InformationUrl;
+                newevent.Description = selectedEvent.Description;
+                newevent.Category = selectedEvent.Category;
+            }
+            var model = new EventViewModel { SelectedEvent = newevent, Categories = categorySelectList() };
+
+            ViewBag.action = "Create";
+            return View("EventForm", model);
+        }
+
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
