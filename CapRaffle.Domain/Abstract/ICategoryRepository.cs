@@ -11,7 +11,5 @@ namespace CapRaffle.Domain.Abstract
         IQueryable<Category> Categories { get; }
 
         void SaveCategory(Category category);
-
-        int PreviousWinsInCategoryByUser(int categoryId, string email);
     }
 }

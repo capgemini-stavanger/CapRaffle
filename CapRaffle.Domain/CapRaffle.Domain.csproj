@@ -51,6 +51,8 @@
     <Compile Include="Abstract\ICategoryRepository.cs" />
     <Compile Include="Abstract\IEmailSender.cs" />
     <Compile Include="Abstract\IEventRepository.cs" />
+    <Compile Include="Abstract\IDrawingRepository.cs" />
+    <Compile Include="Implementation\DrawingRepository.cs" />
     <Compile Include="Implementation\EmailSender.cs" />
     <Compile Include="Implementation\EventRepository.cs" />
     <Compile Include="Implementation\AccountRepository.cs" />

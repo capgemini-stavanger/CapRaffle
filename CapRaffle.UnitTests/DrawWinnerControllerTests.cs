@@ -18,6 +18,7 @@ namespace CapRaffle.UnitTests
     {
         Mock<IEventRepository> eventMock;
         Mock<ICategoryRepository> categoryMock;
+        Mock<IDrawingRepository> drawingMock;
         EventViewModel selectedEvent;
         DrawWinnerController controller;
 
@@ -64,12 +65,13 @@ namespace CapRaffle.UnitTests
             IEnumerable<SelectListItem> categories = categoryMock.Object.Categories.ToList().Select(x =>
                 new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
                 );
+            drawingMock = new Mock<IDrawingRepository>();
 
             categories.FirstOrDefault().Selected = true;
 
             selectedEvent = new EventViewModel { SelectedEvent = eventMock.Object.Events.FirstOrDefault(), Categories = categories };
 
-            controller = new DrawWinnerController(eventMock.Object, categoryMock.Object);
+            controller = new DrawWinnerController(drawingMock.Object);
         }
 
         [Test]
@@ -82,7 +84,7 @@ namespace CapRaffle.UnitTests
 
             Assert.IsInstanceOf(typeof(DrawWinnerViewModel), result.Model);
             Assert.AreEqual(0, viewModel.NumberOfSpotsLeft);
-            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.AtLeastOnce());
+            drawingMock.Verify(m => m.PerformDrawing(It.IsAny<int>()), Times.AtLeastOnce());
             result.AssertPartialViewRendered().ForView("Default");
         }
 
@@ -96,7 +98,7 @@ namespace CapRaffle.UnitTests
 
             Assert.IsInstanceOf(typeof(DrawWinnerViewModel), result.Model);
             Assert.AreEqual(0, viewModel.NumberOfSpotsLeft);
-            eventMock.Verify(m => m.SaveWinner(It.IsAny<Winner>()), Times.AtLeastOnce());
+            drawingMock.Verify(m => m.PerformDrawing(It.IsAny<int>()), Times.AtLeastOnce());
             result.AssertPartialViewRendered().ForView("Default");
         }
 
