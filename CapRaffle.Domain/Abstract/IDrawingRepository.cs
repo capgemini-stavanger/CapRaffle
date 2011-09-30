@@ -14,7 +14,9 @@ namespace CapRaffle.Domain.Abstract
         IQueryable<UserEvent> EventParticipantsForEvent(int eventId);
 
         void PerformDrawing(int eventId);
+        void RemoveWinner(Winner winner);
 
         int NumberOfSpotsLeftForEvent(int eventId);
+
     }
 }
