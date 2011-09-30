@@ -31,9 +31,12 @@
         }
         </div>
 }
-<br />
-<br />
-@Html.ActionLink("Register here", "Register")
+<div class="buttons">
+    <button type="submit" class="regular" name="register" id="register" onclick="javascript:window.location=('@Url.Action("Register", "Account")')">
+        <img src="@Url.Content("~/Content/images/plus.gif")" alt=""/>
+        Register
+    </button>
+</div>
 
 
 <script type="text/javascript">
