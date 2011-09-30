@@ -16,9 +16,5 @@ namespace CapRaffle.Domain.Abstract
         void PerformDrawing(int eventId);
 
         int NumberOfSpotsLeftForEvent(int eventId);
-        int CategoryIdForEvent(int eventId);
-        int PreviousWinsInCategoryByUser(int categoryId, string email);
-        
-        void SaveWinner(Winner winner);
     }
 }

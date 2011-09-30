@@ -47,12 +47,10 @@ namespace CapRaffle.Domain.Implementation
                     CatogoryId = CategoryIdForEvent(eventId)
                 };
 
-                raffleTickets.RemoveAt(winnerNumber); // TODO: remove all the users raffletickets
-
                 raffleTickets.RemoveAll(x => x.UserEmail == winner.UserEmail);
-
-
+                
                 SaveWinner(winner);
+                DeleteParticipant(drawnParticipant);
                 availableSpots -= winner.NumberOfSpotsWon;
             }
         }
@@ -62,17 +60,17 @@ namespace CapRaffle.Domain.Implementation
             return context.Events.FirstOrDefault(x => x.EventId == eventId).AvailableSpots;
         }
 
-        public int CategoryIdForEvent(int eventId)
+        private int CategoryIdForEvent(int eventId)
         {
             return context.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
         }
 
-        public int PreviousWinsInCategoryByUser(int categoryId, string email)
+        private int PreviousWinsInCategoryByUser(int categoryId, string email)
         {
             return context.Winners.Where(x => x.CatogoryId == categoryId && x.UserEmail == email).Count();
         }
 
-        public void SaveWinner(Winner winner)
+        private void SaveWinner(Winner winner)
         {
             if (context.Winners.Where(x => x.EventId == winner.EventId && x.UserEmail == winner.UserEmail).Count() == 0)
             {
@@ -82,6 +80,12 @@ namespace CapRaffle.Domain.Implementation
             {
                 context.UpdateDetachedEntity<Winner>(winner, x => x.EventId);
             }
+            context.SaveChanges();
+        }
+
+        private void DeleteParticipant(UserEvent participant)
+        {
+            context.UserEvents.DeleteObject(participant);
             context.SaveChanges();
         }
 
