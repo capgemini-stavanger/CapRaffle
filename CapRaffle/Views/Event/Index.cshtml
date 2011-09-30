@@ -12,27 +12,24 @@
 <h2>List of Events</h2>
 <table id="eventTable" class="tablesorter"> 
     <thead>
-    <tr>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Available spots</th>
-        <th>Deadline</th>
-        <th>Created by</th>
-    </tr>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Available spots</th>
+            <th>Deadline</th>
+            <th>Created by</th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var e in Model.Events)
-    {
-
-        <tr>
-            <td>@Html.ActionLink(e.Name, "Details", new { id = e.EventId })</td>
-            <td>@e.Category.Name</td>
-            <td>@e.AvailableSpots</td>
-            <td>@e.DeadLine</td>
-            <td>@e.Creator</td>
-        </tr>
-    
-
-    }
-</tbody>
+        @foreach (var e in Model.Events)
+        {
+            <tr>
+                <td>@Html.ActionLink(e.Name, "Details", new { id = e.EventId })</td>
+                <td>@e.Category.Name</td>
+                <td>@e.AvailableSpots</td>
+                <td>@e.DeadLine</td>
+                <td>@e.Creator</td>
+            </tr>
+        }
+    </tbody>
 </table> 
