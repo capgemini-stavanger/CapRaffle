@@ -1,9 +1,18 @@
 ﻿@model IEnumerable<CapRaffle.Domain.Model.UserEvent>
-
-<table>
-    <tr><th>Name</th><th>Number of spots</th></tr>
-        @foreach (var participant in Model)
-        {
-            <tr><td>@participant.User.Name</td><td>@participant.NumberOfSpots</td></tr>
-        }
+<script src="@Url.Content("~/Scripts/jquery.tablesorter.min.js")" type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#participants").tablesorter();
+    }); 
+</script>
+<table id="participants" class="tablesorter">
+    <thead>
+        <tr><th>Name</th><th>Spots</th></tr>
+    </thead>
+        <tbody>
+            @foreach (var participant in Model)
+            {
+                <tr><td>@participant.User.Name</td><td>@participant.NumberOfSpots</td></tr>
+            }
+        </tbody>
 </table>
