@@ -57,7 +57,17 @@ namespace CapRaffle.Domain.Implementation
 
         public int NumberOfSpotsLeftForEvent(int eventId)
         {
-            return context.Events.FirstOrDefault(x => x.EventId == eventId).AvailableSpots;
+            int eventAvailableSpots = context.Events.FirstOrDefault(x => x.EventId == eventId).AvailableSpots;
+            List<Winner> winners = context.Winners.Where(x => x.EventId == eventId).ToList<Winner>();
+            
+            int spotsAlreadyWon = 0;
+            foreach(Winner w in winners) 
+            {
+                spotsAlreadyWon += w.NumberOfSpotsWon;
+            }
+            
+            int actualAvailableSpots = eventAvailableSpots - spotsAlreadyWon;
+            return actualAvailableSpots;
         }
 
         private int CategoryIdForEvent(int eventId)
