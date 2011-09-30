@@ -55,6 +55,12 @@ namespace CapRaffle.Domain.Implementation
             }
         }
 
+        public void RemoveWinner(Winner winner)
+        {
+            context.Winners.DeleteObject(winner);
+            context.SaveChanges();
+        }
+
         public int NumberOfSpotsLeftForEvent(int eventId)
         {
             int eventAvailableSpots = context.Events.FirstOrDefault(x => x.EventId == eventId).AvailableSpots;

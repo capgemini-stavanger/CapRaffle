@@ -29,6 +29,12 @@ namespace CapRaffle.Controllers
             DrawWinnerViewModel model = GenerateDrawWinnerViewModel(eventId);
             return PartialView(view, model);
         }
+
+        public ActionResult RemoveWinner(Winner winner)
+        {
+            drawingRepository.RemoveWinner(winner);
+            return Redirect(Url.Action("Details", "Event", new { id = winner.EventId }));
+        }
         
         private DrawWinnerViewModel GenerateDrawWinnerViewModel(int eventId)
         {
