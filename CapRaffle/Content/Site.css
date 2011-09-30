@@ -356,6 +356,8 @@ button.regular, .buttons a.regular{
     color:#fff;
 }
 
+/* Menus
+----------------------------------------------*/
 div#sexypanels
 {
     float: left; 
@@ -383,16 +385,19 @@ div#sexypanels li a{
     border-bottom: 1px solid black; /*bottom border of menu link. Should be equal or darker to link's bgcolor*/
 }
 
-div#sexypanels li a:visited, .sexypanels li a:active{
-    color: #000;
-}
-
 div#sexypanels li a:hover
 {
     background-color: #0099CC; /*color of menu onMouseover*/
     color: white;
     border-bottom: 1px solid black; /*bottom border of menu link during hover. Should be equal or darker to link's hover's bgcolor*/
 }
+
+div#sexypanels li.selected a
+{
+    background-color: #0099CC; /*color of menu onMouseover*/
+    color: white;
+}
+
 
 /* tables */
 table.tablesorter {

@@ -5,9 +5,11 @@ using System.Web;
 using System.Web.Mvc;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
+using CapRaffle.ActionFilterAttributes;
 
 namespace CapRaffle.Controllers
 {
+    [SetSelectedMenu]
     public class ParticipantController : Controller
     {
         private IEventRepository repository;

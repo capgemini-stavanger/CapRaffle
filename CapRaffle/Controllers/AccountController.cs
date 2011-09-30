@@ -7,9 +7,11 @@ using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Models;
 using System.Reflection;
+using CapRaffle.ActionFilterAttributes;
 
 namespace CapRaffle.Controllers
 {
+    [SetSelectedMenu]
     public class AccountController : Controller
     {
 

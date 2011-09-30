@@ -69,7 +69,9 @@
     <Compile Include="Controllers\DrawWinnerController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
+    <Compile Include="ActionFilterAttributes\SetSelectedMenuAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -81,6 +83,7 @@
     <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\LogOnViewModel.cs" />
     <Compile Include="Models\Extensions.cs" />
+    <Compile Include="Models\MenuViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Event\_DisplayWinner.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Nav\Menu.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
