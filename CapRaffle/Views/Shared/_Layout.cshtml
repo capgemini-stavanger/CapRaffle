@@ -30,7 +30,9 @@
         <div class="title"> @Html.ActionLink("CapRaffle", "index", "Event") </div>
         
     </div>
-        @{ Html.RenderAction("Menu", "Nav", new { controller = ViewBag.MenuController, action = ViewBag.MenuAction }); };
+
+    @{ Html.RenderAction("Menu", "Nav", new { controller = ViewBag.MenuController, action = ViewBag.MenuAction }); }
+
     <div id="content">
         @Html.Raw(TempData["Info"] != null ? "<div class='info'>" + TempData["Info"] + "</div>" : "")
         
