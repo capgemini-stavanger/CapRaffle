@@ -6,9 +6,11 @@ using System.Web.Mvc;
 using CapRaffle.Models;
 using CapRaffle.Domain.Model;
 using CapRaffle.Domain.Abstract;
+using CapRaffle.ActionFilterAttributes;
 
 namespace CapRaffle.Controllers
 {
+    [SetSelectedMenu]
     public class EventController : Controller
     {
         private IEventRepository eventRepository;
@@ -111,6 +113,9 @@ namespace CapRaffle.Controllers
                 NumberOfSpots = NumberofSpotsList(selectedEvent.AvailableSpots),
                 RaffleTypes = getRaffleTypes()
             };
+
+            ViewBag.MenuController = "Event";
+            ViewBag.MenuAction = "Index";
             return View(model);
         }
 

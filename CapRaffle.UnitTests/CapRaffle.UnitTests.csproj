@@ -73,6 +73,7 @@
     <Compile Include="CategoryControllerTests.cs" />
     <Compile Include="DrawWinnerControllerTests.cs" />
     <Compile Include="EventControllerTests.cs" />
+    <Compile Include="NavControllerTests.cs" />
     <Compile Include="ParticipantControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>

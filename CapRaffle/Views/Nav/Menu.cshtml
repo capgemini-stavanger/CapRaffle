@@ -1,0 +1,17 @@
+﻿ @model IEnumerable<CapRaffle.Models.MenuViewModel>
+ 
+ <div id="sexypanels">
+        <ul>
+        @foreach (var menu in Model)
+        {
+            if (menu.isSelected)
+            {
+                <li class="selected">@Html.ActionLink(menu.Text, menu.Action, menu.Controller)</li>
+            }
+            else
+            {
+                <li>@Html.ActionLink(menu.Text, menu.Action, menu.Controller)</li>
+            }
+        }
+        </ul>
+    </div>

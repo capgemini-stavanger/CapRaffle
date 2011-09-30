@@ -6,10 +6,12 @@ using System.Web.Mvc;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Models;
+using CapRaffle.ActionFilterAttributes;
 
 namespace CapRaffle.Controllers
 {
     [Authorize]
+    [SetSelectedMenu]
     public class CategoryController : Controller
     {
         private ICategoryRepository repository;
