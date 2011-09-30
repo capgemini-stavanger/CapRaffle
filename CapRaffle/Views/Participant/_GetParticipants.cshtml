@@ -3,16 +3,52 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $("#participants").tablesorter();
+
+        $(".DeleteParticipant").click(function () {
+            var row = $(this).closest("tr");
+            var user = $(row).find(".ParticipantEmail").val()
+            var eventId = $(row).find(".Eventid").val()
+            var spots = $(row).find(".spots").text()
+            var postdata = { UserEmail: user, NumberOfSpots: spots, EventId: eventId };
+            $.ajax({
+                url: '@Url.Action("Delete", "Participant")',
+                type: 'POST',
+                data: postdata,
+                success: function (data) {
+                    row.remove();
+                }
+            });
+        })
     }); 
 </script>
 <table id="participants" class="tablesorter">
     <thead>
-        <tr><th>Name</th><th>Spots</th></tr>
+        <tr>
+            @if (ViewBag.isCreator)
+            { <th>Del</th> }
+            <th>Name</th>
+            <th>Spots</th>
+        </tr>
     </thead>
         <tbody>
             @foreach (var participant in Model)
             {
-                <tr><td>@participant.User.Name</td><td>@participant.NumberOfSpots</td></tr>
+                <tr>
+                    @if (ViewBag.isCreator)
+                    {
+                        <td>
+                            <img class="DeleteParticipant" src="@Url.Content("~/Content/images/cross.png")" alt="" />
+                            <input type="hidden" class="ParticipantEmail" name="Participant" value="@participant.UserEmail" />
+                            <input type="hidden" class="Eventid" name="EventId" value="@participant.EventId" />
+                        </td>
+                    }
+                    <td>
+                        @participant.User.Name 
+                    </td>
+                    <td class="spots">
+                        @participant.NumberOfSpots
+                    </td>
+                </tr>
             }
         </tbody>
 </table>

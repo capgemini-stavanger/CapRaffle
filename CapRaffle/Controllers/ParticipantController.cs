@@ -48,7 +48,13 @@ namespace CapRaffle.Controllers
         public JsonResult Delete(UserEvent participant)
         {
             if (!HttpContext.User.Identity.Name.Equals(participant.UserEmail))
-                return this.Json(false);
+            {
+                var selectedEvent = repository.Events.Where(x => x.EventId == participant.EventId).FirstOrDefault();
+                if (!HttpContext.User.Identity.Name.Equals(selectedEvent.Creator))
+                {
+                    return this.Json(false);
+                }
+            }
 
             repository.DeleteParticipant(participant);
             return this.Json(true);
@@ -66,6 +72,8 @@ namespace CapRaffle.Controllers
         public PartialViewResult GetParticipants(int eventId)
         {
             var participants = repository.Participants.Where(x => x.EventId == eventId).ToList();
+            var selectEvent = repository.Events.Where(x => x.EventId == eventId).FirstOrDefault();
+            ViewBag.isCreator = selectEvent.Creator.Equals(HttpContext.User.Identity.Name);
             return PartialView("_GetParticipants", participants);
         }
     }
