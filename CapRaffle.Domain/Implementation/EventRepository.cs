@@ -68,18 +68,5 @@ namespace CapRaffle.Domain.Implementation
             }
             context.SaveChanges();
         }
-
-        public void SaveWinner(Winner winner)
-        {
-            if (context.Winners.Where(x => x.EventId == winner.EventId && x.UserEmail == winner.UserEmail).Count() == 0)
-            {
-                context.AddToWinners(winner);
-            }
-            else
-            {
-                context.UpdateDetachedEntity<Winner>(winner, x => x.EventId);
-            }
-            context.SaveChanges();
-        }
     }
 }
