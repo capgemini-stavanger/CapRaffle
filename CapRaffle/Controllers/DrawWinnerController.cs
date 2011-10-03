@@ -30,10 +30,15 @@ namespace CapRaffle.Controllers
             return PartialView(view, model);
         }
 
-        public ActionResult RemoveWinner(Winner winner)
+        public JsonResult RemoveWinner(Winner winner)
         {
+            var selectedEvent = drawingRepository.Winners.Where(x => x.EventId == winner.EventId).Select(x => x.Event).FirstOrDefault();
+            if (!HttpContext.User.Identity.Name.Equals(selectedEvent.Creator))
+            {
+                return this.Json(false);
+            }
             drawingRepository.RemoveWinner(winner);
-            return Redirect(Url.Action("Details", "Event", new { id = winner.EventId }));
+            return this.Json(true);
         }
         
         private DrawWinnerViewModel GenerateDrawWinnerViewModel(int eventId)

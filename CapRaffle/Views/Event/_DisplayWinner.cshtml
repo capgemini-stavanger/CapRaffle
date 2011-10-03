@@ -1,7 +1,14 @@
-﻿@model CapRaffle.Domain.Model.Winner
+﻿@model IEnumerable<CapRaffle.Domain.Model.Winner>
 
-Name: @Model.User.Name 
-<br />
-Number of spots won: @Model.NumberOfSpotsWon
-<br />
-<br />
+<table id="WinnerTable" class="tablesorter" style="width: 25%">
+    <thead>
+        <th>Name</th>
+        <th>Spots</th>
+    </thead>
+    @foreach (var winner in Model) {
+        <tr>
+            <td>@winner.User.Name</td>
+            <td>@winner.NumberOfSpotsWon</td>
+        </tr>
+    }
+    </table>

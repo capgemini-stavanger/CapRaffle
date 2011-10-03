@@ -4,32 +4,17 @@
 <br />
 <br />
 <br />
-<table style="display: none" id="hiddenTable"> 
-@foreach (var item in Model.Winners)
-{
-    <tr>
-        <td>
-            @item.User.Name
-        </td>
-        <td>
-            @item.NumberOfSpotsWon spots
-        </td>
-    </tr>
-}
-</table>
-
+<div id="error"></div>
 <script type="text/javascript">
-    var counter = 1;
-    var arrayLength;
+    var counter = 0;
+    var arrayLength
+    var model = jQuery.parseJSON('@Html.Raw(Json.Encode(Model.Winners.Select(x => new { name = x.User.Name, spots = x.NumberOfSpotsWon})))');
     $(function () {
-
-        var winners = 'CAPRAFFLE';
-        $('#hiddenTable tr').each(function () {
-            var winner = $(this).find("td:first").text();
-            winners += ',';
-            winners += winner.toUpperCase().trim();
-        });
-        var array = winners.split(",");
+        var string = 'CAPRAFFLE,' + '@Html.Raw(Json.Encode(Model.Winners.Select(x => x.User.Name))).ToString().ToUpper()';
+        string = string.replace(/&quot;/g, "");
+        string = string.replace(/\[/g, "");
+        string = string.replace(/\]/g, "");
+        var array = string.split(",");
         arrayLength = array.length;
         $('#basicBoard').flightboard({
             messages: array,
@@ -37,16 +22,18 @@
             shadingImages: ['/Content/images/flightBoardHigh.png', '/Content/images/flightBoardShad.png'],
             speed: 750,
             pause: 1000,
-            flips: [4, 6],
+            flips: [array.length, array.length],
             afterFlip: endedFlip,
             maxLength: 30
         });
     });
 
-    function endedFlip(current) {
-        counter++;
-        if(counter >= arrayLength) {
-            document.getElementById('hiddenTable').style.display = "inline";
+    function endedFlip(current, next) {
+        if (counter <= arrayLength) {
+            if (next != 'CAPRAFFLE') {
+                $("#WinnerTable").append("<tr><td>" + model[counter].name + "</td><td>" + model[counter].spots + "</td></tr>")
+            }
+            counter++;
         }
     }
 </script>

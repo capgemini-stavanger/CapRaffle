@@ -96,7 +96,6 @@
                                 @(Model.UserIsParticipant ? "Update" : "Register")
                             </button>
                         </div>
-                if (!Model.UserIsParticipant) { <br /> }
                 }
                 if (Model.UserIsParticipant)
                 {
@@ -106,8 +105,8 @@
                             Delete participation
                         </button>
                     </div>
-                <br />
                 }
+                <br />
             }
             else
             {
@@ -185,11 +184,8 @@
         <h4>Number of available spots: @Model.SelectedEvent.AvailableSpots</h4>
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
     </div>
-
     <br />
-    @foreach (var winner in Model.SelectedEvent.Winners) {
-        Html.RenderPartial("_DisplayWinner", winner);
-    }
+    @{ Html.RenderPartial("_DisplayWinner", Model.SelectedEvent.Winners); }
     <div class="bottom">
         <div class="drawWinner">
             
