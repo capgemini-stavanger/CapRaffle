@@ -8,12 +8,22 @@
         <EntityContainer Name="CapRaffleModelStoreContainer">
           <EntitySet Name="Category" EntityType="CapRaffleModel.Store.Category" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Event" EntityType="CapRaffleModel.Store.Event" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Rule" EntityType="CapRaffleModel.Store.Rule" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="RuleSet" EntityType="CapRaffleModel.Store.RuleSet" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="User" EntityType="CapRaffleModel.Store.User" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserEvent" EntityType="CapRaffleModel.Store.UserEvent" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Winner" EntityType="CapRaffleModel.Store.Winner" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Category_RuleSet" Association="CapRaffleModel.Store.FK_Category_RuleSet">
+            <End Role="RuleSet" EntitySet="RuleSet" />
+            <End Role="Category" EntitySet="Category" />
+          </AssociationSet>
           <AssociationSet Name="FK_Event_Category" Association="CapRaffleModel.Store.FK_Event_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RuleSet_Rule" Association="CapRaffleModel.Store.FK_RuleSet_Rule">
+            <End Role="Rule" EntitySet="Rule" />
+            <End Role="RuleSet" EntitySet="RuleSet" />
           </AssociationSet>
           <AssociationSet Name="FK_UserEvent_Event" Association="CapRaffleModel.Store.FK_UserEvent_Event">
             <End Role="Event" EntitySet="Event" />
@@ -43,6 +53,7 @@
           <Property Name="CategoryId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="RuleSetID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -57,6 +68,23 @@
           <Property Name="Description" Type="nvarchar" MaxLength="300" />
           <Property Name="DeadLine" Type="datetime" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="DrawRuleSetId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rule">
+          <Key>
+            <PropertyRef Name="RuleId" />
+          </Key>
+          <Property Name="RuleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="MethodName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="ClassName" Type="varchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="RuleSet">
+          <Key>
+            <PropertyRef Name="RuleSetId" />
+          </Key>
+          <Property Name="RuleSetId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="RuleId" Type="int" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -86,6 +114,18 @@
           <Property Name="Date" Type="datetime" />
           <Property Name="CatogoryId" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Category_RuleSet">
+          <End Role="RuleSet" Type="CapRaffleModel.Store.RuleSet" Multiplicity="1" />
+          <End Role="Category" Type="CapRaffleModel.Store.Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RuleSet">
+              <PropertyRef Name="RuleSetId" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="RuleSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Event_Category">
           <End Role="Category" Type="CapRaffleModel.Store.Category" Multiplicity="1" />
           <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="*" />
@@ -95,6 +135,18 @@
             </Principal>
             <Dependent Role="Event">
               <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RuleSet_Rule">
+          <End Role="Rule" Type="CapRaffleModel.Store.Rule" Multiplicity="1" />
+          <End Role="RuleSet" Type="CapRaffleModel.Store.RuleSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rule">
+              <PropertyRef Name="RuleId" />
+            </Principal>
+            <Dependent Role="RuleSet">
+              <PropertyRef Name="RuleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -192,6 +244,16 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Winner" EntitySet="Winners" />
           </AssociationSet>
+          <EntitySet Name="Rules" EntityType="CapRaffleModel.Rule" />
+          <EntitySet Name="RuleSets" EntityType="CapRaffleModel.RuleSet" />
+          <AssociationSet Name="FK_Category_RuleSet" Association="CapRaffleModel.FK_Category_RuleSet">
+            <End Role="RuleSet" EntitySet="RuleSets" />
+            <End Role="Category" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RuleSet_Rule" Association="CapRaffleModel.FK_RuleSet_Rule">
+            <End Role="Rule" EntitySet="Rules" />
+            <End Role="RuleSet" EntitySet="RuleSets" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Category">
           <Key>
@@ -202,6 +264,8 @@
           <NavigationProperty Name="Events" Relationship="CapRaffleModel.FK_Event_Category" FromRole="Category" ToRole="Event" />
           <NavigationProperty Name="Winners" Relationship="CapRaffleModel.FK_Winner_Category" FromRole="Category" ToRole="Winner" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" DefaultValue="true" />
+          <Property Type="Int32" Name="RuleSetID" Nullable="false" />
+          <NavigationProperty Name="RuleSet" Relationship="CapRaffleModel.FK_Category_RuleSet" FromRole="Category" ToRole="RuleSet" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -219,6 +283,7 @@
           <NavigationProperty Name="Category" Relationship="CapRaffleModel.FK_Event_Category" FromRole="Event" ToRole="Category" />
           <NavigationProperty Name="UserEvents" Relationship="CapRaffleModel.FK_UserEvent_Event" FromRole="Event" ToRole="UserEvent" />
           <NavigationProperty Name="Winners" Relationship="CapRaffleModel.FK_Winner_Event" FromRole="Event" ToRole="Winner" />
+          <Property Type="Int32" Name="DrawRuleSetId" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -327,6 +392,49 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Rule">
+          <Key>
+            <PropertyRef Name="RuleId" />
+          </Key>
+          <Property Type="Int32" Name="RuleId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="MethodName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="ClassName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RuleSets" Relationship="CapRaffleModel.FK_RuleSet_Rule" FromRole="Rule" ToRole="RuleSet" />
+        </EntityType>
+        <EntityType Name="RuleSet">
+          <Key>
+            <PropertyRef Name="RuleSetId" />
+          </Key>
+          <Property Type="Int32" Name="RuleSetId" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="RuleId" Nullable="false" />
+          <Property Type="Int32" Name="Priority" Nullable="false" />
+          <NavigationProperty Name="Categories" Relationship="CapRaffleModel.FK_Category_RuleSet" FromRole="RuleSet" ToRole="Category" />
+          <NavigationProperty Name="Rule" Relationship="CapRaffleModel.FK_RuleSet_Rule" FromRole="RuleSet" ToRole="Rule" />
+        </EntityType>
+        <Association Name="FK_Category_RuleSet">
+          <End Type="CapRaffleModel.RuleSet" Role="RuleSet" Multiplicity="1" />
+          <End Type="CapRaffleModel.Category" Role="Category" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RuleSet">
+              <PropertyRef Name="RuleSetId" />
+            </Principal>
+            <Dependent Role="Category">
+              <PropertyRef Name="RuleSetID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RuleSet_Rule">
+          <End Type="CapRaffleModel.Rule" Role="Rule" Multiplicity="1" />
+          <End Type="CapRaffleModel.RuleSet" Role="RuleSet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rule">
+              <PropertyRef Name="RuleId" />
+            </Principal>
+            <Dependent Role="RuleSet">
+              <PropertyRef Name="RuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -334,12 +442,14 @@
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CapRaffleModelStoreContainer" CdmEntityContainer="CapRaffleContext">
           <EntitySetMapping Name="Categories"><EntityTypeMapping TypeName="CapRaffleModel.Category"><MappingFragment StoreEntitySet="Category">
-            <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+            <ScalarProperty Name="RuleSetID" ColumnName="RuleSetID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
             <ScalarProperty Name="Name" ColumnName="Name" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="Events"><EntityTypeMapping TypeName="CapRaffleModel.Event"><MappingFragment StoreEntitySet="Event">
-            <ScalarProperty Name="EventId" ColumnName="EventId" />
+            <ScalarProperty Name="DrawRuleSetId" ColumnName="DrawRuleSetId" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
             <ScalarProperty Name="Name" ColumnName="Name" />
             <ScalarProperty Name="Created" ColumnName="Created" />
             <ScalarProperty Name="Creator" ColumnName="Creator" />
@@ -366,6 +476,24 @@
             <ScalarProperty Name="Date" ColumnName="Date" />
             <ScalarProperty Name="CatogoryId" ColumnName="CatogoryId" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Rules">
+            <EntityTypeMapping TypeName="CapRaffleModel.Rule">
+              <MappingFragment StoreEntitySet="Rule">
+                <ScalarProperty Name="ClassName" ColumnName="ClassName" />
+                <ScalarProperty Name="MethodName" ColumnName="MethodName" />
+                <ScalarProperty Name="RuleId" ColumnName="RuleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RuleSets">
+            <EntityTypeMapping TypeName="CapRaffleModel.RuleSet">
+              <MappingFragment StoreEntitySet="RuleSet">
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="RuleId" ColumnName="RuleId" />
+                <ScalarProperty Name="RuleSetId" ColumnName="RuleSetId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -393,13 +521,14 @@
         <EntityTypeShape EntityType="CapRaffleModel.UserEvent" Width="1.5" PointX="5.25" PointY="4" Height="1.9802864583333335" IsExpanded="true" />
         <EntityTypeShape EntityType="CapRaffleModel.Winner" Width="1.5" PointX="5.25" PointY="0.75" Height="2.5571907552083317" IsExpanded="true" />
         <AssociationConnector Association="CapRaffleModel.FK_Event_Category" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="5.0189925130208337" />
-          <ConnectorPoint PointX="3" PointY="5.0189925130208337" />
+          <ConnectorPoint PointX="2.25" PointY="5.3074446614583337" />
+          <ConnectorPoint PointX="3" PointY="5.3074446614583337" />
         </AssociationConnector>
         <AssociationConnector Association="CapRaffleModel.FK_Winner_Category" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="4.125" />
-          <ConnectorPoint PointX="1.5" PointY="2.0285953776041659" />
-          <ConnectorPoint PointX="5.25" PointY="2.0285953776041659" />
+          <ConnectorPoint PointX="2.25" PointY="4.125" />
+          <ConnectorPoint PointX="2.625" PointY="3.75" />
+          <ConnectorPoint PointX="2.625" PointY="1.6933207832031245" />
+          <ConnectorPoint PointX="5.25" PointY="1.6933207832031245" />
         </AssociationConnector>
         <AssociationConnector Association="CapRaffleModel.FK_UserEvent_Event" ManuallyRouted="false">
           <ConnectorPoint PointX="4.5" PointY="4.9901432291666667" />
@@ -407,8 +536,8 @@
         </AssociationConnector>
         <AssociationConnector Association="CapRaffleModel.FK_Winner_Event" ManuallyRouted="false">
           <ConnectorPoint PointX="3.75" PointY="3.375" />
-          <ConnectorPoint PointX="3.75" PointY="2.6991455664062496" />
-          <ConnectorPoint PointX="5.25" PointY="2.6991455664062496" />
+          <ConnectorPoint PointX="3.75" PointY="2.5315082692057285" />
+          <ConnectorPoint PointX="5.25" PointY="2.5315082692057285" />
         </AssociationConnector>
         <AssociationConnector Association="CapRaffleModel.FK_UserEvent_User" ManuallyRouted="false">
           <ConnectorPoint PointX="8.25" PointY="3.8552864583333331" />
@@ -418,6 +547,18 @@
         <AssociationConnector Association="CapRaffleModel.FK_Winner_User" ManuallyRouted="false">
           <ConnectorPoint PointX="7.5" PointY="2.5910953776041659" />
           <ConnectorPoint PointX="6.75" PointY="2.5910953776041659" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="CapRaffleModel.Rule" Width="1.5" PointX="0.75" PointY="7.375" Height="1.787985026041671" />
+        <EntityTypeShape EntityType="CapRaffleModel.RuleSet" Width="1.5" PointX="0.75" PointY="1.375" Height="1.9802864583333317" />
+        <AssociationConnector Association="CapRaffleModel.FK_Category_RuleSet" >
+          <ConnectorPoint PointX="1.4687475" PointY="3.3552864583333317" />
+          <ConnectorPoint PointX="1.4687475" PointY="4.125" />
+        </AssociationConnector>
+        <AssociationConnector Association="CapRaffleModel.FK_RuleSet_Rule" >
+          <ConnectorPoint PointX="0.75" PointY="7.375" />
+          <ConnectorPoint PointX="0.375" PointY="7" />
+          <ConnectorPoint PointX="0.375" PointY="3.7302864583333317" />
+          <ConnectorPoint PointX="0.75" PointY="3.3552864583333317" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>
