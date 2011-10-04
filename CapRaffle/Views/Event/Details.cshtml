@@ -11,11 +11,13 @@
             $("#WinnerTable tr:gt(0)").children("td.spots").each(function () {
                 total += parseInt($(this).html());
             }); 
-            $("#spotsleft").text(numberOfSpots - total);
+            total = numberOfSpots - total;
+            $("#spotsleft").text(total);
         }
         function decreaseSpotsleft(numberOfSpots) {
             var total = parseInt($("#spotsleft").text());
-            $("#spotsleft").text(total -numberOfSpots);
+            total = total - numberOfSpots;
+            $("#spotsleft").text(total);
         }
         $(document).ready(function () {
             
@@ -178,15 +180,15 @@
                 }
                 <br />
                 <br />
-                <h4> Draw winner for this event</h4>
-                @Html.DropDownList("view", Model.RaffleTypes)
-                <div class="buttons">
-                    <button id="DrawWinner" class="positive" name="DrawWinner">
-                        <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
-                        Draw winners
-                    </button>
-                    </div>
-                <br />
+                    <h4> Draw winner for this event</h4>
+                    @Html.DropDownList("view", Model.RaffleTypes)
+                    <div class="buttons">
+                        <button id="DrawWinner" class="positive" name="DrawWinner">
+                            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                            Draw winners
+                        </button>
+                        </div>
+                    <br />
             }
         </div>
     </div>
