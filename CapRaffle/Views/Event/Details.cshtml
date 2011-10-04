@@ -5,18 +5,20 @@
 }
 
     <script type="text/javascript">
+        function updateSpotsLeft() {
+            var numberOfSpots = '@Model.SelectedEvent.AvailableSpots';
+            var total = 0;
+            $("#WinnerTable tr:gt(0)").children("td.spots").each(function () {
+                total += parseInt($(this).html());
+            }); 
+            $("#spotsleft").text(numberOfSpots - total);
+        }
+        function decreaseSpotsleft(numberOfSpots) {
+            var total = parseInt($("#spotsleft").text());
+            $("#spotsleft").text(total -numberOfSpots);
+        }
         $(document).ready(function () {
             
-            function updateSpotsLeft() {
-                var numberOfSpots = '@Model.SelectedEvent.AvailableSpots';
-                var total = 0;
-                $("#WinnerTable tr:gt(0)").children("td.spots").each(function () {
-                    total += parseInt($(this).html());
-                }); 
-                $("#spotsleft").text(numberOfSpots - total);
-            }
-            
-
             $(".participants form").submit(function (e) {
                 $.post($(this).attr("action"),
                     $(this).serialize(),
@@ -77,7 +79,8 @@
                     url: '@Url.Action("DrawWinner", "DrawWinner")',
                     data: 'eventId=@Model.SelectedEvent.EventId&view='+view,
                     success: function(data){ 
-                        $('.drawWinner').html(data)
+                        $('.drawWinner').html(data);
+                        
                     }
                 })
             });

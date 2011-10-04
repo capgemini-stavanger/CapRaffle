@@ -30,6 +30,7 @@
                         "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[winnerIndex].UserEmail + " />" +
                         "<input type='hidden' class='Eventid' name='EventId' value=" + model[winnerIndex].EventId + " />" +
                     "</td><td>" + model[winnerIndex].Name + "</td><td>" + model[winnerIndex].Spots + "</td></tr>")
+        decreaseSpotsleft(model[winnerIndex].Spots);
         winnerIndex += 1;
         iterateWinners();
     }
