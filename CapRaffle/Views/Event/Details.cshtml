@@ -12,13 +12,24 @@
                 total += parseInt($(this).html());
             }); 
             total = numberOfSpots - total;
+            toggleDrawWinnerAdministration(total);
             $("#spotsleft").text(total);
         }
         function decreaseSpotsleft(numberOfSpots) {
             var total = parseInt($("#spotsleft").text());
             total = total - numberOfSpots;
+            toggleDrawWinnerAdministration(total);
             $("#spotsleft").text(total);
         }
+        function toggleDrawWinnerAdministration(total) {
+            if(total == 0) {
+                $(".DrawWinnerAdministration").hide();
+            }
+            else {
+                $(".DrawWinnerAdministration").show();
+            }
+        }
+
         $(document).ready(function () {
             
             $(".participants form").submit(function (e) {
@@ -180,6 +191,7 @@
                 }
                 <br />
                 <br />
+                <div class="DrawWinnerAdministration">
                     <h4> Draw winner for this event</h4>
                     @Html.DropDownList("view", Model.RaffleTypes)
                     <div class="buttons">
@@ -189,6 +201,7 @@
                         </button>
                         </div>
                     <br />
+                </div>
             }
         </div>
     </div>
