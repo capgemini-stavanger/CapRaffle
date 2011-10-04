@@ -24,6 +24,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("CapRaffleModel", "FK_Winner_Event", "Event", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CapRaffle.Domain.Model.Event), "Winner", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CapRaffle.Domain.Model.Winner), true)]
 [assembly: EdmRelationshipAttribute("CapRaffleModel", "FK_UserEvent_User", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CapRaffle.Domain.Model.User), "UserEvent", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CapRaffle.Domain.Model.UserEvent), true)]
 [assembly: EdmRelationshipAttribute("CapRaffleModel", "FK_Winner_User", "User", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CapRaffle.Domain.Model.User), "Winner", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CapRaffle.Domain.Model.Winner), true)]
+[assembly: EdmRelationshipAttribute("CapRaffleModel", "FK_Category_RuleSet", "RuleSet", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CapRaffle.Domain.Model.RuleSet), "Category", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CapRaffle.Domain.Model.Category), true)]
+[assembly: EdmRelationshipAttribute("CapRaffleModel", "FK_RuleSet_Rule", "Rule", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(CapRaffle.Domain.Model.Rule), "RuleSet", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(CapRaffle.Domain.Model.RuleSet), true)]
 
 #endregion
 
@@ -154,6 +156,38 @@ namespace CapRaffle.Domain.Model
             }
         }
         private ObjectSet<Winner> _Winners;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Rule> Rules
+        {
+            get
+            {
+                if ((_Rules == null))
+                {
+                    _Rules = base.CreateObjectSet<Rule>("Rules");
+                }
+                return _Rules;
+            }
+        }
+        private ObjectSet<Rule> _Rules;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<RuleSet> RuleSets
+        {
+            get
+            {
+                if ((_RuleSets == null))
+                {
+                    _RuleSets = base.CreateObjectSet<RuleSet>("RuleSets");
+                }
+                return _RuleSets;
+            }
+        }
+        private ObjectSet<RuleSet> _RuleSets;
 
         #endregion
         #region AddTo Methods
@@ -197,6 +231,22 @@ namespace CapRaffle.Domain.Model
         {
             base.AddObject("Winners", winner);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Rules EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRules(Rule rule)
+        {
+            base.AddObject("Rules", rule);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the RuleSets EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToRuleSets(RuleSet ruleSet)
+        {
+            base.AddObject("RuleSets", ruleSet);
+        }
 
         #endregion
     }
@@ -220,10 +270,12 @@ namespace CapRaffle.Domain.Model
         /// Create a new Category object.
         /// </summary>
         /// <param name="categoryId">Initial value of the CategoryId property.</param>
-        public static Category CreateCategory(global::System.Int32 categoryId)
+        /// <param name="ruleSetID">Initial value of the RuleSetID property.</param>
+        public static Category CreateCategory(global::System.Int32 categoryId, global::System.Int32 ruleSetID)
         {
             Category category = new Category();
             category.CategoryId = categoryId;
+            category.RuleSetID = ruleSetID;
             return category;
         }
 
@@ -304,6 +356,30 @@ namespace CapRaffle.Domain.Model
         private global::System.Boolean _IsActive = true;
         partial void OnIsActiveChanging(global::System.Boolean value);
         partial void OnIsActiveChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RuleSetID
+        {
+            get
+            {
+                return _RuleSetID;
+            }
+            set
+            {
+                OnRuleSetIDChanging(value);
+                ReportPropertyChanging("RuleSetID");
+                _RuleSetID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RuleSetID");
+                OnRuleSetIDChanged();
+            }
+        }
+        private global::System.Int32 _RuleSetID;
+        partial void OnRuleSetIDChanging(global::System.Int32 value);
+        partial void OnRuleSetIDChanged();
 
         #endregion
     
@@ -352,6 +428,44 @@ namespace CapRaffle.Domain.Model
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_Category_RuleSet", "RuleSet")]
+        public RuleSet RuleSet
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<RuleSet>("CapRaffleModel.FK_Category_RuleSet", "RuleSet").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<RuleSet>("CapRaffleModel.FK_Category_RuleSet", "RuleSet").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<RuleSet> RuleSetReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<RuleSet>("CapRaffleModel.FK_Category_RuleSet", "RuleSet");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<RuleSet>("CapRaffleModel.FK_Category_RuleSet", "RuleSet", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -376,7 +490,8 @@ namespace CapRaffle.Domain.Model
         /// <param name="availableSpots">Initial value of the AvailableSpots property.</param>
         /// <param name="deadLine">Initial value of the DeadLine property.</param>
         /// <param name="categoryId">Initial value of the CategoryId property.</param>
-        public static Event CreateEvent(global::System.Int32 eventId, global::System.String name, global::System.DateTime created, global::System.String creator, global::System.Int32 availableSpots, global::System.DateTime deadLine, global::System.Int32 categoryId)
+        /// <param name="drawRuleSetId">Initial value of the DrawRuleSetId property.</param>
+        public static Event CreateEvent(global::System.Int32 eventId, global::System.String name, global::System.DateTime created, global::System.String creator, global::System.Int32 availableSpots, global::System.DateTime deadLine, global::System.Int32 categoryId, global::System.Int32 drawRuleSetId)
         {
             Event @event = new Event();
             @event.EventId = eventId;
@@ -386,6 +501,7 @@ namespace CapRaffle.Domain.Model
             @event.AvailableSpots = availableSpots;
             @event.DeadLine = deadLine;
             @event.CategoryId = categoryId;
+            @event.DrawRuleSetId = drawRuleSetId;
             return @event;
         }
 
@@ -610,6 +726,30 @@ namespace CapRaffle.Domain.Model
         private global::System.Int32 _CategoryId;
         partial void OnCategoryIdChanging(global::System.Int32 value);
         partial void OnCategoryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 DrawRuleSetId
+        {
+            get
+            {
+                return _DrawRuleSetId;
+            }
+            set
+            {
+                OnDrawRuleSetIdChanging(value);
+                ReportPropertyChanging("DrawRuleSetId");
+                _DrawRuleSetId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DrawRuleSetId");
+                OnDrawRuleSetIdChanged();
+            }
+        }
+        private global::System.Int32 _DrawRuleSetId;
+        partial void OnDrawRuleSetIdChanging(global::System.Int32 value);
+        partial void OnDrawRuleSetIdChanged();
 
         #endregion
     
@@ -693,6 +833,308 @@ namespace CapRaffle.Domain.Model
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Winner>("CapRaffleModel.FK_Winner_Event", "Winner", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CapRaffleModel", Name="Rule")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Rule : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Rule object.
+        /// </summary>
+        /// <param name="ruleId">Initial value of the RuleId property.</param>
+        /// <param name="methodName">Initial value of the MethodName property.</param>
+        /// <param name="className">Initial value of the ClassName property.</param>
+        public static Rule CreateRule(global::System.Int32 ruleId, global::System.String methodName, global::System.String className)
+        {
+            Rule rule = new Rule();
+            rule.RuleId = ruleId;
+            rule.MethodName = methodName;
+            rule.ClassName = className;
+            return rule;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RuleId
+        {
+            get
+            {
+                return _RuleId;
+            }
+            set
+            {
+                if (_RuleId != value)
+                {
+                    OnRuleIdChanging(value);
+                    ReportPropertyChanging("RuleId");
+                    _RuleId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("RuleId");
+                    OnRuleIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _RuleId;
+        partial void OnRuleIdChanging(global::System.Int32 value);
+        partial void OnRuleIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String MethodName
+        {
+            get
+            {
+                return _MethodName;
+            }
+            set
+            {
+                OnMethodNameChanging(value);
+                ReportPropertyChanging("MethodName");
+                _MethodName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("MethodName");
+                OnMethodNameChanged();
+            }
+        }
+        private global::System.String _MethodName;
+        partial void OnMethodNameChanging(global::System.String value);
+        partial void OnMethodNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ClassName
+        {
+            get
+            {
+                return _ClassName;
+            }
+            set
+            {
+                OnClassNameChanging(value);
+                ReportPropertyChanging("ClassName");
+                _ClassName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ClassName");
+                OnClassNameChanged();
+            }
+        }
+        private global::System.String _ClassName;
+        partial void OnClassNameChanging(global::System.String value);
+        partial void OnClassNameChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_RuleSet_Rule", "RuleSet")]
+        public EntityCollection<RuleSet> RuleSets
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<RuleSet>("CapRaffleModel.FK_RuleSet_Rule", "RuleSet");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<RuleSet>("CapRaffleModel.FK_RuleSet_Rule", "RuleSet", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CapRaffleModel", Name="RuleSet")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class RuleSet : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new RuleSet object.
+        /// </summary>
+        /// <param name="ruleSetId">Initial value of the RuleSetId property.</param>
+        /// <param name="ruleId">Initial value of the RuleId property.</param>
+        /// <param name="priority">Initial value of the Priority property.</param>
+        public static RuleSet CreateRuleSet(global::System.Int32 ruleSetId, global::System.Int32 ruleId, global::System.Int32 priority)
+        {
+            RuleSet ruleSet = new RuleSet();
+            ruleSet.RuleSetId = ruleSetId;
+            ruleSet.RuleId = ruleId;
+            ruleSet.Priority = priority;
+            return ruleSet;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RuleSetId
+        {
+            get
+            {
+                return _RuleSetId;
+            }
+            set
+            {
+                if (_RuleSetId != value)
+                {
+                    OnRuleSetIdChanging(value);
+                    ReportPropertyChanging("RuleSetId");
+                    _RuleSetId = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("RuleSetId");
+                    OnRuleSetIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _RuleSetId;
+        partial void OnRuleSetIdChanging(global::System.Int32 value);
+        partial void OnRuleSetIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 RuleId
+        {
+            get
+            {
+                return _RuleId;
+            }
+            set
+            {
+                OnRuleIdChanging(value);
+                ReportPropertyChanging("RuleId");
+                _RuleId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RuleId");
+                OnRuleIdChanged();
+            }
+        }
+        private global::System.Int32 _RuleId;
+        partial void OnRuleIdChanging(global::System.Int32 value);
+        partial void OnRuleIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Priority
+        {
+            get
+            {
+                return _Priority;
+            }
+            set
+            {
+                OnPriorityChanging(value);
+                ReportPropertyChanging("Priority");
+                _Priority = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Priority");
+                OnPriorityChanged();
+            }
+        }
+        private global::System.Int32 _Priority;
+        partial void OnPriorityChanging(global::System.Int32 value);
+        partial void OnPriorityChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_Category_RuleSet", "Category")]
+        public EntityCollection<Category> Categories
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Category>("CapRaffleModel.FK_Category_RuleSet", "Category");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Category>("CapRaffleModel.FK_Category_RuleSet", "Category", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CapRaffleModel", "FK_RuleSet_Rule", "Rule")]
+        public Rule Rule
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Rule>("CapRaffleModel.FK_RuleSet_Rule", "Rule").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Rule>("CapRaffleModel.FK_RuleSet_Rule", "Rule").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Rule> RuleReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Rule>("CapRaffleModel.FK_RuleSet_Rule", "Rule");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Rule>("CapRaffleModel.FK_RuleSet_Rule", "Rule", value);
                 }
             }
         }
