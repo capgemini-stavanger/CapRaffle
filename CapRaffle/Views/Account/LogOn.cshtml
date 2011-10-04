@@ -24,7 +24,7 @@
         
         @if (TempData["ForgotPassword"] != null)
         {
-            <button type="submit" class="regular" name="save">
+            <button type="submit" class="regular"  id="forgotPassword">
                 <img src="@Url.Content("~/Content/images/help.png")" alt=""/>
                 Send a new password
             </button>
@@ -45,13 +45,11 @@
         $("#login").click(function () {
             var form = $('#LogInForm');
             form.attr('action', '/Account/LogOn');
-            form.submit();
         });
 
         $("#forgotPassword").click(function () {
             var form = $('#LogInForm');
             form.attr('action', '/Account/ForgotPassword');
-            form.submit();
         });
     }); 
 </script>
