@@ -8,17 +8,11 @@
         function updateSpotsLeft() {
             var numberOfSpots = '@Model.SelectedEvent.AvailableSpots';
             var total = 0;
+            
             $("#WinnerTable tr:gt(0)").children("td.spots").each(function () {
                 total += parseInt($(this).html());
-            }); 
+            });
             total = numberOfSpots - total;
-            toggleDrawWinnerAdministration(total);
-            toggleWinnerTable(total)
-            $("#spotsleft").text(total);
-        }
-        function decreaseSpotsleft(numberOfSpots) {
-            var total = parseInt($("#spotsleft").text());
-            total = total - numberOfSpots;
             toggleDrawWinnerAdministration(total);
             toggleWinnerTable(total)
             $("#spotsleft").text(total);
@@ -32,7 +26,7 @@
             }
         }
         function toggleDrawWinnerAdministration(total) {
-            if(total == 0) {
+            if(total <= 0) {
                 $(".DrawWinnerAdministration").hide();
             }
             else {
@@ -98,13 +92,16 @@
             });
             $('button#DrawWinner').click(function () {
                 var view = $("#view option:selected").val();
+                $("#WinnerTable tr:gt(0)").each(function () {
+                    $(this).remove();
+                });
+                toggleWinnerTable(1);
                 $.ajax({
                     type: 'post',
                     url: '@Url.Action("DrawWinner", "DrawWinner")',
                     data: 'eventId=@Model.SelectedEvent.EventId&view='+view,
                     success: function(data){ 
                         $('.drawWinner').html(data);
-                        
                     }
                 })
             });

@@ -29,8 +29,8 @@
                         "<img class='DeleteWinner' src='" + url + "' alt='' />" +
                         "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[winnerIndex].UserEmail + " />" +
                         "<input type='hidden' class='Eventid' name='EventId' value=" + model[winnerIndex].EventId + " />" +
-                    "</td><td>" + model[winnerIndex].Name + "</td><td>" + model[winnerIndex].Spots + "</td></tr>")
-        decreaseSpotsleft(model[winnerIndex].Spots);
+                    "</td><td>" + model[winnerIndex].Name + "</td><td class='spots'>" + model[winnerIndex].Spots + "</td></tr>")
+        updateSpotsLeft();
         winnerIndex += 1;
         iterateWinners();
     }
