@@ -5,6 +5,7 @@
 <p>Please log in:</p>
 @using (Html.BeginForm("LogOn", "Account", FormMethod.Post, new { onsubmit = "", id = "LogInForm" }))
 {
+    @Html.Hidden("returnUrl", Request.QueryString["ReturnUrl"]);
     @Html.ValidationSummary(true)
     <p>
     @Html.LabelFor(x => x.Email)
