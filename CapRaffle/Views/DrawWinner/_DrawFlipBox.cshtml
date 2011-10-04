@@ -32,7 +32,7 @@
     });
 
     function iterateWinners() {
-        if (winnerIndex <= array.length) {
+        if (winnerIndex < array.length) {
             winner = array[winnerIndex];
             randomNumber = Math.floor(Math.random() * 4);
             flip = flips[randomNumber];
