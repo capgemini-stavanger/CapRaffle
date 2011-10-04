@@ -11,7 +11,7 @@
     var randomNumber;
     var winnerIndex = 0;
     var winner;
-    var model = jQuery.parseJSON('@Html.Raw(Json.Encode(Model.Winners.Select(x => new { name = x.User.Name, spots = x.NumberOfSpotsWon})))');
+    var model = jQuery.parseJSON('@Html.Raw(Json.Encode(Model.Winners.Select(x => new { Name = x.User.Name, Spots = x.NumberOfSpotsWon, UserEmail = x.UserEmail, EventId = x.EventId})))');
     
     $(document).ready(function () {
         var string = 'The winners,' + '@Html.Raw(Json.Encode(Model.Winners.Select(x => x.User.Name))).ToString().ToUpper()';
@@ -43,7 +43,12 @@
 
     function appendWinner() {
         if (winnerIndex > 0) {
-            $("#WinnerTable").append("<tr><td>" + model[winnerIndex - 1].name + "</td><td>" + model[winnerIndex - 1].spots + "</td></tr>")
+            var url = '@Url.Content("~/Content/images/cross.png")';
+            $("#WinnerTable").append("<tr><td>" +
+                            "<img class='DeleteWinner' src='" + url + "' alt='' />" +
+                            "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[winnerIndex-1].UserEmail + " />" +
+                            "<input type='hidden' class='Eventid' name='EventId' value=" + model[winnerIndex-1].EventId + " />" +
+                        "</td><td>" + model[winnerIndex-1].Name + "</td><td>" + model[winnerIndex-1].Spots + "</td></tr>")
         }
         winnerIndex += 1;
         iterateWinners();

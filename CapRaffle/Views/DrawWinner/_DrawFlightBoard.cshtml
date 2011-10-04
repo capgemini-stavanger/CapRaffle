@@ -8,7 +8,7 @@
 <script type="text/javascript">
     var counter = 0;
     var arrayLength
-    var model = jQuery.parseJSON('@Html.Raw(Json.Encode(Model.Winners.Select(x => new { name = x.User.Name, spots = x.NumberOfSpotsWon})))');
+    var model = jQuery.parseJSON('@Html.Raw(Json.Encode(Model.Winners.Select(x => new { Name = x.User.Name, Spots = x.NumberOfSpotsWon, UserEmail = x.UserEmail, EventId = x.EventId})))');
     $(function () {
         var string = 'CAPRAFFLE,' + '@Html.Raw(Json.Encode(Model.Winners.Select(x => x.User.Name))).ToString().ToUpper()';
         string = string.replace(/&quot;/g, "");
@@ -31,7 +31,12 @@
     function endedFlip(current, next) {
         if (counter <= arrayLength) {
             if (next != 'CAPRAFFLE') {
-                $("#WinnerTable").append("<tr><td>" + model[counter].name + "</td><td>" + model[counter].spots + "</td></tr>")
+                var url = '@Url.Content("~/Content/images/cross.png")';
+                $("#WinnerTable").append("<tr><td>" +
+                            "<img class='DeleteWinner' src='"+url+"' alt='' />" +
+                            "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[counter].UserEmail + " />" +
+                            "<input type='hidden' class='Eventid' name='EventId' value=" + model[counter].EventId + " />" +
+                        "</td><td>" + model[counter].Name + "</td><td>" + model[counter].Spots + "</td></tr>")
             }
             counter++;
         }
