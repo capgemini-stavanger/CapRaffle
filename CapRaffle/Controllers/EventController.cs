@@ -116,6 +116,7 @@ namespace CapRaffle.Controllers
 
             ViewBag.MenuController = "Event";
             ViewBag.MenuAction = "Index";
+            ViewBag.isCreator = selectedEvent.Creator.Equals(HttpContext.User.Identity.Name);
             return View(model);
         }
 

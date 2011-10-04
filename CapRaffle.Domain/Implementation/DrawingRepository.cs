@@ -57,6 +57,7 @@ namespace CapRaffle.Domain.Implementation
 
         public void RemoveWinner(Winner winner)
         {
+            context.UpdateDetachedEntity<Winner>(winner, x => x.EventId);
             context.Winners.DeleteObject(winner);
             context.SaveChanges();
         }

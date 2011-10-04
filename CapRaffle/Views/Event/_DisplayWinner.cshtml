@@ -1,14 +1,43 @@
 ﻿@model IEnumerable<CapRaffle.Domain.Model.Winner>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".DeleteWinner").click(function () {
+            var row = $(this).closest("tr");
+            var user = $(row).find(".winnerEmail").val()
+            var eventId = $(row).find(".Eventid").val()
+            var spots = $(row).find(".spots").text()
+            var postdata = { UserEmail: user, NumberOfSpots: spots, EventId: eventId };
+            $.ajax({
+                url: '@Url.Action("RemoveWinner", "DrawWinner")',
+                type: 'POST',
+                data: postdata,
+                success: function (data) {
+                    row.remove();
+                }
+            });
+        })
+    }); 
+</script>
 <table id="WinnerTable" class="tablesorter" style="width: 25%">
     <thead>
+        @if (ViewBag.isCreator)
+            { <th>Del</th> }
         <th>Name</th>
         <th>Spots</th>
     </thead>
-    @foreach (var winner in Model) {
+    @foreach (var winner in Model)
+    {
         <tr>
+            @if (ViewBag.isCreator)
+            {
+                <td>
+                    <img class="DeleteWinner" src="@Url.Content("~/Content/images/cross.png")" alt="" />
+                    <input type="hidden" class="winnerEmail" name="Participant" value="@winner.UserEmail" />
+                    <input type="hidden" class="Eventid" name="EventId" value="@winner.EventId" />
+                </td>
+            }
             <td>@winner.User.Name</td>
-            <td>@winner.NumberOfSpotsWon</td>
+            <td class="spots">@winner.NumberOfSpotsWon</td>
         </tr>
     }
     </table>
