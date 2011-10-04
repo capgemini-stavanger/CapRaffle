@@ -51,7 +51,8 @@
             });
 
             $("#removeparticipation").click(function (e) {
-                @if (Model.UserIsParticipant) {
+                @if (Model.UserIsParticipant)
+                {
                     <text>
                     var postdata = { UserEmail: '@Model.LoggedInParticipant.UserEmail', NumberOfSpots: '@Model.LoggedInParticipant.NumberOfSpots', EventId: '@Model.LoggedInParticipant.EventId' };
                     </text>
@@ -173,25 +174,25 @@
                         Create new event based on this
                     </button>
                 </div>
-                
-                <br /><br /><br />
-                <h4>Register User for this event</h4>
-                using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
-                    <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
-                    @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
-                    <div class="buttons">
-                        <button type="submit" class="positive" name="register" id="adminAddParticipant">
-                            <img src="@Url.Content("~/Content/images/plus.gif")" alt=""/>
-                            Add
-                        </button>
-                    </div>
-                }
-                <br />
-                <br />
                 <div class="DrawWinnerAdministration">
+                    <br /><br /><br />
+                    <h4>Register User for this event</h4>
+                    @using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
+                        <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
+                        @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
+                        <div class="buttons">
+                            <button type="submit" class="positive" name="register" id="adminAddParticipant">
+                                <img src="@Url.Content("~/Content/images/plus.gif")" alt=""/>
+                                Add
+                            </button>
+                        </div>
+                    }
+                    <br />
+                    <br />
+                
                     <h4> Draw winner for this event</h4>
                     @Html.DropDownList("view", Model.RaffleTypes)
                     <div class="buttons">
