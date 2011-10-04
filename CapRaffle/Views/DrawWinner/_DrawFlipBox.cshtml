@@ -11,7 +11,6 @@
     var randomNumber;
     var winnerIndex = 0;
     var winner;
-    var array;
     var model = jQuery.parseJSON('@Html.Raw(Json.Encode(Model.Winners.Select(x => new { name = x.User.Name, spots = x.NumberOfSpotsWon})))');
     
     $(document).ready(function () {

@@ -1,15 +1,33 @@
 ﻿@model CapRaffle.Models.DrawWinnerViewModel
 
-<table>
-    <tr>
-        <th>Here are the results:</th>
-    </tr>
-@foreach (var item in Model.Winners)
-{
-    <tr>
-        <th>@item.UserEmail</th>
-        <th>@item.NumberOfSpotsWon</th>
-    </tr>
-}
-</table>
-<p>Number of spots left: @Model.NumberOfSpotsLeft</p>
+<script type="text/javascript">
+
+    var array;
+    var winnerIndex = 0;
+    var winner;
+    var model = jQuery.parseJSON('@Html.Raw(Json.Encode(Model.Winners.Select(x => new { name = x.User.Name, spots = x.NumberOfSpotsWon})))');
+
+    $(document).ready(function () {
+        var string = '@Html.Raw(Json.Encode(Model.Winners.Select(x => x.User.Name))).ToString()';
+        string = string.replace(/&quot;/g, "");
+        string = string.replace(/\[/g, "");
+        string = string.replace(/\]/g, "");
+        array = string.split(",");
+    });
+    appendWinner();
+
+    function iterateWinners() {
+        if (winnerIndex <= array.length) {
+            winner = array[winnerIndex];
+            setTimeout('appendWinner()', 2000);
+        }
+    }
+
+    function appendWinner() {
+        if (winnerIndex > 0) {
+            $("#WinnerTable").append("<tr><td>" + model[winnerIndex - 1].name + "</td><td>" + model[winnerIndex - 1].spots + "</td></tr>")
+        }
+        winnerIndex += 1;
+        iterateWinners();
+    }
+</script>
