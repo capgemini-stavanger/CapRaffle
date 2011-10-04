@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CapRaffle.Domain.Model.Winner>
 <script type="text/javascript">
     $(document).ready(function () {
-        $(".DeleteWinner").click(function () {
+        $(".DeleteWinner").live('click', function () {
             var row = $(this).closest("tr");
             var user = $(row).find(".winnerEmail").val()
             var eventId = $(row).find(".Eventid").val()
