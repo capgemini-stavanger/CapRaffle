@@ -13,13 +13,23 @@
             }); 
             total = numberOfSpots - total;
             toggleDrawWinnerAdministration(total);
+            toggleWinnerTable(total)
             $("#spotsleft").text(total);
         }
         function decreaseSpotsleft(numberOfSpots) {
             var total = parseInt($("#spotsleft").text());
             total = total - numberOfSpots;
             toggleDrawWinnerAdministration(total);
+            toggleWinnerTable(total)
             $("#spotsleft").text(total);
+        }
+        function toggleWinnerTable(total) {
+            if(total == '@Model.SelectedEvent.AvailableSpots') {
+                $("#WinnerTable").hide()
+            }
+            else {
+                $("#WinnerTable").show()
+            }
         }
         function toggleDrawWinnerAdministration(total) {
             if(total == 0) {
