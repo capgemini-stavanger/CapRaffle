@@ -94,6 +94,7 @@
                 $("#WinnerTable tr:gt(0)").each(function () {
                     $(this).remove();
                 });
+                
                 toggleWinnerTable(1);
                 $.ajax({
                     type: 'post',
@@ -202,10 +203,10 @@
                     <h4> Draw winner for this event</h4>
                     @Html.DropDownList("view", Model.RaffleTypes)
                     <div class="buttons">
-                        <button id="DrawWinner" class="positive" name="DrawWinner">
-                            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
-                            Draw winners
-                        </button>
+                            <button type="submit" id="DrawWinner" class="positive" name"Draw Winner">
+                                <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                                Draw winners
+                            </button>
                         </div>
                     <br />
                 </div>
@@ -225,7 +226,7 @@
     @{ Html.RenderPartial("_DisplayWinner", Model.SelectedEvent.Winners); }
     <div class="bottom">
         <div class="drawWinner">
-            
+          
         </div>
    </div>
    
