@@ -54,7 +54,7 @@ namespace CapRaffle.Controllers
             {
                 if (accountRepository.Authenticate(model.Email, model.Password))
                 {
-                    return Redirect(returnUrl ?? Url.Action("/"));
+                    return Redirect(String.IsNullOrEmpty(returnUrl) ? Url.Action("/"): returnUrl);
                 }
                 else
                 {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
+using CapRaffle.Domain.Rules;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -25,13 +26,20 @@ namespace CapRaffle.Domain.Implementation
 
         public void PerformDrawing(int eventId)
         {
-            List<UserEvent> raffleTickets = GenerateRaffleTicketsList(eventId);
+            List<UserTickets> userTicketsList = GenerateUserRaffleTicketsList(eventId);
+
+            StandardRules rules = new StandardRules(CategoryIdForEvent(eventId));
+            rules.ReduceChanceOfWinningByPercentForEachPreviousWin(userTicketsList, 25);
+            
+            List<UserEvent> raffle = GenerateRaffleTickets(userTicketsList , eventId);
+            
             Random randomGenerator = new Random();
             int availableSpots = NumberOfSpotsLeftForEvent(eventId);
-            while (availableSpots > 0 && raffleTickets.Count > 0)
+
+            while (availableSpots > 0 && raffle.Count > 0)
             {
-                int winnerNumber = randomGenerator.Next(raffleTickets.Count());
-                UserEvent drawnParticipant = raffleTickets.ElementAt(winnerNumber);
+                int winnerNumber = randomGenerator.Next(raffle.Count());
+                UserEvent drawnParticipant = raffle.ElementAt(winnerNumber);
 
                 int numberOfSpotsGiven = CalculateNumberOfSpotsToGive(
                     availableSpots,
@@ -47,8 +55,8 @@ namespace CapRaffle.Domain.Implementation
                     CatogoryId = CategoryIdForEvent(eventId)
                 };
 
-                raffleTickets.RemoveAll(x => x.UserEmail == winner.UserEmail);
-                
+                raffle.RemoveAll(x => x.UserEmail == winner.UserEmail);
+
                 SaveWinner(winner);
                 DeleteParticipant(drawnParticipant);
                 availableSpots -= winner.NumberOfSpotsWon;
@@ -82,11 +90,6 @@ namespace CapRaffle.Domain.Implementation
             return context.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
         }
 
-        private int PreviousWinsInCategoryByUser(int categoryId, string email)
-        {
-            return context.Winners.Where(x => x.CatogoryId == categoryId && x.UserEmail == email).Count();
-        }
-
         private void SaveWinner(Winner winner)
         {
             if (context.Winners.Where(x => x.EventId == winner.EventId && x.UserEmail == winner.UserEmail).Count() == 0)
@@ -114,23 +117,30 @@ namespace CapRaffle.Domain.Implementation
             return spotsToGive;
         }
 
-        private List<UserEvent> GenerateRaffleTicketsList(int eventId)
+        private List<UserTickets> GenerateUserRaffleTicketsList(int eventId)
         {
             List<UserEvent> eventParticipants = EventParticipantsForEvent(eventId).ToList<UserEvent>();
-            List<UserEvent> raffleTicketsList = new List<UserEvent>();
-
+            List<UserTickets> userTicketsList = new List<UserTickets>();
             foreach (UserEvent ue in eventParticipants)
             {
-                int previousWins = PreviousWinsInCategoryByUser(CategoryIdForEvent(eventId), ue.UserEmail);
-                int raffleTickets = 10 - previousWins;
-                if (raffleTickets < 1) raffleTickets = 1;
+                UserTickets urt = new UserTickets(ue.UserEmail, 100);
+                userTicketsList.Add(urt);
+            }
+            return userTicketsList;
+        }
 
-                for (int i = 0; i <= raffleTickets; i++)
+        private List<UserEvent> GenerateRaffleTickets(List<UserTickets> urt, int eventId)
+        {
+            List<UserEvent> raffle = new List<UserEvent>();
+            foreach (UserTickets ut in urt)
+            {
+                UserEvent userEvent = context.UserEvents.FirstOrDefault(x => x.UserEmail.Equals(ut.Email) && x.EventId == eventId);
+                for (int i = 0; i < ut.NumberOfTickets; i++)
                 {
-                    raffleTicketsList.Add(ue);
+                    raffle.Add(userEvent);
                 }
             }
-            return raffleTicketsList;
+            return raffle;
         }
     }
 }
