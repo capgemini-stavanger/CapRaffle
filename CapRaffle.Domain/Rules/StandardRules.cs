@@ -10,10 +10,8 @@ namespace CapRaffle.Domain.Rules
      * Rules to be implemented
      * 
      * If a user have never won in this category before, give him the event tickets, then draw the rest.
-     * Reduce chance of winning by XX% for each previous win. (10,25,50,75%)
      * When RaffleTickets are taken away from a user, devide them between the user(s) with least wins in the category.
      * When RaffleTickets are taken away from a user, devide them between users with no wins in the category.
-     * Max RaffleTickets per user is: xx (?)
      * Min RaffleTickets per user is: xx (?)
      * 
      */
@@ -29,27 +27,18 @@ namespace CapRaffle.Domain.Rules
             categoryId = catId;
         }
 
-        public void ReduceChanceOfWinningBy10PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
+        public void MinimumRaffleTicketsPerUserIs(List<UserTickets> userRaffleTicketsList, int number)
         {
-            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 10);
+            foreach (UserTickets urt in userRaffleTicketsList)
+            {
+                if( urt.NumberOfTickets < number) 
+                {
+                    urt.NumberOfTickets = number;
+                }
+            }
         }
 
-        public void ReduceChanceOfWinningBy25PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
-        {
-            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 25);
-        }
-
-        public void ReduceChanceOfWinningBy50PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
-        {
-            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 50);
-        }
-
-        public void ReduceChanceOfWinningBy75PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
-        {
-            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 75);
-        }
-
-        private void ReduceChanceOfWinningByPercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList, int percent)
+        public void ReduceChanceOfWinningByPercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList, int percent)
         {
             foreach (UserTickets urt in userRaffleTicketsList)
             {

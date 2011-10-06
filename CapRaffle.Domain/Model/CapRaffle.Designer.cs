@@ -1036,6 +1036,30 @@ namespace CapRaffle.Domain.Model
         private Nullable<global::System.Int32> _EventId;
         partial void OnEventIdChanging(Nullable<global::System.Int32> value);
         partial void OnEventIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> RuleParameter
+        {
+            get
+            {
+                return _RuleParameter;
+            }
+            set
+            {
+                OnRuleParameterChanging(value);
+                ReportPropertyChanging("RuleParameter");
+                _RuleParameter = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RuleParameter");
+                OnRuleParameterChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _RuleParameter;
+        partial void OnRuleParameterChanging(Nullable<global::System.Int32> value);
+        partial void OnRuleParameterChanged();
 
         #endregion
     

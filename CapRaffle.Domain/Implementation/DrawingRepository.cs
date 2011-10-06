@@ -143,14 +143,14 @@ namespace CapRaffle.Domain.Implementation
 
         private void ApplyRulesForEvent(int eventId, List<UserTickets> userTicketsList)
         {
-            List<Rule> rules = GetRulesForEvent(eventId);
-            foreach (Rule r in rules)
+            List<RuleParameter> rules = GetRulesForEvent(eventId);
+            foreach (RuleParameter rp in rules)
             {
-                InvokeRuleMethod(r.ClassName, r.MethodName, userTicketsList, eventId);
+                InvokeRuleMethod(rp, userTicketsList, eventId);
             }
         }
 
-        private List<Rule> GetRulesForEvent(int eventId)
+        private List<RuleParameter> GetRulesForEvent(int eventId)
         {
             int ruleSetId;
             if (context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault() != null)
@@ -169,31 +169,33 @@ namespace CapRaffle.Domain.Implementation
             }
 
             List<RuleSet> ruleSets = context.RuleSets.Where(rs => rs.RuleSetId == ruleSetId).OrderBy(rs => rs.Priority).ToList<RuleSet>();
-            List<Rule> ruleList = new List<Rule>();
+            List<RuleParameter> ruleList = new List<RuleParameter>();
             foreach (RuleSet rs in ruleSets)
             {
                 if (rs.RuleSetId == ruleSetId)
                 {
                     Rule rule = context.Rules.FirstOrDefault(r => r.RuleId == rs.RuleId);
-                    ruleList.Add(rule);
+                    int param = (rs.RuleParameter != null) ? (int)rs.RuleParameter : 0;
+                    ruleList.Add(new RuleParameter { Rule = rule, Param = param });
                 }
             }
             return ruleList;
         }
-        private void InvokeRuleMethod(string className, string methodName, List<UserTickets> userTicketsList, int eventId)
+
+        private void InvokeRuleMethod(RuleParameter ruleParameter, List<UserTickets> userTicketsList, int eventId)
         {
             Assembly MyAssembly = Assembly.Load("CapRaffle.Domain");
-            Type calledType = MyAssembly.GetType("CapRaffle.Domain.Rules."+className);
+            Type calledType = MyAssembly.GetType("CapRaffle.Domain.Rules."+ruleParameter.Rule.ClassName);
             if (calledType != null)
             {
-                int catId = context.Events.Where(e => e.EventId == eventId).FirstOrDefault().CategoryId;
+                int catId = CategoryIdForEvent(eventId);
                 object MyObj = Activator.CreateInstance(calledType, catId);
                 calledType.InvokeMember(
-                    methodName,
+                    ruleParameter.Rule.MethodName,
                     BindingFlags.InvokeMethod | BindingFlags.Default,
                     null,
                     MyObj,
-                    new Object[] { userTicketsList });
+                    new Object[] { userTicketsList, ruleParameter.Param });
             }
         }  
     }

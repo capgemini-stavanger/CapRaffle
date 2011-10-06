@@ -67,6 +67,7 @@
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\RuleParameter.cs" />
     <Compile Include="Rules\StandardRules.cs" />
     <Compile Include="Rules\UserTickets.cs" />
   </ItemGroup>

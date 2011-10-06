@@ -82,6 +82,7 @@
           <Property Name="Priority" Type="int" Nullable="false" />
           <Property Name="CateogryId" Type="int" />
           <Property Name="EventId" Type="int" />
+          <Property Name="RuleParameter" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -283,6 +284,7 @@
           <Property Type="Int32" Name="CateogryId" />
           <Property Type="Int32" Name="EventId" />
           <NavigationProperty Name="Rule" Relationship="CapRaffleModel.FK_RuleSet_Rule" FromRole="RuleSet" ToRole="Rule" />
+          <Property Type="Int32" Name="RuleParameter" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -445,6 +447,7 @@
           <EntitySetMapping Name="RuleSets">
             <EntityTypeMapping TypeName="CapRaffleModel.RuleSet">
               <MappingFragment StoreEntitySet="RuleSet">
+                <ScalarProperty Name="RuleParameter" ColumnName="RuleParameter" />
                 <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="CateogryId" ColumnName="CateogryId" />
                 <ScalarProperty Name="Priority" ColumnName="Priority" />
