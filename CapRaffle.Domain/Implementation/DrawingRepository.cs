@@ -163,7 +163,7 @@ namespace CapRaffle.Domain.Implementation
                 else { return null; }
             }
 
-            List<RuleSet> ruleSets = context.RuleSets.ToList<RuleSet>();
+            List<RuleSet> ruleSets = context.RuleSets.Where(rs => rs.RuleSetId == ruleSetId).ToList<RuleSet>();
             List<Rule> ruleList = new List<Rule>();
             foreach (RuleSet rs in ruleSets)
             {
