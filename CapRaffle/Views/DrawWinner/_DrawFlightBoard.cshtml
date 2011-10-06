@@ -1,6 +1,6 @@
 ﻿@model CapRaffle.Models.DrawWinnerViewModel
 <script src="@Url.Content("~/Scripts/jquery.flightboard.min.js")" type="text/javascript"></script>
-<div id="basicBoard"></div>
+<div id="basicBoard" title="Draw winner"></div>
 <br />
 <br />
 <br />
@@ -16,6 +16,7 @@
         string = string.replace(/\]/g, "");
         var array = string.split(",");
         arrayLength = array.length;
+
         $('#basicBoard').flightboard({
             messages: array,
             lettersImage: '/Content/images/flightBoardLarge.png',

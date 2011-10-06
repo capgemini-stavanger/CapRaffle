@@ -16,13 +16,13 @@ namespace CapRaffle.UnitTests
     [TestFixture]
     public class CategoryControllerTests
     {
-        Mock<ICategoryRepository> mock;
+        Mock<IEventRepository> mock;
         CategoryController controller;
 
         [SetUp]
         public void Setup()
         {
-            mock = new Mock<ICategoryRepository>();
+            mock = new Mock<IEventRepository>();
             mock.Setup(m => m.Categories).Returns(new Category[] 
             {
                 new Category { CategoryId = 1, Name = "Hockey" },
