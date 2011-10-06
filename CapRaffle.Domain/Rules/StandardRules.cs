@@ -20,16 +20,36 @@ namespace CapRaffle.Domain.Rules
 
     public class StandardRules
     {
-        
+
         private CapRaffleContext context = new CapRaffleContext();
         private int categoryId;
 
-        public StandardRules(int categoryId)
+        public StandardRules(int catId)
         {
-            this.categoryId = categoryId;
+            categoryId = catId;
         }
 
-        public void ReduceChanceOfWinningByPercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList, int percent)
+        public void ReduceChanceOfWinningBy10PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
+        {
+            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 10);
+        }
+
+        public void ReduceChanceOfWinningBy25PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
+        {
+            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 25);
+        }
+
+        public void ReduceChanceOfWinningBy50PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
+        {
+            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 50);
+        }
+
+        public void ReduceChanceOfWinningBy75PercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList)
+        {
+            ReduceChanceOfWinningByPercentForEachPreviousWin(userRaffleTicketsList, 75);
+        }
+
+        private void ReduceChanceOfWinningByPercentForEachPreviousWin(List<UserTickets> userRaffleTicketsList, int percent)
         {
             foreach (UserTickets urt in userRaffleTicketsList)
             {

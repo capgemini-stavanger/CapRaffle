@@ -5,6 +5,7 @@ using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Domain.Rules;
+using System.Reflection;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -27,7 +28,7 @@ namespace CapRaffle.Domain.Implementation
         public void PerformDrawing(int eventId)
         {
             List<UserTickets> userTicketsList = GenerateUserRaffleTicketsList(eventId);
-            GetRulesForEvent(eventId);
+            ApplyRulesForEvent(eventId, userTicketsList);
             List<UserEvent> raffle = GenerateRaffleTickets(userTicketsList , eventId);
 
             Random randomGenerator = new Random();
@@ -140,9 +141,13 @@ namespace CapRaffle.Domain.Implementation
             return raffle;
         }
 
-        private void ApplyRulesForEvent(int eventId)
+        private void ApplyRulesForEvent(int eventId, List<UserTickets> userTicketsList)
         {
             List<Rule> rules = GetRulesForEvent(eventId);
+            foreach (Rule r in rules)
+            {
+                InvokeRuleMethod(r.ClassName, r.MethodName, userTicketsList, eventId);
+            }
         }
 
         private List<Rule> GetRulesForEvent(int eventId)
@@ -175,5 +180,21 @@ namespace CapRaffle.Domain.Implementation
             }
             return ruleList;
         }
+        private void InvokeRuleMethod(string className, string methodName, List<UserTickets> userTicketsList, int eventId)
+        {
+            Assembly MyAssembly = Assembly.Load("CapRaffle.Domain");
+            Type calledType = MyAssembly.GetType("CapRaffle.Domain.Rules."+className);
+            if (calledType != null)
+            {
+                int catId = context.Events.Where(e => e.EventId == eventId).FirstOrDefault().CategoryId;
+                object MyObj = Activator.CreateInstance(calledType, catId);
+                calledType.InvokeMember(
+                    methodName,
+                    BindingFlags.InvokeMethod | BindingFlags.Default,
+                    null,
+                    MyObj,
+                    new Object[] { userTicketsList });
+            }
+        }  
     }
 }
