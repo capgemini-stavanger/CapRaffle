@@ -27,12 +27,9 @@ namespace CapRaffle.Domain.Implementation
         public void PerformDrawing(int eventId)
         {
             List<UserTickets> userTicketsList = GenerateUserRaffleTicketsList(eventId);
-
-            StandardRules rules = new StandardRules(CategoryIdForEvent(eventId));
-            rules.ReduceChanceOfWinningByPercentForEachPreviousWin(userTicketsList, 25);
-            
+            GetRulesForEvent(eventId);
             List<UserEvent> raffle = GenerateRaffleTickets(userTicketsList , eventId);
-            
+
             Random randomGenerator = new Random();
             int availableSpots = NumberOfSpotsLeftForEvent(eventId);
 
@@ -141,6 +138,42 @@ namespace CapRaffle.Domain.Implementation
                 }
             }
             return raffle;
+        }
+
+        private void ApplyRulesForEvent(int eventId)
+        {
+            List<Rule> rules = GetRulesForEvent(eventId);
+        }
+
+        private List<Rule> GetRulesForEvent(int eventId)
+        {
+            int ruleSetId;
+            if (context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault() != null)
+            {
+                ruleSetId = context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault().RuleSetId;
+            }
+            else
+            {
+                //No custom rules just for this event, get category ruleset.
+                int eventCategoryId = context.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
+                if (context.RuleSets.Where(e => e.CateogryId == eventCategoryId).FirstOrDefault() != null)
+                {
+                    ruleSetId = context.RuleSets.Where(e => e.CateogryId == eventCategoryId).FirstOrDefault().RuleSetId;
+                }
+                else { return null; }
+            }
+
+            List<RuleSet> ruleSets = context.RuleSets.ToList<RuleSet>();
+            List<Rule> ruleList = new List<Rule>();
+            foreach (RuleSet rs in ruleSets)
+            {
+                if (rs.RuleSetId == ruleSetId)
+                {
+                    Rule rule = context.Rules.FirstOrDefault(r => r.RuleId == rs.RuleId);
+                    ruleList.Add(rule);
+                }
+            }
+            return ruleList;
         }
     }
 }
