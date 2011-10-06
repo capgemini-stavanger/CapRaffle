@@ -16,6 +16,10 @@ namespace CapRaffle.Domain.Abstract
 
         IQueryable<UserEvent> EventParticipants(int eventId);
 
+        IQueryable<Category> Categories { get; }
+
+        void SaveCategory(Category category);
+
         void DeleteEvent(Event selectedEvent);
 
         void SaveEvent(Event changedEvent);

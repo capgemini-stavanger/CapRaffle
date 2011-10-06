@@ -19,7 +19,6 @@ namespace CapRaffle.UnitTests
     public class EventControllerTests
     {
         Mock<IEventRepository> mock;
-        Mock<ICategoryRepository> categoryMock;
         Event newevent;
         EventViewModel selectedEvent;
         EventController controller;
@@ -42,13 +41,12 @@ namespace CapRaffle.UnitTests
                 new Event { EventId = 5, Name = "event 5", Created = DateTime.Now, Creator = "creator 5", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 5 }
             }.AsQueryable());
 
-            categoryMock = new Mock<ICategoryRepository>();
-            categoryMock.Setup(m => m.Categories).Returns(new Category[] {
-                new Category { CategoryId = 1, Name = "Category1" },
-                new Category { CategoryId = 2, Name = "Category2" },
-                new Category { CategoryId = 3, Name = "Category3" },
-                new Category { CategoryId = 4, Name = "Category4" },
-                new Category { CategoryId = 5, Name = "Category5" }
+            mock.Setup(m => m.Categories).Returns(new Category[] {
+                new Category { CategoryId = 1, Name = "Category1", IsActive = true },
+                new Category { CategoryId = 2, Name = "Category2", IsActive = true },
+                new Category { CategoryId = 3, Name = "Category3", IsActive = true },
+                new Category { CategoryId = 4, Name = "Category4", IsActive = true },
+                new Category { CategoryId = 5, Name = "Category5", IsActive = true }
             }.AsQueryable());
             
 
@@ -63,7 +61,7 @@ namespace CapRaffle.UnitTests
                 CategoryId = 10
             };
 
-            IEnumerable<SelectListItem> categories = categoryMock.Object.Categories.ToList().Select(x =>
+            IEnumerable<SelectListItem> categories = mock.Object.Categories.ToList().Select(x =>
                 new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
                 );
 
@@ -73,7 +71,7 @@ namespace CapRaffle.UnitTests
 
 
 
-            controller = new EventController(mock.Object, categoryMock.Object);
+            controller = new EventController(mock.Object);
             controller.ControllerContext = new ControllerContext(mockHttpContext.Object.HttpContext, new RouteData(), controller);
         }
         

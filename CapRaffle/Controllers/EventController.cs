@@ -14,12 +14,10 @@ namespace CapRaffle.Controllers
     public class EventController : Controller
     {
         private IEventRepository eventRepository;
-        private ICategoryRepository categoryRepository;
 
-        public EventController(IEventRepository eventRepository, ICategoryRepository categoryRepository)
+        public EventController(IEventRepository eventRepository)
         {
             this.eventRepository = eventRepository;
-            this.categoryRepository = categoryRepository;
         }
 
 
@@ -170,7 +168,7 @@ namespace CapRaffle.Controllers
         }
 
         private IEnumerable<SelectListItem> categorySelectList() {
-            var categories = categoryRepository.Categories.ToList().Where(x => x.IsActive).Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
+            var categories = eventRepository.Categories.ToList().Where(x => x.IsActive).Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
             categories.FirstOrDefault().Selected = true;
             return categories;
         }

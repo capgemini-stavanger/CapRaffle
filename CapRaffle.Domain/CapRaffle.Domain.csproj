@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IAccountRepository.cs" />
-    <Compile Include="Abstract\ICategoryRepository.cs" />
     <Compile Include="Abstract\IEmailSender.cs" />
     <Compile Include="Abstract\IEventRepository.cs" />
     <Compile Include="Abstract\IDrawingRepository.cs" />
@@ -56,7 +55,6 @@
     <Compile Include="Implementation\EmailSender.cs" />
     <Compile Include="Implementation\EventRepository.cs" />
     <Compile Include="Implementation\AccountRepository.cs" />
-    <Compile Include="Implementation\CategoryRepository.cs" />
     <Compile Include="Model\CapRaffle.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

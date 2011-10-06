@@ -29,6 +29,31 @@ namespace CapRaffle.Domain.Implementation
             return context.UserEvents.Where(x => x.EventId == eventId).AsQueryable();
         }
 
+        public IQueryable<Category> Categories
+        {
+            get { return context.Categories; }
+        }
+
+        public void SaveCategory(Category category)
+        {
+            if (category.CategoryId == 0)
+            {
+                context.AddToCategories(category);
+            }
+            else
+            {
+                try
+                {
+                    context.UpdateDetachedEntity<Category>(category, x => x.CategoryId);
+                }
+                catch (Exception)
+                {
+                    context.ApplyCurrentValues<Category>(category.EntityKey.EntitySetName, category);
+                }
+            }
+            context.SaveChanges();
+        }
+        
         public void DeleteEvent(Event selectedEvent)
         {
             context.Events.DeleteObject(selectedEvent);

@@ -14,9 +14,9 @@ namespace CapRaffle.Controllers
     [SetSelectedMenu]
     public class CategoryController : Controller
     {
-        private ICategoryRepository repository;
+        private IEventRepository repository;
 
-        public CategoryController(ICategoryRepository repo)
+        public CategoryController(IEventRepository repo)
         {
             repository = repo;
         }

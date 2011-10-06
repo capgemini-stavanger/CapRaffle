@@ -17,7 +17,6 @@ namespace CapRaffle.UnitTests
     public class DrawWinnerControllerTests
     {
         Mock<IEventRepository> eventMock;
-        Mock<ICategoryRepository> categoryMock;
         Mock<IDrawingRepository> drawingMock;
         EventViewModel selectedEvent;
         DrawWinnerController controller;
@@ -53,8 +52,7 @@ namespace CapRaffle.UnitTests
                     return eventMock.Object.Participants.Where(s => s.EventId == eventId); 
                 });
 
-            categoryMock = new Mock<ICategoryRepository>();
-            categoryMock.Setup(m => m.Categories).Returns(new Category[] {
+            eventMock.Setup(m => m.Categories).Returns(new Category[] {
                 new Category { CategoryId = 1, Name = "Category1" },
                 new Category { CategoryId = 2, Name = "Category2" },
                 new Category { CategoryId = 3, Name = "Category3" },
@@ -62,7 +60,7 @@ namespace CapRaffle.UnitTests
                 new Category { CategoryId = 5, Name = "Category5" }
             }.AsQueryable());
 
-            IEnumerable<SelectListItem> categories = categoryMock.Object.Categories.ToList().Select(x =>
+            IEnumerable<SelectListItem> categories = eventMock.Object.Categories.ToList().Select(x =>
                 new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
                 );
             drawingMock = new Mock<IDrawingRepository>();
