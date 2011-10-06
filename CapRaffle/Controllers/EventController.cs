@@ -120,6 +120,11 @@ namespace CapRaffle.Controllers
             return View(model);
         }
 
+        public PartialViewResult DisplayDrawing()
+        {
+            return PartialView("_DisplayDrawing");
+        }
+
         [Authorize]
         public ActionResult Edit(int id)
         {
