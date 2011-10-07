@@ -853,6 +853,30 @@ namespace CapRaffle.Domain.Model
         private global::System.String _ClassName;
         partial void OnClassNameChanging(global::System.String value);
         partial void OnClassNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String DisplayName
+        {
+            get
+            {
+                return _DisplayName;
+            }
+            set
+            {
+                OnDisplayNameChanging(value);
+                ReportPropertyChanging("DisplayName");
+                _DisplayName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("DisplayName");
+                OnDisplayNameChanged();
+            }
+        }
+        private global::System.String _DisplayName;
+        partial void OnDisplayNameChanging(global::System.String value);
+        partial void OnDisplayNameChanged();
 
         #endregion
     

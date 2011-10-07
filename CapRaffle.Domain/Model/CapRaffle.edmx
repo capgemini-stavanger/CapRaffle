@@ -71,6 +71,7 @@
           <Property Name="RuleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="MethodName" Type="varchar" Nullable="false" MaxLength="50" />
           <Property Name="ClassName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="DisplayName" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="RuleSet">
           <Key>
@@ -272,6 +273,7 @@
           <Property Type="String" Name="MethodName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="ClassName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="RuleSets" Relationship="CapRaffleModel.FK_RuleSet_Rule" FromRole="Rule" ToRole="RuleSet" />
+          <Property Type="String" Name="DisplayName" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="RuleSet">
           <Key>
@@ -438,6 +440,7 @@
           <EntitySetMapping Name="Rules">
             <EntityTypeMapping TypeName="CapRaffleModel.Rule">
               <MappingFragment StoreEntitySet="Rule">
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="ClassName" ColumnName="ClassName" />
                 <ScalarProperty Name="MethodName" ColumnName="MethodName" />
                 <ScalarProperty Name="RuleId" ColumnName="RuleId" />
