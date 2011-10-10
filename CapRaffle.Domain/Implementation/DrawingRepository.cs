@@ -89,7 +89,7 @@ namespace CapRaffle.Domain.Implementation
         {
             var rulesets = (from n in context.RuleSets
                              where n.EventId == eventId
-                             select n.RuleSetId);
+                             select n.RuleSetId).ToList();
             DeleteRulesForEvent(eventId);
             var ruleSetId = rulesets.Count() > 0 ? rulesets.FirstOrDefault() : context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
             var priority = 1;
