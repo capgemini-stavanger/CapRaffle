@@ -59,8 +59,11 @@ namespace CapRaffle.Controllers
         public JsonResult SaveRules(int eventid, List<SaveRuleViewModel> rules)
         {
             var ruleparameters = new List<RuleParameter>();
-            rules = rules.Distinct(new RuleComparer()).ToList();
-            rules.ForEach(x => ruleparameters.Add(new RuleParameter { Rule = new Rule { RuleId = x.RuleId }, Param = x.Param } ));
+            if (rules != null)
+            {
+                rules = rules.Distinct(new RuleComparer()).ToList();
+                rules.ForEach(x => ruleparameters.Add(new RuleParameter { Rule = new Rule { RuleId = x.RuleId }, Param = x.Param }));
+            }
             repository.SaveRulesForEvent(eventid, ruleparameters);
             return this.Json(true);
         }

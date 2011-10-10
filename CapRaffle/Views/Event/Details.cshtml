@@ -102,7 +102,7 @@
                             modal: true, 
                             title: 'Choose rules for this event',
                             buttons: {
-                                "saveRules": function() {
+                                "Save rules": function() {
                                     var selectedRules = new Array();
                                     $("#rulesForEvent li").each(function () {
                                         var rule = {};
@@ -121,9 +121,23 @@
                                         contentType: 'application/json; charset=utf-8',
                                         data: JSON.stringify(postdata),
                                         success: function (data) {
-                                            alert("reglene har blitt lagret");
                                             $(this).dialog("close");
                     
+                                        }
+                                    });
+                                },
+                                "Use category rules": function() {
+                                    var postdata = { eventId: '@Model.SelectedEvent.EventId' };
+                                    $.ajax({
+                                        url: '@Url.Action("SaveRules", "DrawWinner")',
+                                        type: 'POST',
+                                        datatype: "JSON",
+                                        traditional: true,
+                                        context: $(this),
+                                        contentType: 'application/json; charset=utf-8',
+                                        data: JSON.stringify(postdata),
+                                        success: function (data) {
+                                            $(this).dialog("close");
                                         }
                                     });
                                 }
