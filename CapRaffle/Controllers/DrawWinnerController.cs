@@ -7,6 +7,7 @@ using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Models;
 using CapRaffle.ActionFilterAttributes;
+using CapRaffle.Domain.Rules;
 
 namespace CapRaffle.Controllers
 {
@@ -14,13 +15,11 @@ namespace CapRaffle.Controllers
     [SetSelectedMenu]
     public class DrawWinnerController : Controller
     {
-        private IDrawingRepository drawingRepository;
-        
-        
+        private IDrawingRepository repository;
 
         public DrawWinnerController(IDrawingRepository drawRepo)
         {
-            drawingRepository = drawRepo;
+            repository = drawRepo;
         }
 
         [HttpPost]
@@ -32,23 +31,48 @@ namespace CapRaffle.Controllers
 
         public JsonResult RemoveWinner(Winner winner)
         {
-            var selectedEvent = drawingRepository.Winners.Where(x => x.EventId == winner.EventId).Select(x => x.Event).FirstOrDefault();
+            var selectedEvent = repository.Winners.Where(x => x.EventId == winner.EventId).Select(x => x.Event).FirstOrDefault();
             if (!HttpContext.User.Identity.Name.Equals(selectedEvent.Creator))
             {
                 return this.Json(false);
             }
-            drawingRepository.RemoveWinner(winner);
+            repository.RemoveWinner(winner);
             return this.Json(true);
         }
-        
+
+        public PartialViewResult Rules(int eventId)
+        {
+            var rulesforevent = repository.GetRulesForEvent(eventId);
+            var available = repository.AvailableRules.ToList();
+            
+            available.RemoveAll(x => rulesforevent.Exists(y => y.Rule.RuleId == x.RuleId));
+            var model = new RulesViewModel
+            {
+                AvailableRules = available,
+                RulesForEvent = rulesforevent,
+                EventId = eventId
+            };
+            
+            return PartialView("_Rules", model);
+        }
+
+        public JsonResult SaveRules(int eventid, List<SaveRuleViewModel> rules)
+        {
+            var ruleparameters = new List<RuleParameter>();
+            rules = rules.Distinct(new RuleComparer()).ToList();
+            rules.ForEach(x => ruleparameters.Add(new RuleParameter { Rule = new Rule { RuleId = x.RuleId }, Param = x.Param } ));
+            repository.SaveRulesForEvent(eventid, ruleparameters);
+            return this.Json(true);
+        }
+
         private DrawWinnerViewModel GenerateDrawWinnerViewModel(int eventId)
         {
-            drawingRepository.PerformDrawing(eventId);
+            repository.PerformDrawing(eventId);
 
             DrawWinnerViewModel viewModel = new DrawWinnerViewModel
             {
-                Winners = drawingRepository.WinnersForEvent(eventId).ToList<Winner>(),
-                NumberOfSpotsLeft = drawingRepository.NumberOfSpotsLeftForEvent(eventId)
+                Winners = repository.WinnersForEvent(eventId).ToList<Winner>(),
+                NumberOfSpotsLeft = repository.NumberOfSpotsLeftForEvent(eventId)
             };
             return viewModel;
         }

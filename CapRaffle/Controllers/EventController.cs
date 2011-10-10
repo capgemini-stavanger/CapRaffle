@@ -20,7 +20,6 @@ namespace CapRaffle.Controllers
             this.eventRepository = eventRepository;
         }
 
-
         public ActionResult Index()
         {
             var model = new EventsListViewModel { Events = eventRepository.Events.OrderByDescending(x => x.EventId) };
@@ -116,11 +115,6 @@ namespace CapRaffle.Controllers
             ViewBag.MenuAction = "Index";
             ViewBag.isCreator = selectedEvent.Creator.Equals(HttpContext.User.Identity.Name);
             return View(model);
-        }
-
-        public PartialViewResult DisplayDrawing()
-        {
-            return PartialView("_DisplayDrawing");
         }
 
         [Authorize]

@@ -15,6 +15,8 @@ namespace CapRaffle.Domain.Implementation
 
         public IQueryable<Winner> Winners { get { return context.Winners; } }
 
+        public IQueryable<Rule> AvailableRules { get { return context.Rules; } }
+
         public IQueryable<Winner> WinnersForEvent(int eventId) 
         {
             return context.Winners.Where(w => w.EventId == eventId).AsQueryable<Winner>();
@@ -82,6 +84,57 @@ namespace CapRaffle.Domain.Implementation
             int actualAvailableSpots = eventAvailableSpots - spotsAlreadyWon;
             return actualAvailableSpots;
         }
+        
+        public void SaveRulesForEvent(int eventId, List<RuleParameter> ruleparameters)
+        {
+            var rulesets = (from n in context.RuleSets
+                             where n.EventId == eventId
+                             select n.RuleSetId);
+            DeleteRulesForEvent(eventId);
+            var ruleSetId = rulesets != null ? rulesets.FirstOrDefault() : context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
+            var priority = 1;
+            foreach (var parameter in ruleparameters)
+            {
+                context.RuleSets.AddObject(new RuleSet { RuleSetId = ruleSetId, RuleId = parameter.Rule.RuleId, EventId = eventId, RuleParameter = parameter.Param, Priority = priority });
+                priority++;
+            }
+            context.SaveChanges();
+        }
+
+        public List<RuleParameter> GetRulesForEvent(int eventId)
+        {
+            int ruleSetId;
+            if (context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault() != null)
+            {
+                ruleSetId = context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault().RuleSetId;
+            }
+            else
+            {
+                //No custom rules just for this event, get category ruleset.
+                int eventCategoryId = context.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
+                if (context.RuleSets.Where(e => e.CateogryId == eventCategoryId).FirstOrDefault() != null)
+                {
+                    ruleSetId = context.RuleSets.Where(e => e.CateogryId == eventCategoryId).FirstOrDefault().RuleSetId;
+                }
+                else { return null; }
+            }
+
+            List<RuleSet> ruleSets = context.RuleSets.Where(rs => rs.RuleSetId == ruleSetId).OrderBy(rs => rs.Priority).ToList<RuleSet>();
+            List<RuleParameter> ruleList = new List<RuleParameter>();
+            foreach (RuleSet rs in ruleSets)
+            {
+                Rule rule = context.Rules.FirstOrDefault(r => r.RuleId == rs.RuleId);
+                int param = (rs.RuleParameter != null) ? (int)rs.RuleParameter : 0;
+                ruleList.Add(new RuleParameter { Rule = rule, Param = param });
+            }
+            return ruleList;
+        }
+
+        private void DeleteRulesForEvent(int eventId)
+        {
+            var existingrules = context.RuleSets.Where(x => x.EventId == eventId).ToList();
+            existingrules.ForEach(x => context.RuleSets.DeleteObject(x));
+        }
 
         private int CategoryIdForEvent(int eventId)
         {
@@ -148,38 +201,6 @@ namespace CapRaffle.Domain.Implementation
             {
                 InvokeRuleMethod(rp, userTicketsList, eventId);
             }
-        }
-
-        private List<RuleParameter> GetRulesForEvent(int eventId)
-        {
-            int ruleSetId;
-            if (context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault() != null)
-            {
-                ruleSetId = context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault().RuleSetId;
-            }
-            else
-            {
-                //No custom rules just for this event, get category ruleset.
-                int eventCategoryId = context.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
-                if (context.RuleSets.Where(e => e.CateogryId == eventCategoryId).FirstOrDefault() != null)
-                {
-                    ruleSetId = context.RuleSets.Where(e => e.CateogryId == eventCategoryId).FirstOrDefault().RuleSetId;
-                }
-                else { return null; }
-            }
-
-            List<RuleSet> ruleSets = context.RuleSets.Where(rs => rs.RuleSetId == ruleSetId).OrderBy(rs => rs.Priority).ToList<RuleSet>();
-            List<RuleParameter> ruleList = new List<RuleParameter>();
-            foreach (RuleSet rs in ruleSets)
-            {
-                if (rs.RuleSetId == ruleSetId)
-                {
-                    Rule rule = context.Rules.FirstOrDefault(r => r.RuleId == rs.RuleId);
-                    int param = (rs.RuleParameter != null) ? (int)rs.RuleParameter : 0;
-                    ruleList.Add(new RuleParameter { Rule = rule, Param = param });
-                }
-            }
-            return ruleList;
         }
 
         private void InvokeRuleMethod(RuleParameter ruleParameter, List<UserTickets> userTicketsList, int eventId)

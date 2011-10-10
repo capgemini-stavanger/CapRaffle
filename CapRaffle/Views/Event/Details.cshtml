@@ -89,6 +89,49 @@
                 },
                 minLength: 2
             });
+            $('button#SetRules').click(function() {
+                $.ajax({
+                    url: '@Url.Action("Rules", "DrawWinner")',
+                    data: 'eventId=@Model.SelectedEvent.EventId',
+                    success: function(data) {
+                        var dialog = $('<div style="display:none"></div>').appendTo('body');
+                        dialog.html(data);
+                        dialog.dialog({ 
+                            width: 700, 
+                            height: 500, 
+                            modal: true, 
+                            title: 'Choose rules for this event',
+                            buttons: {
+                                "saveRules": function() {
+                                    var selectedRules = new Array();
+                                    $("#rulesForEvent li").each(function () {
+                                        var rule = {};
+                                        rule.Param = $(this).children('.param').val();
+                                        rule.RuleId = $(this).children('.ruleId').val();
+                                        selectedRules.push(rule);
+
+                                    });
+                                    var postdata = { eventId: '@Model.SelectedEvent.EventId', rules: selectedRules };
+                                    $.ajax({
+                                        url: '@Url.Action("SaveRules", "DrawWinner")',
+                                        type: 'POST',
+                                        datatype: "JSON",
+                                        traditional: true,
+                                        context: $(this),
+                                        contentType: 'application/json; charset=utf-8',
+                                        data: JSON.stringify(postdata),
+                                        success: function (data) {
+                                            alert("reglene har blitt lagret");
+                                            $(this).dialog("close");
+                    
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            });
             $('button#DrawWinner').click(function () {
                 var view = $("#view option:selected").val();
                 $("#WinnerTable tr:gt(0)").each(function () {
@@ -201,13 +244,23 @@
                     <br />
                 
                     <h4> Draw winner for this event</h4>
-                    @Html.DropDownList("view", Model.RaffleTypes)
                     <div class="buttons">
-                            <button type="submit" id="DrawWinner" class="positive" name"Draw Winner">
-                                <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
-                                Draw winners
-                            </button>
-                        </div>
+                        <button type="submit" id="SetRules" class="positive" name="Select rules">
+                                <img src="@Url.Content("~/Content/images/apply2.png")" alt="" />
+                                Select rules
+                            </button> 
+                            <br />
+                            <br />
+                            <br />
+                            
+                        @Html.DropDownList("view", Model.RaffleTypes)
+                        <br />
+                               
+                        <button type="submit" id="DrawWinner" class="positive" name"Draw Winner">
+                            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                            Draw winners
+                        </button>
+                    </div>
                     <br />
                 </div>
             }
