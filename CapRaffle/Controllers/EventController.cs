@@ -20,9 +20,19 @@ namespace CapRaffle.Controllers
             this.eventRepository = eventRepository;
         }
 
-        public ActionResult Index()
+        //public ActionResult Index()
+        //{
+        //    DateTime date = DateTime.Now.Date;
+        //    var model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderByDescending(x => x.EventId) };
+        //    return View(model);
+        //}
+
+        public ActionResult Index(bool archive = false)
         {
-            var model = new EventsListViewModel { Events = eventRepository.Events.OrderByDescending(x => x.EventId) };
+            DateTime date = DateTime.Now.Date.AddDays(-5);
+            var model = new EventsListViewModel();
+            if (archive) model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderByDescending(x => x.EventId), Archive = true };
+            else model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderByDescending(x => x.EventId) };
             return View(model);
         }
 

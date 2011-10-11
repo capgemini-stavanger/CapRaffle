@@ -9,6 +9,6 @@ namespace CapRaffle.Models
     public class EventsListViewModel
     {
         public IEnumerable<Event> Events { get; set; }
-
+        public Boolean Archive { get; set; }
     }
 }

@@ -6,7 +6,7 @@
 <script src="@Url.Content("~/Scripts/jquery.tablesorter.min.js")" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#eventTable").tablesorter();
+        $("#eventTable").tablesorter({ sortList: [[3, 0], [0, 0]] });
     }); 
 </script>
 <h2>List of Events</h2>
@@ -33,3 +33,21 @@
         }
     </tbody>
 </table> 
+@if (Model.Archive)
+{
+    <div class="buttons">
+    <button type="submit" class="positive" name="ViewActive" id="ViewActive" onclick="javascript:window.location=('@Url.Action("Index", "Event")')">
+        <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
+        View Active
+    </button>
+</div>
+}
+else
+{
+    <div class="buttons">
+    <button type="submit" class="regular" name="ViewArchive" id="ViewArchive" onclick="javascript:window.location=('@Url.Action("Index", "Event", new { archive = true })')">
+        <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
+        View Archive
+    </button>
+</div>
+}
