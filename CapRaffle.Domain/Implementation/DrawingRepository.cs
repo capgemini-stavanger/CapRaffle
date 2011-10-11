@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
-using CapRaffle.Domain.Rules;
 using System.Reflection;
+using CapRaffle.Domain.Draw;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -29,38 +29,8 @@ namespace CapRaffle.Domain.Implementation
 
         public void PerformDrawing(int eventId)
         {
-            List<UserTickets> userTicketsList = GenerateUserRaffleTicketsList(eventId);
-            ApplyRulesForEvent(eventId, userTicketsList);
-            List<UserEvent> raffle = GenerateRaffleTickets(userTicketsList , eventId);
-
-            Random randomGenerator = new Random();
-            int availableSpots = NumberOfSpotsLeftForEvent(eventId);
-
-            while (availableSpots > 0 && raffle.Count > 0)
-            {
-                int winnerNumber = randomGenerator.Next(raffle.Count());
-                UserEvent drawnParticipant = raffle.ElementAt(winnerNumber);
-
-                int numberOfSpotsGiven = CalculateNumberOfSpotsToGive(
-                    availableSpots,
-                    drawnParticipant.NumberOfSpots
-                    );
-
-                Winner winner = new Winner
-                {
-                    EventId = drawnParticipant.EventId,
-                    UserEmail = drawnParticipant.UserEmail,
-                    Date = DateTime.Now,
-                    NumberOfSpotsWon = numberOfSpotsGiven,
-                    CatogoryId = CategoryIdForEvent(eventId)
-                };
-
-                raffle.RemoveAll(x => x.UserEmail == winner.UserEmail);
-
-                SaveWinner(winner);
-                DeleteParticipant(drawnParticipant);
-                availableSpots -= winner.NumberOfSpotsWon;
-            }
+            var drawing = new DrawWinners(eventId, context);
+            drawing.ExecuteDraw();
         }
 
         public void RemoveWinner(Winner winner)
@@ -68,21 +38,6 @@ namespace CapRaffle.Domain.Implementation
             context.UpdateDetachedEntity<Winner>(winner, x => x.EventId);
             context.Winners.DeleteObject(winner);
             context.SaveChanges();
-        }
-
-        public int NumberOfSpotsLeftForEvent(int eventId)
-        {
-            int eventAvailableSpots = context.Events.FirstOrDefault(x => x.EventId == eventId).AvailableSpots;
-            List<Winner> winners = context.Winners.Where(x => x.EventId == eventId).ToList<Winner>();
-            
-            int spotsAlreadyWon = 0;
-            foreach(Winner w in winners) 
-            {
-                spotsAlreadyWon += w.NumberOfSpotsWon;
-            }
-            
-            int actualAvailableSpots = eventAvailableSpots - spotsAlreadyWon;
-            return actualAvailableSpots;
         }
         
         public void SaveRulesForEvent(int eventId, List<RuleParameter> ruleparameters)
@@ -136,88 +91,5 @@ namespace CapRaffle.Domain.Implementation
             existingrules.ForEach(x => context.RuleSets.DeleteObject(x));
         }
 
-        private int CategoryIdForEvent(int eventId)
-        {
-            return context.Events.FirstOrDefault(x => x.EventId == eventId).CategoryId;
-        }
-
-        private void SaveWinner(Winner winner)
-        {
-            if (context.Winners.Where(x => x.EventId == winner.EventId && x.UserEmail == winner.UserEmail).Count() == 0)
-            {
-                context.AddToWinners(winner);
-            }
-            else
-            {
-                context.UpdateDetachedEntity<Winner>(winner, x => x.EventId);
-            }
-            context.SaveChanges();
-        }
-
-        private void DeleteParticipant(UserEvent participant)
-        {
-            context.UserEvents.DeleteObject(participant);
-            context.SaveChanges();
-        }
-
-        private int CalculateNumberOfSpotsToGive(int spotsLeft, int wantedSpots)
-        {
-            int spotsToGive = 0;
-            if (wantedSpots > spotsLeft) spotsToGive = spotsLeft;
-            if (wantedSpots <= spotsLeft) spotsToGive = wantedSpots;
-            return spotsToGive;
-        }
-
-        private List<UserTickets> GenerateUserRaffleTicketsList(int eventId)
-        {
-            List<UserEvent> eventParticipants = EventParticipantsForEvent(eventId).ToList<UserEvent>();
-            List<UserTickets> userTicketsList = new List<UserTickets>();
-            foreach (UserEvent ue in eventParticipants)
-            {
-                UserTickets urt = new UserTickets(ue.UserEmail, 100);
-                userTicketsList.Add(urt);
-            }
-            return userTicketsList;
-        }
-
-        private List<UserEvent> GenerateRaffleTickets(List<UserTickets> urt, int eventId)
-        {
-            List<UserEvent> raffle = new List<UserEvent>();
-            foreach (UserTickets ut in urt)
-            {
-                UserEvent userEvent = context.UserEvents.FirstOrDefault(x => x.UserEmail.Equals(ut.Email) && x.EventId == eventId);
-                for (int i = 0; i < ut.NumberOfTickets; i++)
-                {
-                    raffle.Add(userEvent);
-                }
-            }
-            return raffle;
-        }
-
-        private void ApplyRulesForEvent(int eventId, List<UserTickets> userTicketsList)
-        {
-            List<RuleParameter> rules = GetRulesForEvent(eventId);
-            foreach (RuleParameter rp in rules)
-            {
-                InvokeRuleMethod(rp, userTicketsList, eventId);
-            }
-        }
-
-        private void InvokeRuleMethod(RuleParameter ruleParameter, List<UserTickets> userTicketsList, int eventId)
-        {
-            Assembly MyAssembly = Assembly.Load("CapRaffle.Domain");
-            Type calledType = MyAssembly.GetType("CapRaffle.Domain.Rules."+ruleParameter.Rule.ClassName);
-            if (calledType != null)
-            {
-                int catId = CategoryIdForEvent(eventId);
-                object MyObj = Activator.CreateInstance(calledType, catId);
-                calledType.InvokeMember(
-                    ruleParameter.Rule.MethodName,
-                    BindingFlags.InvokeMethod | BindingFlags.Default,
-                    null,
-                    MyObj,
-                    new Object[] { userTicketsList, ruleParameter.Param });
-            }
-        }  
     }
 }

@@ -83,6 +83,11 @@ namespace CapRaffle.Domain.Implementation
 
         public void SaveParticipant(UserEvent participant)
         {
+            if (DeadlineForEventHasPassed(participant.EventId))
+            {
+                throw new ArgumentException("You cant create or edit a participation after the deadline");
+            }
+
             if (context.UserEvents.Where(x => x.EventId == participant.EventId && x.UserEmail.Equals(participant.UserEmail)).Count() == 0)
             {
                 context.AddToUserEvents(participant);
@@ -92,6 +97,17 @@ namespace CapRaffle.Domain.Implementation
                 context.UpdateDetachedEntity<UserEvent>(participant, x => x.EventId);
             }
             context.SaveChanges();
+        }
+
+        private bool DeadlineForEventHasPassed(int eventid)
+        {
+            var selectedEvent = context.Events.Where(x => x.EventId == eventid).FirstOrDefault();
+            if (selectedEvent == null)
+            {
+                return false;
+            }
+            var test = selectedEvent.DeadLine < DateTime.Now;
+            return test;
         }
     }
 }

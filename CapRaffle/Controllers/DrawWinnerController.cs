@@ -7,7 +7,7 @@ using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Models;
 using CapRaffle.ActionFilterAttributes;
-using CapRaffle.Domain.Rules;
+using CapRaffle.Domain.Draw;
 
 namespace CapRaffle.Controllers
 {
@@ -75,7 +75,6 @@ namespace CapRaffle.Controllers
             DrawWinnerViewModel viewModel = new DrawWinnerViewModel
             {
                 Winners = repository.WinnersForEvent(eventId).ToList<Winner>(),
-                NumberOfSpotsLeft = repository.NumberOfSpotsLeftForEvent(eventId)
             };
             return viewModel;
         }

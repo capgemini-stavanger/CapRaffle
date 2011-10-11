@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.ActionFilterAttributes;
+using CapRaffle.Models;
 
 namespace CapRaffle.Controllers
 {
@@ -26,20 +27,27 @@ namespace CapRaffle.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(UserEvent participant)
         {
-            if (repository.Users.Where(x => x.Email.Equals(participant.UserEmail)).Count() == 0)
+            try
             {
-                var name = participant.UserEmail;
-                if(name.Contains(".") || name.Contains("-") || name.Contains(".")) 
+                if (repository.Users.Where(x => x.Email.Equals(participant.UserEmail)).Count() == 0)
                 {
-                    name = participant.UserEmail.Replace("capgemini.com", "");
-                    name = name.Replace("-", " ");
-                    name = name.Replace(".", " ");
-                    name = name.Substring(0, name.Length - 1);
+                    participant.UserEmail = participant.UserEmail.ToLower();
+                    var name = participant.UserEmail;
+                    if (name.Contains(".") || name.Contains("-") || name.Contains("."))
+                    {
+                        name = participant.UserEmail.Replace("capgemini.com", "");
+                        name = name.Replace("-", " ");
+                        name = name.Replace(".", " ");
+                        name = name.Substring(0, name.Length - 1);
+                    }
+                    accountrepository.Create(participant.UserEmail, null, name);
                 }
-                accountrepository.Create(participant.UserEmail, null, name);
+                repository.SaveParticipant(participant);
             }
-
-            repository.SaveParticipant(participant);
+            catch (Exception e)
+            {
+                this.Error(e.Message);
+            }
             return RedirectToAction("GetParticipants", new { eventId = participant.EventId });
         }
 
