@@ -22,7 +22,8 @@ namespace CapRaffle.Controllers
 
         public ActionResult Index()
         {
-            var model = new EventsListViewModel { Events = eventRepository.Events.OrderByDescending(x => x.EventId) };
+            DateTime date = DateTime.Now.Date;
+            var model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderByDescending(x => x.EventId) };
             return View(model);
         }
 
