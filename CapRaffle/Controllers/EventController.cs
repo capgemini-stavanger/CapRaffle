@@ -29,7 +29,7 @@ namespace CapRaffle.Controllers
 
         public ActionResult Index(bool archive = false)
         {
-            DateTime date = DateTime.Now.Date;
+            DateTime date = DateTime.Now.Date.AddDays(-5);
             var model = new EventsListViewModel();
             if (archive) model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderByDescending(x => x.EventId) };
             else model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderByDescending(x => x.EventId) };
