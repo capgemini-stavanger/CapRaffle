@@ -42,18 +42,36 @@ namespace CapRaffle.Domain.Implementation
         
         public void SaveRulesForEvent(int eventId, List<RuleParameter> ruleparameters)
         {
-            var rulesets = (from n in context.RuleSets
-                             where n.EventId == eventId
-                             select n.RuleSetId).ToList();
-            var ruleSetId = rulesets.Count() > 0 ? rulesets.FirstOrDefault() : context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
+            var rulesetId = GetRulesetId(eventId);
             DeleteRulesForEvent(eventId);
             var priority = 1;
             foreach (var parameter in ruleparameters)
             {
-                context.RuleSets.AddObject(new RuleSet { RuleSetId = ruleSetId, RuleId = parameter.Rule.RuleId, EventId = eventId, RuleParameter = parameter.Param, Priority = priority });
+                context.RuleSets.AddObject(new RuleSet { RuleSetId = rulesetId, RuleId = parameter.Rule.RuleId, EventId = eventId, RuleParameter = parameter.Param, Priority = priority });
                 priority++;
             }
             context.SaveChanges();
+        }
+
+        private int GetRulesetId(int eventId)
+        {
+            var rulesets = (from n in context.RuleSets
+                                where n.EventId == eventId
+                                select n.RuleSetId).ToList();
+            var ruleSetId = 0;
+            if(rulesets.Count() > 0) {
+                ruleSetId = rulesets.FirstOrDefault();
+            }
+            else {
+                if(context.Rules.Count() > 0)
+                {
+                    ruleSetId = context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
+                }
+                else {
+                    ruleSetId = 1;
+                }
+            }
+            return ruleSetId;
         }
 
         public List<RuleParameter> GetRulesForEvent(int eventId)

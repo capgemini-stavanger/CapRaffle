@@ -19,8 +19,8 @@
 
         $('#basicBoard').flightboard({
             messages: array,
-            lettersImage: '/Content/images/flightBoardLarge.png',
-            shadingImages: ['/Content/images/flightBoardHigh.png', '/Content/images/flightBoardShad.png'],
+            lettersImage: '@Url.Content("~/Content/images/flightBoardLarge.png")',
+            shadingImages: ['@Url.Content("~/Content/images/flightBoardHigh.png")', '@Url.Content("~/Content/images/flightBoardShad.png")'],
             speed: 750,
             pause: 1000,
             flips: [4, 6],
