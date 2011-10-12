@@ -125,7 +125,7 @@ namespace CapRaffle.UnitTests
             Assert.AreEqual(1, list.Count);
         }
         [Test]
-        public void can_get_PartialViewResult_Result_With_Participants()
+        public void Can_Get_PartialViewResult_Result_With_Participants()
         {
             //arrange
 
