@@ -42,9 +42,8 @@ namespace CapRaffle.Controllers
 
         public PartialViewResult Rules(int eventId)
         {
-            var rulesforevent = repository.GetRulesForEvent(eventId);
+            var rulesforevent = repository.GetRulesForEvent(eventId) ?? new List<RuleParameter>();
             var available = repository.AvailableRules.ToList();
-            
             available.RemoveAll(x => rulesforevent.Exists(y => y.Rule.RuleId == x.RuleId));
             var model = new RulesViewModel
             {

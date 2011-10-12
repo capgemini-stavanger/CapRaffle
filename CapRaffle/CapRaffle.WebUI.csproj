@@ -175,6 +175,7 @@
     <Content Include="Scripts\jquery-1.5.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.js" />
     <Content Include="Scripts\jquery-ui-1.8.11.min.js" />
+    <Content Include="Scripts\jquery-ui-timepicker-addon.js" />
     <Content Include="Scripts\jquery.flightboard.min.js" />
     <Content Include="Scripts\jquery.flip.min.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />

@@ -104,19 +104,40 @@ namespace CapRaffle.Domain.Implementation
 
         public void SaveRulesForCategory(int categoryId, List<RuleParameter> ruleParameters)
         {
-            var rulesets = (from n in context.RuleSets
-                            where n.CateogryId == categoryId
-                            select n.RuleSetId).ToList();
-            var ruleSetId = rulesets.Count() > 0 ? rulesets.FirstOrDefault() : context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
+            var rulesetId = GetRulesetId(categoryId);
             var priority = 1;
             var existingrules = context.RuleSets.Where(x => x.CateogryId == categoryId).ToList();
             existingrules.ForEach(x => context.RuleSets.DeleteObject(x));
             foreach (var parameter in ruleParameters)
             {
-                context.RuleSets.AddObject(new RuleSet { RuleSetId = ruleSetId, RuleId = parameter.Rule.RuleId, CateogryId = categoryId, RuleParameter = parameter.Param, Priority = priority });
+                context.RuleSets.AddObject(new RuleSet { RuleSetId = rulesetId, RuleId = parameter.Rule.RuleId, CateogryId = categoryId, RuleParameter = parameter.Param, Priority = priority });
                 priority++;
             }
             context.SaveChanges();
+        }
+
+        private int GetRulesetId(int categoryId)
+        {
+            var rulesets = (from n in context.RuleSets
+                            where n.CateogryId == categoryId
+                            select n.RuleSetId).ToList();
+            int rulesetId = 0;
+            if (rulesets.Count() > 0)
+            {
+                rulesetId = rulesets.FirstOrDefault();
+            }
+            else
+            {
+                if (context.RuleSets.Count() > 0)
+                {
+                    rulesetId = context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
+                }
+                else
+                {
+                    rulesetId = 1;
+                }
+            }
+            return rulesetId;
         }
 
         public List<RuleParameter> GetRulesForCategory(int categoryId)
