@@ -95,7 +95,12 @@
     <Content Include="Content\images\cross.png" />
     <Content Include="Content\images\desc.gif" />
     <Content Include="Content\images\error.png" />
+    <Content Include="Content\images\flightBoardHigh.png" />
+    <Content Include="Content\images\flightBoardLarge.png" />
+    <Content Include="Content\images\flightBoardShad.png" />
+    <Content Include="Content\images\help.png" />
     <Content Include="Content\images\info.png" />
+    <Content Include="Content\images\plus.gif" />
     <Content Include="Content\images\sexypanelright.gif" />
     <Content Include="Content\images\success.png" />
     <Content Include="Content\images\textfield_key.png" />
