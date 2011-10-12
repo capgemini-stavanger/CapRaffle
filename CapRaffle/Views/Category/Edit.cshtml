@@ -2,7 +2,69 @@
 
 @{
     ViewBag.Title = ViewBag.action + " category";
-}
+} 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('button#SetRules').click(function () {
+            if ('@Model.CategoryId' == 0) {
+                var dialog = $('<div style="display:none">You have to save the category before selecting rules.</div>').appendTo('body');
+                dialog.dialog({
+                    title: 'Error getting rules for category',
+                    buttons: {
+                        "OK": function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                })
+                return;
+            }
+            $.ajax({
+                url: '@Url.Action("Rules", "Category")',
+                data: 'categoryId=@Model.CategoryId',
+                success: function (data) {
+                    var dialog = $('<div style="display:none"></div>').appendTo('body');
+                    dialog.html(data);
+                    dialog.dialog({
+                        width: 700,
+                        height: 500,
+                        modal: true,
+                        title: 'Choose rules for this category',
+                        buttons: {
+                            "Save rules": function () {
+                                var selectedRules = new Array();
+                                $("#rulesForEvent li").each(function () {
+                                    var rule = {};
+                                    rule.Param = $(this).children('.param').val();
+                                    rule.RuleId = $(this).children('.ruleId').val();
+                                    selectedRules.push(rule);
+
+                                });
+                                var postdata = { categoryId: '@Model.CategoryId', rules: selectedRules };
+                                $.ajax({
+                                    url: '@Url.Action("SaveRules", "Category")',
+                                    type: 'POST',
+                                    datatype: "JSON",
+                                    traditional: true,
+                                    context: $(this),
+                                    contentType: 'application/json; charset=utf-8',
+                                    data: JSON.stringify(postdata),
+                                    success: function (data) {
+                                        $(this).dialog("close");
+
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    })
+    
+</script>
+
+
 
 <h2>@ViewBag.Title</h2>
 
@@ -14,12 +76,17 @@
     <p>Category is active: @Html.CheckBoxFor(x => x.IsActive)</p>
     
     <div class="buttons">
+        <button type="button" id="SetRules" class="positive" name="Select rules">
+            <img src="@Url.Content("~/Content/images/apply2.png")" alt="" />
+            Select rules
+        </button>
         <button type="submit" class="positive" name="save">
             <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
             Save
         </button>
+        @Html.ActionLink("Cancel and return to list", "Index")
     </div>
     <br />
     <br />
-    @Html.ActionLink("Cancel and return to list", "Index")
+    
 }

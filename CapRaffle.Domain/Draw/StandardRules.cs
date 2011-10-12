@@ -7,12 +7,9 @@ using CapRaffle.Domain.Model;
 namespace CapRaffle.Domain.Draw
 {
     /*
-     * Rules to be implemented
-     * 
-     * If a user have never won in this category before, give him the event tickets, then draw the rest.
+     * Ideas for future rules
      * When RaffleTickets are taken away from a user, devide them between the user(s) with least wins in the category.
      * When RaffleTickets are taken away from a user, devide them between users with no wins in the category.
-     * Min RaffleTickets per user is: xx (?)
      * 
      */
 

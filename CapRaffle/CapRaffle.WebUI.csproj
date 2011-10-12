@@ -260,7 +260,7 @@
     <Content Include="Views\Nav\Menu.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\DrawWinner\_Rules.cshtml" />
+    <Content Include="Views\Shared\_Rules.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -7,6 +7,7 @@ using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Models;
 using CapRaffle.ActionFilterAttributes;
+using CapRaffle.Domain.Draw;
 
 namespace CapRaffle.Controllers
 {
@@ -62,6 +63,36 @@ namespace CapRaffle.Controllers
             }            
             return View(category);
         }
+
+        public PartialViewResult Rules(int categoryId)
+        {
+            var rulesforevent = repository.GetRulesForCategory(categoryId);
+            var available = repository.AvailableRules.ToList();
+
+            available.RemoveAll(x => rulesforevent.Exists(y => y.Rule.RuleId == x.RuleId));
+            var model = new RulesViewModel
+            {
+                AvailableRules = available,
+                RulesForEvent = rulesforevent,
+                CategoryId = categoryId
+            };
+
+            return PartialView("_Rules", model);
+        }
+
+        public JsonResult SaveRules(int categoryId, List<SaveRuleViewModel> rules)
+        {
+            var ruleparameters = new List<RuleParameter>();
+            if (rules != null)
+            {
+                rules = rules.Distinct(new RuleComparer()).ToList();
+                rules.ForEach(x => ruleparameters.Add(new RuleParameter { Rule = new Rule { RuleId = x.RuleId }, Param = x.Param }));
+            }
+            repository.SaveRulesForCategory(categoryId, ruleparameters);
+            return this.Json(true);
+        }
+
+
 
         private bool ModelStateAndCategoryNameIsValid(Category category)
         {

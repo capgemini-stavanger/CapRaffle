@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CapRaffle.Domain.Model;
+using CapRaffle.Domain.Draw;
 
 namespace CapRaffle.Domain.Abstract
 {
@@ -18,6 +19,8 @@ namespace CapRaffle.Domain.Abstract
 
         IQueryable<Category> Categories { get; }
 
+        IQueryable<Rule> AvailableRules { get; }
+
         void SaveCategory(Category category);
 
         void DeleteEvent(Event selectedEvent);
@@ -27,5 +30,9 @@ namespace CapRaffle.Domain.Abstract
         void DeleteParticipant(UserEvent participant);
 
         void SaveParticipant(UserEvent participant);
+
+        void SaveRulesForCategory(int categoryId, List<RuleParameter> ruleParameters);
+
+        List<RuleParameter> GetRulesForCategory(int categoryId);
     }
 }

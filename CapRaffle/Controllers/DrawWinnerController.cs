@@ -56,6 +56,7 @@ namespace CapRaffle.Controllers
             return PartialView("_Rules", model);
         }
 
+        [HttpPost]
         public JsonResult SaveRules(int eventid, List<SaveRuleViewModel> rules)
         {
             var ruleparameters = new List<RuleParameter>();

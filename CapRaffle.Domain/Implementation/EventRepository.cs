@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
-using System.Data;
 using System.Collections.Specialized;
 using System.Data.Objects;
 using System.Reflection;
 using System.Data.Objects.DataClasses;
 using System.Data.Entity;
+using CapRaffle.Domain.Draw;
+using Rule = CapRaffle.Domain.Model.Rule;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -23,6 +24,8 @@ namespace CapRaffle.Domain.Implementation
         public IQueryable<UserEvent> Participants { get { return context.UserEvents; } }
 
         public IQueryable<User> Users { get { return context.Users; } }
+
+        public IQueryable<Rule> AvailableRules { get { return context.Rules; } }
 
         public IQueryable<UserEvent> EventParticipants(int eventId)
         {
@@ -97,6 +100,40 @@ namespace CapRaffle.Domain.Implementation
                 context.UpdateDetachedEntity<UserEvent>(participant, x => x.EventId);
             }
             context.SaveChanges();
+        }
+
+        public void SaveRulesForCategory(int categoryId, List<RuleParameter> ruleParameters)
+        {
+            var rulesets = (from n in context.RuleSets
+                            where n.CateogryId == categoryId
+                            select n.RuleSetId).ToList();
+            var ruleSetId = rulesets.Count() > 0 ? rulesets.FirstOrDefault() : context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
+            var priority = 1;
+            var existingrules = context.RuleSets.Where(x => x.CateogryId == categoryId).ToList();
+            existingrules.ForEach(x => context.RuleSets.DeleteObject(x));
+            foreach (var parameter in ruleParameters)
+            {
+                context.RuleSets.AddObject(new RuleSet { RuleSetId = ruleSetId, RuleId = parameter.Rule.RuleId, CateogryId = categoryId, RuleParameter = parameter.Param, Priority = priority });
+                priority++;
+            }
+            context.SaveChanges();
+        }
+
+        public List<RuleParameter> GetRulesForCategory(int categoryId)
+        {
+            var ruleSetId = -1;
+            if(context.RuleSets.Where(e => e.CateogryId == categoryId).Count() > 0)
+                ruleSetId = context.RuleSets.Where(e => e.CateogryId == categoryId).FirstOrDefault().RuleSetId;
+
+            List<RuleSet> ruleSets = context.RuleSets.Where(rs => rs.RuleSetId == ruleSetId).OrderBy(rs => rs.Priority).ToList<RuleSet>();
+            List<RuleParameter> ruleList = new List<RuleParameter>();
+            foreach (RuleSet rs in ruleSets)
+            {
+                Rule rule = context.Rules.FirstOrDefault(r => r.RuleId == rs.RuleId);
+                int param = (rs.RuleParameter != null) ? (int)rs.RuleParameter : 0;
+                ruleList.Add(new RuleParameter { Rule = rule, Param = param });
+            }
+            return ruleList;
         }
 
         private bool DeadlineForEventHasPassed(int eventid)

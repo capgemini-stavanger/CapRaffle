@@ -31,8 +31,8 @@ namespace CapRaffle.Controllers
         {
             DateTime date = DateTime.Now.Date.AddDays(-5);
             var model = new EventsListViewModel();
-            if (archive) model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderByDescending(x => x.EventId), Archive = true };
-            else model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderByDescending(x => x.EventId) };
+            if (archive) model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine <= date), Archive = true };
+            else model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date) };
             return View(model);
         }
 

@@ -13,5 +13,6 @@ namespace CapRaffle.Models
         public List<Rule> AvailableRules { get; set; }
         public List<RuleParameter> RulesForEvent { get; set; }
         public int EventId { get; set; }
+        public int CategoryId { get; set; }
     }
 }
