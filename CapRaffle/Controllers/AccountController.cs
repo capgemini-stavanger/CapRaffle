@@ -31,7 +31,7 @@ namespace CapRaffle.Controllers
                 if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
                     this.Success(string.Format("Password for {0} has been saved", model.Email));
-                    return Redirect("/");
+                    return RedirectToAction("Index", "Event");
                 }
             }
             return View(User);
@@ -79,7 +79,7 @@ namespace CapRaffle.Controllers
                     {
                         this.Success(string.Format("Account for {0} has been registered", user.Email));
                         accountRepository.Authenticate(user.Email, user.Password);
-                        return Redirect("/");
+                        return RedirectToAction("Index", "Event");
                     }
                 }
             return View();
@@ -92,13 +92,13 @@ namespace CapRaffle.Controllers
 
         public ActionResult Index()
         {
-           return Redirect("/");
+            return RedirectToAction("Index", "Event");
         }
 
         public ActionResult SignOut()
         {
             accountRepository.SignOut();
-            return Redirect("/Account/LogOn");
+            return RedirectToAction("LogOn", "Account");
         }
 
         public ActionResult EmailExists(string email)
@@ -125,7 +125,7 @@ namespace CapRaffle.Controllers
                     this.Error(string.Format("Email not found: {0}", model.Email));
                 }
             }
-            return Redirect("/Account/LogOn");
+            return RedirectToAction("LogOn", "Account");
         }
     }
 }
