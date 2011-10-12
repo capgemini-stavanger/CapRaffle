@@ -124,5 +124,17 @@ namespace CapRaffle.UnitTests
             Assert.IsNotNull(result.Data);
             Assert.AreEqual(1, list.Count);
         }
+        [Test]
+        public void can_get_PartialViewResult_Result_With_Participants()
+        {
+            //arrange
+
+            //act
+            var result = controller.GetParticipants(1);
+
+            //assert
+            result.AssertPartialViewRendered().ForView("_GetParticipants");
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
     }
 }
