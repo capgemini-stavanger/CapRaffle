@@ -1,0 +1,96 @@
+﻿@model CapRaffle.Models.RulesViewModel
+@{ var regex = new System.Text.RegularExpressions.Regex("(?<=[a-z])(?<x>[A-Z])|(?<=.)(?<x>[A-Z])(?=[a-z])"); }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#rulesForEvent, #AvailableRulesList").sortable({
+            connectWith: ".connectedSortable"
+        }).disableSelection();
+    });
+</script>
+<style type="text/css">
+    #container 
+    {
+        margin: auto; width: 100%; text-align:center
+    }
+    .connectedSortable 
+    {
+        padding: 0;
+        height: 200px;
+        list-style-type: none;
+    }
+    .box
+    {
+        background-color:#dff4ff;
+        border:1px solid #dedede;
+        border-top:1px solid #eee;
+        border-left:1px solid #eee;
+        line-height:200%;
+        max-width: 90%; 
+        margin: auto;
+        margin-bottom: 5px;
+        color:#336699;
+    }
+    .EventRules, .AvailableRules 
+    {
+        width: 45%; 
+        min-height: 290px;
+    }
+    .EventRules h4, .AvailableRules h4
+    {
+        background-color:#dff4ff;
+        border-bottom: 1px solid blue;
+        padding-bottom: 3px;
+        line-height: 200%;
+        margin-top: 0px;
+    }
+    
+    
+    .EventRules { float: left; }
+    .AvailableRules { float: right; }
+    
+</style>
+<div id="container">
+    <p>Choose rules by dragging rules to and from "rules for this event" container</p>
+    <div class="EventRules">
+        <h4>Rules for this event</h4>
+        <ul id="rulesForEvent" class="connectedSortable">
+        @foreach (var rule in Model.RulesForEvent)
+        {
+            <li class="box">
+	            @{ var name = !string.IsNullOrEmpty(rule.Rule.DisplayName) ? rule.Rule.DisplayName : regex.Replace(rule.Rule.MethodName, " ${x}"); }
+                @name
+                <input type="text" class="param" value="@rule.Param" />
+                <input type="hidden" class="ruleId" value="@rule.Rule.RuleId" />
+            </li>
+        }
+        </ul>
+    </div>
+
+    <div class="AvailableRules">
+        <h4>Available rules for this event</h4>
+        <ul id="AvailableRulesList" class="connectedSortable">
+        @foreach (var rule in Model.AvailableRules)
+        {
+            <li class="box">
+	            @{ var name = !string.IsNullOrEmpty(rule.DisplayName) ? rule.DisplayName : regex.Replace(rule.MethodName, " ${x}"); }
+                @name
+                <input type="text" class="param" />
+                <input type="hidden" class="ruleId" value="@rule.RuleId" />
+            </li>
+        }
+        </ul>
+    </div>
+
+</div>
+
+<div style="clear: both"></div>
+<br />
+@*<div class="buttons" style="float: right">
+    <button type="submit" id="saveRules" class="positive" name"Save rules">
+        <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+        Save rules
+    </button>
+    
+</div>*@
+<br /> 
+<br /> 

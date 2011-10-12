@@ -117,22 +117,6 @@ namespace CapRaffle.UnitTests
 
         #endregion
 
-        [Test]
-        public void Index_Get_Sorted_List_Of_Events()
-        {
-            //Arrange
-
-            //Act
-            ViewResult result = (ViewResult) controller.Index();
-            var events = ((EventsListViewModel)result.Model).Events.ToList();
-            
-
-            //Assert
-            Assert.IsTrue(events.Count == 5);
-            Assert.AreEqual(events.First().EventId, 5);
-            Assert.AreEqual(events.Last().EventId, 1);
-            result.AssertViewRendered().ForView(string.Empty);
-        }
 
         [Test]
         public void Can_Return_Correct_Event_On_Details_Action()
