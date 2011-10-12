@@ -121,5 +121,26 @@ namespace CapRaffle.UnitTests
             result.AssertActionRedirect().ToAction("Index");
             mock.Verify(m => m.SaveCategory(categoryToEdit), Times.Once());
         }
+
+        [Test]
+        public void Can_Display_Category_Rules()
+        {
+            var result = controller.Rules(1);
+
+            result.AssertPartialViewRendered().ForView("_Rules");
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
+
+        [Test]
+        public void Can_Save_Category_Rules()
+        {
+            List<SaveRuleViewModel> rules = new List<SaveRuleViewModel>();
+            SaveRuleViewModel srvm = new SaveRuleViewModel { RuleId = 1, Param = 10 };
+            rules.Add(srvm);
+
+            var result = controller.SaveRules(1, rules);
+
+            Assert.IsInstanceOf(typeof(JsonResult), result);
+        }
     }
 }

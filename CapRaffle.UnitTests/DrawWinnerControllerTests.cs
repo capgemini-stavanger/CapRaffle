@@ -64,7 +64,6 @@ namespace CapRaffle.UnitTests
                 new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
                 );
             drawingMock = new Mock<IDrawingRepository>();
-
             categories.FirstOrDefault().Selected = true;
 
             selectedEvent = new EventViewModel { SelectedEvent = eventMock.Object.Events.FirstOrDefault(), Categories = categories };
@@ -99,6 +98,28 @@ namespace CapRaffle.UnitTests
             drawingMock.Verify(m => m.PerformDrawing(It.IsAny<int>()), Times.AtLeastOnce());
             result.AssertPartialViewRendered().ForView("Default");
         }
+
+        [Test]
+        public void Can_Display_Event_Rules()
+        {
+            var result = controller.Rules(1);
+
+            result.AssertPartialViewRendered().ForView("_Rules");
+            Assert.IsInstanceOf(typeof(PartialViewResult), result);
+        }
+
+        [Test]
+        public void Can_Save_Event_Rules()
+        {
+            List<SaveRuleViewModel> rules = new List<SaveRuleViewModel>();
+            SaveRuleViewModel srvm = new SaveRuleViewModel { RuleId = 1, Param = 10 };
+            rules.Add(srvm);
+
+            var result = controller.SaveRules(1, rules);
+
+            Assert.IsInstanceOf(typeof(JsonResult), result);
+        }
+
 
         private IEnumerable<UserEvent> SelectedEventParticipants()
         {
