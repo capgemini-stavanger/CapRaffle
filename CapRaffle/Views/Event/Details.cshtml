@@ -184,38 +184,44 @@
             <div class="ParticipantsTable">
                 @Html.Action("GetParticipants", "Participant", new { eventId = Model.SelectedEvent.EventId })
             </div>
-            @if (@HttpContext.Current.User.Identity.IsAuthenticated)
-            {
-                using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "addParticipant" }))
+            @if(Model.SelectedEvent.DeadLine > DateTime.Now) {
+                if (@HttpContext.Current.User.Identity.IsAuthenticated)
                 {
-                    @Html.AntiForgeryToken()   
-                    <input type="hidden" name="UserEmail" value="@HttpContext.Current.User.Identity.Name" />
-                    <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
+                    using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "addParticipant" }))
+                    {
+                        @Html.AntiForgeryToken()   
+                        <input type="hidden" name="UserEmail" value="@HttpContext.Current.User.Identity.Name" />
+                        <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
             
-                    <label for="NumberOfSpots">@(Model.UserIsParticipant ? "Update" : "Choose") number of spots</label>
-                    @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots)    
-                <!--<input type="text" name="NumberOfSpots" />-->
+                        <label for="NumberOfSpots">@(Model.UserIsParticipant ? "Update" : "Choose") number of spots</label>
+                        @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots)    
+                    <!--<input type="text" name="NumberOfSpots" />-->
+                            <div class="buttons">
+                                <button type="submit" class="positive" name="register">
+                                <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                                    @(Model.UserIsParticipant ? "Update" : "Register")
+                                </button>
+                            </div>
+                    }
+                    if (Model.UserIsParticipant)
+                    {
                         <div class="buttons">
-                            <button type="submit" class="positive" name="register">
-                            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
-                                @(Model.UserIsParticipant ? "Update" : "Register")
+                            <button class="nagative" type="submit" id="removeparticipation">
+                                <img src="@Url.Content("~/Content/images/cross.png")" alt=""/>
+                                Delete participation
                             </button>
                         </div>
+                    }
+                    <br />
                 }
-                if (Model.UserIsParticipant)
+                else
                 {
-                    <div class="buttons">
-                        <button class="nagative" type="submit" id="removeparticipation">
-                            <img src="@Url.Content("~/Content/images/cross.png")" alt=""/>
-                            Delete participation
-                        </button>
-                    </div>
+                    <p>Sign in if you want to register for this event:</p>
                 }
-                <br />
             }
-            else
+            else 
             {
-                <p>Sign in if you want to register for this event:</p>
+                <p>Registration for this event has is closed.</p>
             }
         </div>
         <br />
@@ -252,20 +258,24 @@
                     </button>
                 </div>
                 <div class="DrawWinnerAdministration">
-                    <br /><br /><br />
-                    <h4>Register User for this event</h4>
-                    @using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
+                    @if (Model.SelectedEvent.DeadLine > DateTime.Now)
                     {
-                        @Html.AntiForgeryToken()
-                        <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
-                        <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
-                        @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
-                        <div class="buttons">
-                            <button type="submit" class="positive" name="register" id="adminAddParticipant">
-                                <img src="@Url.Content("~/Content/images/plus.gif")" alt=""/>
-                                Add
-                            </button>
-                        </div>
+                        <br /><br /><br />
+                        <h4>Register User for this event</h4>
+                    
+                        using (Html.BeginForm("Create", "Participant", FormMethod.Post, new { id = "adminAddParticipant" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
+                            <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
+                            @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
+                            <div class="buttons">
+                                <button type="submit" class="positive" name="register" id="adminAddParticipant">
+                                    <img src="@Url.Content("~/Content/images/plus.gif")" alt=""/>
+                                    Add
+                                </button>
+                            </div>
+                        }
                     }
                     <br />
                     <br />
