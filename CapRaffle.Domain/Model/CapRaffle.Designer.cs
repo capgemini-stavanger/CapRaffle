@@ -427,7 +427,8 @@ namespace CapRaffle.Domain.Model
         /// <param name="availableSpots">Initial value of the AvailableSpots property.</param>
         /// <param name="deadLine">Initial value of the DeadLine property.</param>
         /// <param name="categoryId">Initial value of the CategoryId property.</param>
-        public static Event CreateEvent(global::System.Int32 eventId, global::System.String name, global::System.DateTime created, global::System.String creator, global::System.Int32 availableSpots, global::System.DateTime deadLine, global::System.Int32 categoryId)
+        /// <param name="startTime">Initial value of the StartTime property.</param>
+        public static Event CreateEvent(global::System.Int32 eventId, global::System.String name, global::System.DateTime created, global::System.String creator, global::System.Int32 availableSpots, global::System.DateTime deadLine, global::System.Int32 categoryId, global::System.DateTime startTime)
         {
             Event @event = new Event();
             @event.EventId = eventId;
@@ -437,6 +438,7 @@ namespace CapRaffle.Domain.Model
             @event.AvailableSpots = availableSpots;
             @event.DeadLine = deadLine;
             @event.CategoryId = categoryId;
+            @event.StartTime = startTime;
             return @event;
         }
 
@@ -661,6 +663,30 @@ namespace CapRaffle.Domain.Model
         private global::System.Int32 _CategoryId;
         partial void OnCategoryIdChanging(global::System.Int32 value);
         partial void OnCategoryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime StartTime
+        {
+            get
+            {
+                return _StartTime;
+            }
+            set
+            {
+                OnStartTimeChanging(value);
+                ReportPropertyChanging("StartTime");
+                _StartTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("StartTime");
+                OnStartTimeChanged();
+            }
+        }
+        private global::System.DateTime _StartTime;
+        partial void OnStartTimeChanging(global::System.DateTime value);
+        partial void OnStartTimeChanged();
 
         #endregion
     

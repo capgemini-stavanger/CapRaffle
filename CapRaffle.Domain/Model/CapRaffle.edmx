@@ -63,6 +63,7 @@
           <Property Name="Description" Type="nvarchar" MaxLength="300" />
           <Property Name="DeadLine" Type="datetime" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Rule">
           <Key>
@@ -264,6 +265,7 @@
           <NavigationProperty Name="Category" Relationship="CapRaffleModel.FK_Event_Category" FromRole="Event" ToRole="Category" />
           <NavigationProperty Name="UserEvents" Relationship="CapRaffleModel.FK_UserEvent_Event" FromRole="Event" ToRole="UserEvent" />
           <NavigationProperty Name="Winners" Relationship="CapRaffleModel.FK_Winner_Event" FromRole="Event" ToRole="Winner" />
+          <Property Type="DateTime" Name="StartTime" Nullable="false" />
         </EntityType>
         <EntityType Name="Rule">
           <Key>
@@ -425,6 +427,7 @@
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="CapRaffleModel.Event">
               <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
