@@ -15,7 +15,7 @@ namespace CapRaffle.Domain.Implementation
         public string Password = "";
         public string ServerName = "smtp.some.place.com";
         public int ServerPort = 25;
-        public bool WriteAsFile = true; //Remeber this one
+        public bool WriteAsFile = false; //Remeber this one
         public string FileLocation = @"c:\temp\";
     }
 
