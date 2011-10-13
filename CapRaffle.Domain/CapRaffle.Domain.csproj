@@ -72,7 +72,6 @@
     <Compile Include="Draw\UserTickets.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <EntityDeploy Include="Model\CapRaffle.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CapRaffle.Designer.cs</LastGenOutput>
