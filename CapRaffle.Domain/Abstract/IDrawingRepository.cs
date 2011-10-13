@@ -23,5 +23,7 @@ namespace CapRaffle.Domain.Abstract
         List<RuleParameter> GetRulesForEvent(int eventId);
 
         void SaveRulesForEvent(int eventId, List<RuleParameter> ruleparameters);
+
+        bool NotifyWinners(int eventId);
     }
 }

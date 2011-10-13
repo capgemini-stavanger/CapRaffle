@@ -2,16 +2,18 @@
 using System.Net.Mail;
 using System.Text;
 using CapRaffle.Domain.Abstract;
+using CapRaffle.Domain.Model;
+using System;
 
 namespace CapRaffle.Domain.Implementation
 {
    public class EmailSettings
     {
-        public string MailFromAddress = "DoNotReplyCapRaffle@capgemini.com";
+        public string MailFromAddress = "CapRaffle@capgemini.com";
         public bool UseSsl = false;
-        public string Username = "SMTPusername";
-        public string Password = "SMTPpassword";
-        public string ServerName = "smtp.server.com";
+        public string Username = "";
+        public string Password = "";
+        public string ServerName = "smtp.some.place.com";
         public int ServerPort = 25;
         public bool WriteAsFile = true; //Remeber this one
         public string FileLocation = @"c:\temp\";
@@ -27,7 +29,7 @@ namespace CapRaffle.Domain.Implementation
             SetUpSmtpClient();
         }
 
-        public void ForgotPassword(string email, string newPassword)
+        public bool ForgotPassword(string email, string newPassword)
         {
             if (smtpClient != null) {
                 string body = string.Format("Your new CapRaffle password is: {0}", newPassword);
@@ -35,7 +37,7 @@ namespace CapRaffle.Domain.Implementation
                 MailMessage mailMessage = new MailMessage(
                     emailSettings.MailFromAddress, // From
                     email, // To
-                    "CapRaffle password", // Subject
+                    "[CapRaffle] password", // Subject
                     body.ToString()
                     ); // Body
 
@@ -43,8 +45,45 @@ namespace CapRaffle.Domain.Implementation
                 {
                     mailMessage.BodyEncoding = Encoding.ASCII;
                 }
+                return SendEmail(mailMessage);
+            }
+            return false;
+        }
+
+        public bool NotifyWinner(Winner winner)
+        {
+            string body = string.Format("Your won the raffle for event: {0} <br />", winner.Event.Name);
+            body += string.Format("You won {0} tickets <br />", winner.NumberOfSpotsWon);
+            body += string.Format("Please contact {0} to get your ticket(s)", winner.Event.Creator);
+            MailMessage mailMessage = new MailMessage(
+                emailSettings.MailFromAddress, // From
+                winner.UserEmail, // To
+                string.Format("[CapRaffle] {0} winner!", winner.Event.Name), // Subject
+                body
+                ); // Body
+            mailMessage.IsBodyHtml = true;
+           
+            if (emailSettings.WriteAsFile)
+            {
+                mailMessage.BodyEncoding = Encoding.ASCII;
+            }
+            return SendEmail(mailMessage);
+        }
+
+        private bool SendEmail(MailMessage mailMessage)
+        {
+            if (smtpClient == null) return false;
+            try
+            {
                 smtpClient.Send(mailMessage);
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Exception caught in CreateTestMessage1(): {0}",
+                ex.ToString());
+                return false;
+            }
+            return true;
         }
 
         private  void SetUpSmtpClient()

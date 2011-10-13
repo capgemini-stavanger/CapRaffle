@@ -17,7 +17,7 @@
                 }
             });
         })
-    }); 
+    });
 </script>
 <div id="winners">
 <h2>Winners</h2>
@@ -44,4 +44,12 @@
             </tr>
         }
 </table>
+@if (ViewBag.isCreator) {
+    <div class="buttons">
+        <button type="submit" id="NotifyWinners" class="positive" name="NotifyWinners" onclick="javascript:window.location=('@Url.Action("NotifyWinners", "DrawWinner", new { eventid = @Model.FirstOrDefault().EventId })')">
+            <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+            Notify Winners
+        </button>
+    </div>
+    }
 </div>

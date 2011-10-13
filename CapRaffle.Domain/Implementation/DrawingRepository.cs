@@ -109,5 +109,16 @@ namespace CapRaffle.Domain.Implementation
             existingrules.ForEach(x => context.RuleSets.DeleteObject(x));
         }
 
+        public bool NotifyWinners(int eventId)
+        {
+            IEmailSender emailSender = new EmailSender();
+            bool emailsDeliverd = true;
+            foreach(Winner w in WinnersForEvent(eventId))
+            {
+                bool emailSendt = emailSender.NotifyWinner(w);
+                if (!emailSendt) emailsDeliverd = false;
+            }
+            return emailsDeliverd;
+        }
     }
 }

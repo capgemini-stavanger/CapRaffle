@@ -68,6 +68,19 @@ namespace CapRaffle.Controllers
             return this.Json(true);
         }
 
+        public ActionResult NotifyWinners(int eventid)
+        {
+            if (repository.NotifyWinners(eventid))
+            {
+                this.Success("Winners are now notified");
+            }
+            else
+            {
+                this.Error("Something wrong happend, Is the smtp server configured, can it be down? Try again later");
+            }
+            return RedirectToAction("Details", "Event", new { id = eventid });
+        }
+
         private DrawWinnerViewModel GenerateDrawWinnerViewModel(int eventId)
         {
             repository.PerformDrawing(eventId);
