@@ -77,6 +77,8 @@ namespace CapRaffle.Controllers
             {
                 var currentDatetime = DateTime.Now;
                 newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
+                newevent.StartTime = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(8);
+                newevent.Name = selectedEvent.Name;
                 newevent.AvailableSpots = selectedEvent.AvailableSpots;
                 newevent.InformationUrl = selectedEvent.InformationUrl;
                 newevent.Description = selectedEvent.Description;
