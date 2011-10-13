@@ -308,6 +308,7 @@
         <p>@(Model.SelectedEvent.InformationUrl == null ? "" : "More information about the event: " + @Model.SelectedEvent.InformationUrl)</p>
         <h4>Number of spots: @Model.SelectedEvent.AvailableSpots</h4>
         <h4>Number of spots left: <span id="spotsleft">@Model.SelectedEvent.AvailableSpots</span></h4>
+        <h4>The event starts: @Model.SelectedEvent.StartTime</h4>
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
     </div>
     <br />
