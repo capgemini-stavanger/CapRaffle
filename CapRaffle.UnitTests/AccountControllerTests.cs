@@ -55,7 +55,7 @@ namespace CapRaffle.UnitTests
 
             // Assert
             mock.Verify(m => m.Create(model.Email, model.Password, model.Name));
-            Assert.IsInstanceOf(typeof(RedirectResult), res);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace CapRaffle.UnitTests
 
             // Assert
             mock.Verify(m => m.ChangePassword(model.Email, model.Password));
-            Assert.IsInstanceOf(typeof(RedirectResult), res);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
         }
         
         [Test]
@@ -174,7 +174,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.SignOut();
 
             //Assert
-            Assert.IsInstanceOf(typeof(RedirectResult), res);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
             mock.Verify(m => m.SignOut());
         }
 
@@ -205,8 +205,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.Index();
 
             //Assert
-            Assert.IsInstanceOf(typeof(RedirectResult), res);
-            Assert.AreEqual("/", ((RedirectResult)res).Url);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
         }
 
         [Test]
@@ -236,7 +235,7 @@ namespace CapRaffle.UnitTests
 
             // Assert
             mock.Verify(m => m.ForgotPassword(model.Email));
-            Assert.IsInstanceOf(typeof(RedirectResult), res);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
         }
         [Test]
         public void Forgot_Password_Not_Working_When_User_Dont_Exist()
@@ -252,7 +251,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.ForgotPassword(model);
 
             // Assert
-            Assert.IsInstanceOf(typeof(RedirectResult), res);
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
         }
     }
 }
