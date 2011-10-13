@@ -7,6 +7,7 @@
 <script type="text/javascript">
     $(function () {
         $("#SelectedEvent_DeadLine").datetimepicker({ dateFormat: 'dd.mm.yy' });
+        $("#SelectedEvent_StartTime").datetimepicker({ dateFormat: 'dd.mm.yy' });
     });
 </script>
 
@@ -53,6 +54,12 @@
     @Html.EditorFor(x => x.SelectedEvent.InformationUrl)
     @Html.ValidationMessageFor(x => x.SelectedEvent.InformationUrl)
     </p><p>
+    @Html.LabelFor(x => x.SelectedEvent.StartTime)
+    <br />
+    @Html.EditorFor(x => x.SelectedEvent.StartTime)
+    @Html.ValidationMessageFor(x => x.SelectedEvent.StartTime)
+    </p>
+    <p>
     @Html.LabelFor(x => x.SelectedEvent.DeadLine)
     <br />
     @Html.EditorFor(x => x.SelectedEvent.DeadLine)

@@ -43,7 +43,7 @@ namespace CapRaffle.Controllers
             //set proposed deadline to next full hour
             var currentDatetime = DateTime.Now;
             newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
-
+            newevent.StartTime = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(8);
             var model = new EventViewModel { SelectedEvent = newevent, Categories = categorySelectList() };
             
             ViewBag.action = "Create";

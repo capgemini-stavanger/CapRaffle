@@ -38,8 +38,10 @@ namespace CapRaffle.Domain.Model
             [Required(ErrorMessage = "Please enter a deadline for rsvp on this event")]
             [Display(Name="Deadline")]
             public DateTime DeadLine { get; set; }
+
+            [Required(ErrorMessage = "Please enter a start time for this event")]
+            [Display(Name = "Event starts")]
+            public DateTime StartTime { get; set; }
         }
     }
-
-    
 }
