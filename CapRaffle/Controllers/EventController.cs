@@ -41,6 +41,7 @@ namespace CapRaffle.Controllers
             PagingInfo pi = new PagingInfo
             {
                 CurrentPage = page,
+                Archive = model.Archive,
                 ItemsPerPage = PageSize,
                 TotalItems = numberOfEvents
             };

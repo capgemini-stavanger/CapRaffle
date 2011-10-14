@@ -15,8 +15,10 @@ namespace CapRaffle.HtmlHelpers
             StringBuilder result = new StringBuilder();
             for (int i = 1; i <= pagingInfo.TotalPages; i++)
             {
+                string archive = "";
+                if (pagingInfo.Archive) archive = "&Archive=true";
                 TagBuilder tag = new TagBuilder("a");
-                tag.MergeAttribute("href", pageUrl(i));
+                tag.MergeAttribute("href", pageUrl(i) + archive);
                 tag.InnerHtml = i.ToString();
                 if (i == pagingInfo.CurrentPage)
                     tag.AddCssClass("selected");
