@@ -14,7 +14,7 @@ namespace CapRaffle.Controllers
     public class EventController : Controller
     {
         private IEventRepository eventRepository;
-        public int PageSize = 3; //For testing, change in prod.
+        public int PageSize = 12;
 
         public EventController(IEventRepository eventRepository)
         {
@@ -32,8 +32,26 @@ namespace CapRaffle.Controllers
         {
             DateTime date = DateTime.Now.Date.AddDays(-5);
             var model = new EventsListViewModel();
-            if (archive) model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize), Archive = true };
-            else model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize) };
+            int numberOfEvents = 0;
+            if (archive)
+            {
+                numberOfEvents = eventRepository.Events.Where(x => x.DeadLine <= date).Count();
+                model.Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize); 
+                model.Archive = true;    
+            }
+            else
+            {
+                numberOfEvents = eventRepository.Events.Where(x => x.DeadLine >= date).Count();
+                model.Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize);
+            }
+            
+            PagingInfo pi = new PagingInfo
+            {
+                CurrentPage = page,
+                ItemsPerPage = PageSize,
+                TotalItems = numberOfEvents
+            };
+            model.PagingInfo = pi;
             return View(model);
         }
 

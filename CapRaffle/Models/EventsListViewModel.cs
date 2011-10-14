@@ -10,5 +10,6 @@ namespace CapRaffle.Models
     {
         public IEnumerable<Event> Events { get; set; }
         public Boolean Archive { get; set; }
+        public PagingInfo PagingInfo { get; set; }
     }
 }

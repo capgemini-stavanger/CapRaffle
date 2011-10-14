@@ -456,3 +456,11 @@ background-color: #8dbdd8;
 .ui-timepicker-div dl dt{ height: 25px; }
 .ui-timepicker-div dl dd{ margin: -25px 0 10px 65px; }
 .ui-timepicker-div td { font-size: 90%; }
+
+/* css for pagination */
+DIV.pager { text-align:right;
+padding: .1em 0 0 0; margin-top: 0.2em; }
+DIV.pager A { font-size: 1.1em; color: #000; text-decoration: none;
+padding: 0 .1em 0 .1em; }
+DIV.pager A:hover { background-color: #0088EE; }
+DIV.pager A.selected { background-color: #0099CC; color: #000; }

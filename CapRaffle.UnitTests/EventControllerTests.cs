@@ -12,6 +12,7 @@ using Event = CapRaffle.Domain.Model.Event;
 using MvcContrib.TestHelper;
 using CapRaffle.Models;
 using System.Web.Routing;
+using CapRaffle.HtmlHelpers;
 
 namespace CapRaffle.UnitTests
 {

@@ -35,6 +35,9 @@
         }
     </tbody>
 </table> 
+<div class="pager">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new {page = x}))
+</div>
 @if (Model.Archive)
 {
     <div class="buttons">
