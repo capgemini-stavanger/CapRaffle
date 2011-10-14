@@ -21,18 +21,7 @@ namespace CapRaffle.Controllers
             this.eventRepository = eventRepository;
         }
 
-<<<<<<< HEAD
-        //public ActionResult Index()
-        //{
-        //    DateTime date = DateTime.Now.Date;
-        //    var model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderByDescending(x => x.EventId) };
-        //    return View(model);
-        //}
-
         public ActionResult Index(bool archive = false, int page = 1)
-=======
-        public ActionResult Index(bool archive = false)
->>>>>>> 2e73c7c44d0bb18e72e6809f862c555fba5c6872
         {
             DateTime date = DateTime.Now.Date.AddDays(-5);
             var model = new EventsListViewModel();
