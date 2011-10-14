@@ -21,6 +21,7 @@ namespace CapRaffle.Controllers
             this.eventRepository = eventRepository;
         }
 
+<<<<<<< HEAD
         //public ActionResult Index()
         //{
         //    DateTime date = DateTime.Now.Date;
@@ -29,6 +30,9 @@ namespace CapRaffle.Controllers
         //}
 
         public ActionResult Index(bool archive = false, int page = 1)
+=======
+        public ActionResult Index(bool archive = false)
+>>>>>>> 2e73c7c44d0bb18e72e6809f862c555fba5c6872
         {
             DateTime date = DateTime.Now.Date.AddDays(-5);
             var model = new EventsListViewModel();
@@ -194,7 +198,7 @@ namespace CapRaffle.Controllers
 
         private IEnumerable<SelectListItem> categorySelectList() {
             var categories = eventRepository.Categories.ToList().Where(x => x.IsActive).Select(x => new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() });
-            categories.FirstOrDefault().Selected = true;
+            if(categories.Count() > 0) categories.FirstOrDefault().Selected = true;
             return categories;
         }
 
