@@ -63,7 +63,7 @@ namespace CapRaffle.Domain.Implementation
                 ruleSetId = rulesets.FirstOrDefault();
             }
             else {
-                if(context.Rules.Count() > 0)
+                if(context.RuleSets.Count() > 0)
                 {
                     ruleSetId = context.RuleSets.OrderByDescending(x => x.RuleSetId).FirstOrDefault().RuleSetId + 1;
                 }
