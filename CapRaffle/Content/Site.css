@@ -92,6 +92,7 @@ div#content
     border-left: 2px solid gray; 
     margin-left: 14em; 
     padding: 1em; 
+    min-height: 200px;
 }
 
 div#menu  

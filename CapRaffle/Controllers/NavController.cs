@@ -30,7 +30,7 @@ namespace CapRaffle.Controllers
                 menuViewModel.Add(new MenuViewModel { Text = "Log in", Action = "LogOn", Controller = "Account" });
                 menuViewModel.Add(new MenuViewModel { Text = "Register new account", Action = "Register", Controller = "Account" });
             }
-
+            menuViewModel.Add(new MenuViewModel { Text = "About CapRaffle", Action = "About", Controller = "Home" });
             var selected = menuViewModel.Where(x => x.Controller.ToLower().Equals(controller.ToLower()) && x.Action.ToLower().Equals(action.ToLower())).FirstOrDefault();
             if(selected != null) selected.isSelected = true;
 
