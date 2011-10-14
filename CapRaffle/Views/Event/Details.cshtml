@@ -19,9 +19,11 @@
         function toggleWinnerTable(total) {
             if(total == '@Model.SelectedEvent.AvailableSpots') {
                 $("#winners").hide()
+                $("#NotifyWinners").hide()
             }
             else { 
                 $("#winners").show()
+                $("#NotifyWinners").show()
             }
         }
         function toggleDrawWinnerAdministration(total) {
@@ -313,6 +315,14 @@
     </div>
     <br />
     @{ Html.RenderPartial("_DisplayWinner", Model.SelectedEvent.Winners); }
+    @if (ViewBag.isCreator) {
+        <div class="buttons">
+            <button type="submit" id="NotifyWinners" class="positive" name="NotifyWinners" onclick="javascript:window.location=('@Url.Action("NotifyWinners", "DrawWinner", new { eventid = @Model.SelectedEvent.EventId })')">
+                <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                Notify Winners
+            </button>
+        </div>
+    }
     <div class="bottom">
         <div class="drawWinner">
           
