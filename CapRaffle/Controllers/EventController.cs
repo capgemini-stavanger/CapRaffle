@@ -14,6 +14,7 @@ namespace CapRaffle.Controllers
     public class EventController : Controller
     {
         private IEventRepository eventRepository;
+        public int PageSize = 3; //For testing, change in prod.
 
         public EventController(IEventRepository eventRepository)
         {
@@ -27,12 +28,12 @@ namespace CapRaffle.Controllers
         //    return View(model);
         //}
 
-        public ActionResult Index(bool archive = false)
+        public ActionResult Index(bool archive = false, int page = 1)
         {
             DateTime date = DateTime.Now.Date.AddDays(-5);
             var model = new EventsListViewModel();
-            if (archive) model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine <= date), Archive = true };
-            else model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date) };
+            if (archive) model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize), Archive = true };
+            else model = new EventsListViewModel { Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize) };
             return View(model);
         }
 

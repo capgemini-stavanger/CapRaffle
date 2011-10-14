@@ -220,7 +220,22 @@ namespace CapRaffle.UnitTests
             result.AssertViewRendered().ForView("EventForm");
             mock.Verify(m => m.SaveEvent(It.IsAny<Event>()), Times.Never());
         }
+
+        [Test]
+        public void Can_Paginate()
+        {
+            controller.PageSize = 3;
+
+            ActionResult res = controller.Index(false, 2);
+            ViewResult wr = (ViewResult)res;
+            EventsListViewModel elvm = (EventsListViewModel)wr.ViewData.Model;
+            Event[] events = elvm.Events.ToArray();
+
+
+            // Assert - Should be 2 events.
+            Assert.IsTrue(events.Length == 2);
+            Assert.AreEqual(events[0].Name, "event 4");
+            Assert.AreEqual(events[1].Name, "event 5");
+        }
     }
-
-
 }
