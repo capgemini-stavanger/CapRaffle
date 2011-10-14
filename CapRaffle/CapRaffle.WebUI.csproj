@@ -84,6 +84,7 @@
     <Compile Include="Models\LogOnViewModel.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
+    <Compile Include="Models\PaginInfo.cs" />
     <Compile Include="Models\RulesViewModel.cs" />
     <Compile Include="Models\SaveRuleViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
