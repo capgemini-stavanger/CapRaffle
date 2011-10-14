@@ -75,6 +75,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\DrawWinnerViewModel.cs" />
@@ -84,7 +85,7 @@
     <Compile Include="Models\LogOnViewModel.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\MenuViewModel.cs" />
-    <Compile Include="Models\PaginInfo.cs" />
+    <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\RulesViewModel.cs" />
     <Compile Include="Models\SaveRuleViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -269,6 +270,7 @@
   <ItemGroup>
     <Content Include="Views\Shared\_Rules.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
