@@ -51,12 +51,14 @@
     <Compile Include="Abstract\IEmailSender.cs" />
     <Compile Include="Abstract\IEventRepository.cs" />
     <Compile Include="Abstract\IDrawingRepository.cs" />
+    <Compile Include="Abstract\IStatisticRepository.cs" />
     <Compile Include="Draw\DrawWinners.cs" />
     <Compile Include="Draw\ListExtension.cs" />
     <Compile Include="Implementation\DrawingRepository.cs" />
     <Compile Include="Implementation\EmailSender.cs" />
     <Compile Include="Implementation\EventRepository.cs" />
     <Compile Include="Implementation\AccountRepository.cs" />
+    <Compile Include="Implementation\StatisticRepository.cs" />
     <Compile Include="Model\CapRaffle.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -70,6 +72,8 @@
     <Compile Include="Draw\RuleParameter.cs" />
     <Compile Include="Draw\StandardRules.cs" />
     <Compile Include="Draw\UserTickets.cs" />
+    <Compile Include="Statistics\CategoryStatistics.cs" />
+    <Compile Include="Statistics\UserStatistics.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="Model\CapRaffle.edmx">
@@ -77,6 +81,7 @@
       <LastGenOutput>CapRaffle.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

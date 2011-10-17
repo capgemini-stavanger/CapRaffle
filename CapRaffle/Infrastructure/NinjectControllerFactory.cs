@@ -30,6 +30,7 @@ namespace CapRaffle.Infrastructure
             ninjectKernel.Bind<IEventRepository>().To<EventRepository>();
             ninjectKernel.Bind<IAccountRepository>().To<AccountRepository>();
             ninjectKernel.Bind<IDrawingRepository>().To<DrawingRepository>();
+            ninjectKernel.Bind<IStatisticRepository>().To<StatisticRepository>();
 
         }
     }

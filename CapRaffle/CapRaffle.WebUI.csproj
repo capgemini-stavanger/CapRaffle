@@ -73,6 +73,7 @@
     <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\ParticipantController.cs" />
     <Compile Include="ActionFilterAttributes\SetSelectedMenuAttribute.cs" />
+    <Compile Include="Controllers\StatisticController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -274,7 +275,9 @@
   <ItemGroup>
     <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Statistic\Category.cshtml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

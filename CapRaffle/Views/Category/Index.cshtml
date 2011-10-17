@@ -9,17 +9,38 @@
 <table>
     <tr>
         <th align="left">Name</th>
+        <th>Statistics</th>
         <th>Is active</th>
     </tr>
 
 @foreach (var item in Model.Categories)
 {
     <tr>
-        <th align="left">@Html.ActionLink(item.Name, "Edit", new { item.CategoryId })</th>
-        <th>@Html.CheckBoxFor(x => item.IsActive, new { @disabled = "disabled" })</th>        
+        <td align="left">
+            <div class="buttons">
+                <button class="positive" type="submit" id="statistics" onclick="javascript:window.location=('@Url.Action("Edit", "Category", new { categoryId = @item.CategoryId })')">
+                    <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+                    @item.Name
+                </button>
+            </div>
+        </td>
+         
+        <td>
+            <div class="buttons">
+                <button class="positive" type="submit" id="statistics" onclick="javascript:window.location=('@Url.Action("Category", "Statistic", new { categoryId = @item.CategoryId })')">
+                    <img src="@Url.Content("~/Content/images/help.png")" alt=""/>
+                    Statistics
+                </button>
+            </div>
+        </td> 
+        <td>@Html.CheckBoxFor(x => item.IsActive, new { @disabled = "disabled" })</td>      
     </tr>
 }
-
 </table>
-
-@Html.ActionLink("Create a new category", "Create")
+<br /><br />
+<div class="buttons">
+    <button class="positive" type="submit" id="statistics" onclick="javascript:window.location=('@Url.Action("Create", "Category")')">
+        <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+        Create a new category
+    </button>
+</div>
