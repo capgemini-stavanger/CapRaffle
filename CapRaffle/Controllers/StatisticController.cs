@@ -22,6 +22,8 @@ namespace CapRaffle.Controllers
         public ActionResult Category(int categoryId)
         {
             var winners = repository.CategoryStatistics(categoryId);
+            ViewBag.MenuController = "Category";
+            ViewBag.MenuAction = "Index";
             return View(winners);
         }
 
