@@ -16,6 +16,6 @@ namespace CapRaffle.Domain.Statistics
         public int NumberOfEventTicketsHandedOut { get; set; }
         public int NumberOfEventTicketsNotHandedOut { get; set; }
         public int UniqueNumberOfRaffleParticipantsInCategory { get; set; }
-        public Dictionary<string, int> NumberOfTimesEventCreatorHasWonHisOwnRaffle { get; set; }
+        public int NumberOfTimesEventCreatorHasWonHisOwnRaffle { get; set; }
     }
 }

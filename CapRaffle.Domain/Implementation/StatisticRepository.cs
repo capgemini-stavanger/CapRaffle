@@ -31,6 +31,7 @@ namespace CapRaffle.Domain.Implementation
             catStatistics.NumberOfEventTicketsHandedOut = NumberOfEventTicketsHandedOut();
             catStatistics.UniqueNumberOfRaffleParticipantsInCategory = UniqueNumberOfRaffleParticipantsInCategory();
             catStatistics.NumberOfEventTicketsNotHandedOut = NumberOfEventTicketsNotHandedOut();
+            catStatistics.NumberOfTimesEventCreatorHasWonHisOwnRaffle = NumberOfTimesEventCreatorHasWonHisOwnRaffle();
 
             return catStatistics;
         }
@@ -84,7 +85,14 @@ namespace CapRaffle.Domain.Implementation
 
         public int NumberOfTimesEventCreatorHasWonHisOwnRaffle()
         {
-            throw new NotImplementedException();
+            var events = context.Events.Where(x => x.CategoryId == categoryId).ToList();
+            int number = 0;
+            foreach (var selectedEvent in events)
+            {
+                number += selectedEvent.Winners
+                    .Where(x => x.UserEmail.Equals(selectedEvent.Creator)).Count() > 0 ? 1 : 0;
+            }
+            return number;
         }
     }
 }
