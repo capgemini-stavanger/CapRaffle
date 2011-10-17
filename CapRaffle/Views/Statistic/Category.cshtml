@@ -1,0 +1,63 @@
+﻿@model CapRaffle.Domain.Statistics.CategoryStatistics
+@{
+    ViewBag.Title = "Category";
+}
+<style type="text/css">
+    div#winners 
+    {
+        float: left;
+    }
+    div#loosers 
+    {
+        float:left;
+        margin-left: 5%;
+    }
+
+</style>
+<div>
+    <h2>Statistics for @Model.Category.Name</h2>
+    <div>
+        <table style="border-spacing: 0px">
+            <tr style="background-color: #E6EEEE"><td>Number of events with this category:</td><td>@Model.NumberOfEventsInCategory</td></tr>
+            <tr><td>Number of tickets Handed out in this category:</td><td>@Model.NumberOfEventTicketsHandedOut</td></tr>
+            <tr style="background-color: #E6EEEE"><td>Number of tickets not handed out in this category:</td><td>@Model.NumberOfEventTicketsNotHandedOut</td></tr>
+            <tr><td>Total number of Participants in this category:</td><td>@Model.NumberOfRaffleParticipantsInCategory</td></tr>
+            <tr style="background-color: #E6EEEE"><td>Unique number of participants in this category:</td><td>@Model.UniqueNumberOfRaffleParticipantsInCategory</td></tr>
+            
+        </table>
+    </div>
+    <div id="winners">
+    <h3>Top 5 winners</h3>
+    <table class="tablesorter">
+        <thead>
+            <tr><th>Name</th><th>Wins</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var winner in Model.Top5Winners)
+        {
+            decimal percent = ((decimal)winner.Wins / (decimal)winner.NumberOfParticipations) * 100;
+            <tr><td>@winner.Name</td><td>@winner.Wins / @winner.NumberOfParticipations (@string.Format("{0:0}",percent)%)</td></tr>
+            
+        }
+        </tbody>
+    </table>
+    </div>
+    <div id="loosers">
+    <h3>Top 5 loosers</h3>
+    <table class="tablesorter">
+        <thead>
+            <tr><th>Name</th><th>Losses</th></tr>
+        </thead>
+        <tbody>
+        @foreach (var looser in Model.Top5Loosers)
+        {
+            decimal percent = ((decimal)looser.Losses / (decimal)looser.NumberOfParticipations) * 100;
+            <tr><td>@looser.Name</td><td>@looser.Losses / @looser.NumberOfParticipations (@string.Format("{0:0}",percent)%)</td></tr>
+        }
+        </tbody>
+    </table>
+    </div>
+    <div style="clear: both"></div>
+    
+    
+</div>
