@@ -13,7 +13,7 @@ namespace CapRaffle.Domain.Implementation
         public bool UseSsl = false;
         public string Username = "";
         public string Password = "";
-        public string ServerName = "smtp.some.place.com";
+        public string ServerName = "smtp.is.fun";
         public int ServerPort = 25;
         public bool WriteAsFile = false; //Remeber this one
         public string FileLocation = @"c:\temp\";
@@ -53,8 +53,8 @@ namespace CapRaffle.Domain.Implementation
         public bool NotifyWinner(Winner winner)
         {
             string body = string.Format("Your won the raffle for event: {0} <br />", winner.Event.Name);
-            body += string.Format("You won {0} tickets <br />", winner.NumberOfSpotsWon);
-            body += string.Format("Please contact {0} to get your ticket(s)", winner.Event.Creator);
+            body += string.Format("You won {0} ticket(s) <br />", winner.NumberOfSpotsWon);
+            body += string.Format("Please look at the event details or contact {0} to get your ticket(s)", winner.Event.Creator);
             MailMessage mailMessage = new MailMessage(
                 emailSettings.MailFromAddress, // From
                 winner.UserEmail, // To
