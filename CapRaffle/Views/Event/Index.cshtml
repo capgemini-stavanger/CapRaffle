@@ -26,7 +26,7 @@
         {
             <tr>
                 <td>@Html.ActionLink(e.Name, "Details", new { id = e.EventId })</td>
-                <td>@e.Category.Name</td>
+                <td>@Html.ActionLink(e.Category.Name, "Category", "Statistic", new { categoryId = e.CategoryId }, null)</td>
                 <td>@e.AvailableSpots</td>
                 <td>@e.DeadLine</td>
                 <td>@e.StartTime</td>
