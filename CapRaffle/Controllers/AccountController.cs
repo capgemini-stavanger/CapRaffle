@@ -127,5 +127,10 @@ namespace CapRaffle.Controllers
             }
             return RedirectToAction("LogOn", "Account");
         }
+
+        public ActionResult PersonalPage()
+        {
+            return View();
+        }
     }
 }
