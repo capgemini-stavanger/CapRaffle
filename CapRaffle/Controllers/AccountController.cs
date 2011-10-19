@@ -37,7 +37,8 @@ namespace CapRaffle.Controllers
                     this.Error(string.Format("Password not changed"));
                 }
             }
-            return View("PersonalPage");
+            User retmodel = accountRepository.GetUserByEmail(model.Email);
+            return View("PersonalPage", retmodel);
         }
 
         [Authorize]
@@ -159,7 +160,8 @@ namespace CapRaffle.Controllers
             {
                 this.Error(string.Format("Name not changed"));
             }
-            return View("PersonalPage");
+            User retmodel = accountRepository.GetUserByEmail(model.Email);
+            return View("PersonalPage",retmodel);
         }
     }
 }
