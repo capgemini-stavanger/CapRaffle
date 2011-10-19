@@ -11,5 +11,6 @@ namespace CapRaffle.Domain.Statistics
         public int Wins { get; set; }
         public int NumberOfParticipations { get; set; }
         public int Losses { get; set; }
+        public int TotalSpots { get; set; }
     }
 }

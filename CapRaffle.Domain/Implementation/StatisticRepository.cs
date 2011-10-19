@@ -116,7 +116,7 @@ namespace CapRaffle.Domain.Implementation
             return 0;
         }
 
-        public int NumberOfTimesEventCreatorHasWonHisOwnRaffle()
+        private int NumberOfTimesEventCreatorHasWonHisOwnRaffle()
         {
             var events = context.Events.Where(x => x.CategoryId == categoryId).ToList();
             int number = 0;
@@ -126,6 +126,31 @@ namespace CapRaffle.Domain.Implementation
                     .Where(x => x.UserEmail.Equals(selectedEvent.Creator)).Count() > 0 ? 1 : 0;
             }
             return number;
+        }
+
+
+
+        public UserStatistics UserStatistics(string email)
+        {
+            User user = (User)context.Users.Where(x => x.Email == email).FirstOrDefault();
+            UserStatistics us = new UserStatistics();
+            if (user != null)
+            {
+                us.Wins = context.Winners.Where(x => x.UserEmail == email).Count();
+                us.Losses = context.UserEvents.Where(x => x.UserEmail == email).Count();
+                us.NumberOfParticipations = us.Wins + us.Losses;
+                us.TotalSpots = NumberOfUserTicketsHandedOut(email);
+            }
+            else { throw new ArgumentException("User does not exist"); }
+            return us;
+        }
+
+        private int NumberOfUserTicketsHandedOut(string email)
+        {
+            var winners = context.Winners.Where(x => x.UserEmail == email);
+            if (winners.Count() > 0)
+                return winners.Sum(x => x.NumberOfSpotsWon);
+            return 0;
         }
     }
 }

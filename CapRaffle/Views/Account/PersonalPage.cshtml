@@ -38,6 +38,15 @@
         });
     });
 </script>
+<h3>User info</h3>
+<table style="border-spacing: 0px">
+<tr style="background-color: #E6EEEE"><td>Name:</td><td>@Model.Name</td></tr>
+<tr><td>E-mail:</td><td>@Model.Email</td></tr>
+</table>
+<br />
+<h3>Statistics</h3>
+@{Html.RenderAction("UserStatisticPartial", "Statistic");}
+<br />
 <div class="buttons">
     <button type="submit" class="regular" name="ChangeName" id="ChangeName">
         <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
@@ -48,4 +57,6 @@
         Change password
     </button>
 </div>
-
+<br />
+<br />
+<br />

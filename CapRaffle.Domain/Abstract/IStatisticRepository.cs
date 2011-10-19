@@ -12,5 +12,6 @@ namespace CapRaffle.Domain.Abstract
     {
 
         CategoryStatistics CategoryStatistics(int categoryId);
+        UserStatistics UserStatistics(string email);
     }
 }

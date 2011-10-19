@@ -27,5 +27,10 @@ namespace CapRaffle.Controllers
             return View(winners);
         }
 
+        public ActionResult UserStatisticPartial()
+        {
+            var stats = repository.UserStatistics(HttpContext.User.Identity.Name);
+            return PartialView("_UserStatistic", stats);
+        }
     }
 }
