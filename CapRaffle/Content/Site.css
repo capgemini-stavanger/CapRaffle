@@ -123,8 +123,23 @@ div#menu a:hover
     margin-top: 45px;
     text-align:right;
     float: right;
+    
 }
-
+.topright a:link    
+{
+    text-decoration:  none;
+    color: #000;
+} 
+.topright a:visited 
+{
+    color: #000;
+    text-decoration:  none;
+} 
+.topright a:hover   
+{
+    color: #0099CC;
+    text-decoration:  none;
+} 
 /* Style for title.
 -----------------------------------------------------------*/
 .title a:link    

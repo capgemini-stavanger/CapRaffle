@@ -18,10 +18,13 @@
     <div id="header">
     
         <div class="topright"> 
-            @Html.ViewContext.HttpContext.User.Identity.Name
+        
+            
             @if (Html.ViewContext.HttpContext.User.Identity.IsAuthenticated)
             {
-                @Html.ActionLink("Sign out", "SignOut", "Account")
+                @Html.ActionLink(@Html.ViewContext.HttpContext.User.Identity.Name, "PersonalPage", "Account");
+                                                                                                             
+                @Html.ActionLink(" Sign out", "SignOut", "Account")
             }
             else
             {
