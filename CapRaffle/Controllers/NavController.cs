@@ -20,16 +20,12 @@ namespace CapRaffle.Controllers
             menuViewModel.Add(new MenuViewModel { Text = "Category list", Action = "index", Controller = "category" });
             menuViewModel.Add(new MenuViewModel { Text = "Create new category", Action = "create", Controller = "category" });
 
-            if (HttpContext.User.Identity.IsAuthenticated)
-            {
-                menuViewModel.Add(new MenuViewModel { Text = "Change password", Action = "ChangePassword", Controller = "Account" });
-                menuViewModel.Add(new MenuViewModel { Text = "Sign out", Action = "SignOut", Controller = "Account" });
-            }
-            else
+            if (!HttpContext.User.Identity.IsAuthenticated)
             {
                 menuViewModel.Add(new MenuViewModel { Text = "Log in", Action = "LogOn", Controller = "Account" });
                 menuViewModel.Add(new MenuViewModel { Text = "Register new account", Action = "Register", Controller = "Account" });
             }
+
             menuViewModel.Add(new MenuViewModel { Text = "About CapRaffle", Action = "About", Controller = "Home" });
             var selected = menuViewModel.Where(x => x.Controller.ToLower().Equals(controller.ToLower()) && x.Action.ToLower().Equals(action.ToLower())).FirstOrDefault();
             if(selected != null) selected.isSelected = true;
