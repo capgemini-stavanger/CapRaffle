@@ -13,6 +13,7 @@ namespace CapRaffle.Domain.Abstract
         bool Authenticate(string email, string password);
         bool Create(string email, string password, string name);
         bool ChangePassword(string email, string newPassword);
+        bool ChangeName(string email, string newName);
         void SignOut();
         void ForgotPassword(string email);
         User GetUserByEmail(string email);

@@ -128,9 +128,34 @@ namespace CapRaffle.Controllers
             return RedirectToAction("LogOn", "Account");
         }
 
+        [Authorize]
         public ActionResult PersonalPage()
         {
-            return View();
+            User model = accountRepository.GetUserByEmail(HttpContext.User.Identity.Name);
+            return View(model);
+        }
+
+        public ActionResult ChangeNamePartial()
+        {
+            User user = accountRepository.GetUserByEmail(HttpContext.User.Identity.Name);
+            return PartialView("_ChangeName", new ChangeNameViewModel { NewName = user.Name } );
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult ChangeName(ChangeNameViewModel model)
+        {
+            User userExist = accountRepository.GetUserByEmail(model.Email);
+            if (userExist != null)
+            {
+                accountRepository.ChangeName(model.Email, model.NewName);
+                this.Success(string.Format("Name changed to {0}", model.NewName));
+            }
+            else
+            {
+                this.Error(string.Format("Name not changed"));
+            }
+            return View("PersonalPage");
         }
     }
 }

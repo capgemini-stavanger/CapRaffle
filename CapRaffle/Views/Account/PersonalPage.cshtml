@@ -1,5 +1,30 @@
-﻿@{
-    ViewBag.Title = "PersonalPage";
+﻿@model CapRaffle.Domain.Model.User
+@{
+    ViewBag.Title = "Personal Page for " + Html.ViewContext.HttpContext.User.Identity.Name;
 }
 
-<h2>PersonalPage</h2>
+<script type="text/javascript">
+    $(function () {
+        var $dialog = $('<div></div>')
+		.dialog({
+		    autoOpen: false,
+		    title: 'Change your name',
+            modal: true,
+		    open: function (event, ui) {
+		        $(this).load('@Url.Action("ChangeNamePartial", "Account")');
+		    }
+		});
+
+        $('#ChangeName').click(function () {
+            $dialog.dialog('open');
+            return false;
+        });
+    });
+</script>
+
+<div class="buttons">
+    <button type="submit" class="regular" name="ChangeName" id="ChangeName">
+        <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
+        Change Name
+    </button>
+</div>

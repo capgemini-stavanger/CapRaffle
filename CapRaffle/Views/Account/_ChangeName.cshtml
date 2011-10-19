@@ -1,0 +1,21 @@
+﻿@model CapRaffle.Models.ChangeNameViewModel
+
+@using (Html.BeginForm("ChangeName", "Account"))
+{
+    Model.Email = Html.ViewContext.HttpContext.User.Identity.Name;
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Email)
+    <p>
+    @Html.LabelFor(x => x.NewName)
+    <br />
+    @Html.EditorFor(x => x.NewName)
+    @Html.ValidationMessageFor(x => x.NewName)
+    </p>
+    <div class="buttons">
+    <button type="submit" class="positive" name="ChangeName" id="ChangeName">
+        <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
+        Save
+    </button>
+</div>
+}

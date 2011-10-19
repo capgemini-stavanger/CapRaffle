@@ -58,6 +58,18 @@ namespace CapRaffle.Domain.Implementation
             return false;
         }
 
+        public bool ChangeName(string email, string newName)
+        {
+            User user = GetUserByEmail(email);
+            if (user != null)
+            {
+                user.Name = newName;
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
         public void SignOut()
         {
             FormsAuthentication.SignOut();
