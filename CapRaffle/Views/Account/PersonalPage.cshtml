@@ -20,6 +20,8 @@
 		    autoOpen: false,
 		    title: 'Change your password',
 		    modal: true,
+		    minHeight: 150  ,
+            minWidth: 600,
 		    open: function (event, ui) {
 		        $(this).load('@Url.Action("ChangePasswordPartial", "Account")');
 		    }
