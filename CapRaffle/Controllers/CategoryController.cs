@@ -44,6 +44,7 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Category category)
         {
             if (ModelStateAndCategoryNameIsValid(category))

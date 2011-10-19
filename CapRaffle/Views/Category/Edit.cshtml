@@ -70,6 +70,7 @@
 
 @using (Html.BeginForm("Edit", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
     @Html.HiddenFor(x => x.CategoryId)
     <p>Category name: @Html.TextBoxFor(x => x.Name) </p>
