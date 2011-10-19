@@ -142,10 +142,10 @@ namespace CapRaffle.UnitTests
 
 
             // Act
-            ActionResult res = accountController.ChangePassword();
+            ActionResult res = accountController.ChangePasswordPartial();
 
             // Assert
-            Assert.IsInstanceOf(typeof(ViewResult), res);
+            Assert.IsInstanceOf(typeof(PartialViewResult), res);
         }
 
         [Test]

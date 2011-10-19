@@ -31,20 +31,23 @@ namespace CapRaffle.Controllers
                 if (accountRepository.ChangePassword(model.Email, model.Password))
                 {
                     this.Success(string.Format("Password for {0} has been saved", model.Email));
-                    return RedirectToAction("Index", "Event");
+                }
+                else
+                {
+                    this.Error(string.Format("Password not changed"));
                 }
             }
-            return View(User);
+            return View("PersonalPage");
         }
 
         [Authorize]
-        public ActionResult ChangePassword()
+        public ActionResult ChangePasswordPartial()
         {
             ChangePasswordViewModel user = new ChangePasswordViewModel
             {
                 Email = HttpContext.User.Identity.Name
             };
-            return View(user);
+            return PartialView("_ChangePassword", user);
         }
 
         [HttpPost]
@@ -135,6 +138,7 @@ namespace CapRaffle.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult ChangeNamePartial()
         {
             User user = accountRepository.GetUserByEmail(HttpContext.User.Identity.Name);

@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
     $(function () {
-        var $dialog = $('<div></div>')
+        var $ChangeNameDialog = $('<div></div>')
 		.dialog({
 		    autoOpen: false,
 		    title: 'Change your name',
@@ -15,8 +15,23 @@
 		    }
 		});
 
+		var $ChangePasswordDialog = $('<div></div>')
+		.dialog({
+		    autoOpen: false,
+		    title: 'Change your password',
+		    modal: true,
+		    open: function (event, ui) {
+		        $(this).load('@Url.Action("ChangePasswordPartial", "Account")');
+		    }
+		});
+
         $('#ChangeName').click(function () {
-            $dialog.dialog('open');
+            $ChangeNameDialog.dialog('open');
+            return false;
+        });
+
+        $('#ChangePassword').click(function () {
+            $ChangePasswordDialog.dialog('open');
             return false;
         });
     });
@@ -25,6 +40,10 @@
     <button type="submit" class="regular" name="ChangeName" id="ChangeName">
         <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
         Change name
+    </button>
+        <button type="submit" class="regular" name="ChangePassword" id="ChangePassword">
+        <img src="@Url.Content("~/Content/images/textfield_key.png")" alt=""/>
+        Change password
     </button>
 </div>
 
