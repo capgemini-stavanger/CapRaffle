@@ -146,7 +146,7 @@ namespace CapRaffle.Controllers
         public ActionResult ChangeName(ChangeNameViewModel model)
         {
             User userExist = accountRepository.GetUserByEmail(model.Email);
-            if (userExist != null)
+            if (userExist != null && model.NewName != null)
             {
                 accountRepository.ChangeName(model.Email, model.NewName);
                 this.Success(string.Format("Name changed to {0}", model.NewName));
