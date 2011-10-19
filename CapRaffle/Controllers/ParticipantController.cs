@@ -54,6 +54,7 @@ namespace CapRaffle.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public JsonResult Delete(UserEvent participant)
         {
             if (!HttpContext.User.Identity.Name.Equals(participant.UserEmail))
@@ -72,6 +73,7 @@ namespace CapRaffle.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public JsonResult GetUsers(string email)
         {
             return this.Json(repository.Users.Where(x => x.Email.StartsWith(email)).Select(x => x.Email).ToList());
