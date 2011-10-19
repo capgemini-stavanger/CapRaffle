@@ -16,7 +16,7 @@ namespace CapRaffle.Domain.Implementation
         public bool UseSsl = false;
         public string Username = "";
         public string Password = "";
-        public string ServerName = "smtp.is.fun";
+        public string ServerName = "ismtp.corp.capgemini.com";
         public int ServerPort = 25;
         public bool WriteAsFile = false; //Remeber this one
         public string FileLocation = @"c:\temp\";

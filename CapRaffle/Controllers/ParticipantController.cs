@@ -39,6 +39,7 @@ namespace CapRaffle.Controllers
                         name = name.Replace("-", " ");
                         name = name.Replace(".", " ");
                         name = name.Substring(0, name.Length - 1);
+                        name = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
                     }
                     accountrepository.Create(participant.UserEmail, null, name);
                 }
