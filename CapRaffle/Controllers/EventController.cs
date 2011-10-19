@@ -7,6 +7,8 @@ using CapRaffle.Models;
 using CapRaffle.Domain.Model;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.ActionFilterAttributes;
+using System.IO;
+using System.Text;
 
 namespace CapRaffle.Controllers
 {
@@ -140,6 +142,55 @@ namespace CapRaffle.Controllers
             ViewBag.MenuAction = "Index";
             ViewBag.isCreator = selectedEvent.Creator.Equals(HttpContext.User.Identity.Name);
             return View(model);
+        }
+
+        public FileContentResult ExportEvent(int id)
+        {
+            var selectedevent = eventRepository.Events.Where(x => x.EventId == id).FirstOrDefault();
+            if (selectedevent == null)
+            {
+                throw new ArgumentException("The event does not exist");
+            }
+
+            var start = selectedevent.StartTime.ToUniversalTime().ToString("yyyyMMddTHHMMssZ");
+            var end = selectedevent.StartTime.AddHours(3).ToUniversalTime().ToString("yyyyMMddTHHMMssZ");
+
+            var calendardata = "BEGIN:VCALENDAR\r\n";
+            calendardata += "VERSION: 1.0\r\n";
+            calendardata += "BEGIN:VEVENT\r\n";
+            calendardata += "UID:"+Guid.NewGuid() + "\r\n";
+            calendardata += "DTSTART:"+ start + "\r\n";
+            calendardata += "DTEND:"+ end + "\r\n";
+            calendardata += "SUMMARY:[CapRaffle] " + selectedevent.Name + "\r\n";
+            calendardata += "DESCRIPTION:" + selectedevent.Description + "\r\n";
+            calendardata += "CLASS:PUBLIC\r\n";
+            calendardata += "CATEGORIES:" + selectedevent.Category.Name + "\r\n";
+            calendardata += "END:VEVENT\r\n";
+            calendardata += "END:VCALENDAR";
+            var encoding = new UTF8Encoding();
+
+            var bytearray = encoding.GetBytes(calendardata);
+
+            var filename = selectedevent.Name + ".ics";
+            Response.AppendHeader("Content-Disposition", "inline; filename=" + filename +";");
+
+            return File(bytearray, "text/calendar", filename);
+
+            //var memory = new MemoryStream();
+
+            //var writer = new StreamWriter(memory);
+
+            //writer.WriteLine("BEGIN:VEVENT");
+            //writer.WriteLine("UID:" + Guid.NewGuid());
+            //writer.WriteLine("DTSTART:" + selectedevent.StartTime);
+            //writer.WriteLine("DTEND:" + selectedevent.StartTime.AddHours(3));
+            //writer.WriteLine("SUMMARY:" + selectedevent.Name);
+            //writer.WriteLine("DESCRIPTION:" + selectedevent.Description);
+            //writer.WriteLine("CLASS:PUBLIC");
+            //writer.WriteLine("CATEGORIES:" + selectedevent.Category.Name);
+            //writer.WriteLine("END:VEVENT");
+
+            //memory.Seek(0, SeekOrigin.Begin);
         }
 
         [Authorize]
