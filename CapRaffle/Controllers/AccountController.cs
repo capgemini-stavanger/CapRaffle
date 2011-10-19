@@ -24,6 +24,7 @@ namespace CapRaffle.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -52,6 +53,7 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult LogOn(LogOnViewModel model, string returnUrl)
         {
             if (ModelState.IsValid)
@@ -75,6 +77,7 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(User user)
         {
             if (ModelState.IsValid)
@@ -114,6 +117,7 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ForgotPassword(LogOnViewModel model)
         {
             if (ModelState.IsValid)
@@ -148,6 +152,7 @@ namespace CapRaffle.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult ChangeName(ChangeNameViewModel model)
         {
             User userExist = accountRepository.GetUserByEmail(model.Email);

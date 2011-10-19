@@ -2,6 +2,7 @@
 
 @using (Html.BeginForm("ChangeName", "Account"))
 {
+    @Html.AntiForgeryToken();
     Model.Email = Html.ViewContext.HttpContext.User.Identity.Name;
     @Html.ValidationSummary(true)
     @Html.AntiForgeryToken()
