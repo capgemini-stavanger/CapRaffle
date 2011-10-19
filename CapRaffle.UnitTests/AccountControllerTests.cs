@@ -125,14 +125,12 @@ namespace CapRaffle.UnitTests
                 PasswordAgain = "newPass123"
             };
 
-            
-
             // Act
             ActionResult res = accountController.ChangePassword(model);
 
             // Assert
             mock.Verify(m => m.ChangePassword(model.Email, model.Password));
-            Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
+            Assert.IsInstanceOf(typeof(ViewResult), res);
         }
         
         [Test]
@@ -252,6 +250,61 @@ namespace CapRaffle.UnitTests
 
             // Assert
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
+        }
+
+        [Test]
+        public void Can_Get_Personal_Page()
+        {
+            // Act
+            ActionResult res = accountController.PersonalPage();
+
+            // Assert
+            Assert.IsInstanceOf(typeof(ViewResult), res);
+        }
+
+        [Test]
+        public void Can_Get_ChangeNamePartial_Page()
+        {
+            // Act
+            ActionResult res = accountController.ChangeNamePartial();
+
+            // Assert
+            Assert.IsInstanceOf(typeof(PartialViewResult), res);
+        }
+
+        [Test]
+        public void User_Can_Change_Name()
+        {
+            // Arrange
+            ChangeNameViewModel model = new ChangeNameViewModel
+            {
+                Email = "test@capgemini.com",
+                NewName = "Some name"
+            };
+
+            // Act
+            ActionResult res = accountController.ChangeName(model);
+
+            // Assert
+            mock.Verify(m => m.ChangeName(model.Email, model.NewName));
+            Assert.IsInstanceOf(typeof(ViewResult), res);
+        }
+
+        [Test]
+        public void User_Can_Not_Change_Name()
+        {
+            // Arrange
+            ChangeNameViewModel model = new ChangeNameViewModel
+            {
+                Email = "test@capgemini.com",
+            };
+
+            // Act
+            ActionResult res = accountController.ChangeName(model);
+
+            // Assert
+            mock.Verify(m => m.ChangeName(model.Email, model.NewName), Times.Never());
+            Assert.IsInstanceOf(typeof(ViewResult), res);
         }
     }
 }
