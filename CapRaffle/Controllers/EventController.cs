@@ -25,19 +25,19 @@ namespace CapRaffle.Controllers
 
         public ActionResult Index(bool archive = false, int page = 1)
         {
-            DateTime date = DateTime.Now.Date.AddDays(-5);
+            DateTime ArchiveDate = DateTime.Now;
             var model = new EventsListViewModel();
             int numberOfEvents = 0;
             if (archive)
             {
-                numberOfEvents = eventRepository.Events.Where(x => x.DeadLine <= date).Count();
-                model.Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize); 
+                numberOfEvents = eventRepository.Events.Where(x => x.StartTime <= ArchiveDate).Count();
+                model.Events = eventRepository.Events.Where(x => x.StartTime <= ArchiveDate).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize); 
                 model.Archive = true;    
             }
             else
             {
-                numberOfEvents = eventRepository.Events.Where(x => x.DeadLine >= date).Count();
-                model.Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize);
+                numberOfEvents = eventRepository.Events.Where(x => x.StartTime >= ArchiveDate).Count();
+                model.Events = eventRepository.Events.Where(x => x.StartTime >= ArchiveDate).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize);
             }
             
             PagingInfo pi = new PagingInfo
