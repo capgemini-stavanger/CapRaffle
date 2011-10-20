@@ -25,19 +25,19 @@ namespace CapRaffle.Controllers
 
         public ActionResult Index(bool archive = false, int page = 1)
         {
-            DateTime date = DateTime.Now.Date.AddDays(-5);
+            DateTime ArchiveDate = DateTime.Now;
             var model = new EventsListViewModel();
             int numberOfEvents = 0;
             if (archive)
             {
-                numberOfEvents = eventRepository.Events.Where(x => x.DeadLine <= date).Count();
-                model.Events = eventRepository.Events.Where(x => x.DeadLine <= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize); 
+                numberOfEvents = eventRepository.Events.Where(x => x.StartTime <= ArchiveDate).Count();
+                model.Events = eventRepository.Events.Where(x => x.StartTime <= ArchiveDate).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize); 
                 model.Archive = true;    
             }
             else
             {
-                numberOfEvents = eventRepository.Events.Where(x => x.DeadLine >= date).Count();
-                model.Events = eventRepository.Events.Where(x => x.DeadLine >= date).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize);
+                numberOfEvents = eventRepository.Events.Where(x => x.StartTime >= ArchiveDate).Count();
+                model.Events = eventRepository.Events.Where(x => x.StartTime >= ArchiveDate).OrderBy(x => x.Name).Skip((page - 1) * PageSize).Take(PageSize);
             }
             
             PagingInfo pi = new PagingInfo
@@ -54,15 +54,24 @@ namespace CapRaffle.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            var newevent = new Event();
-            //set proposed deadline to next full hour
-            var currentDatetime = DateTime.Now;
-            newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
-            newevent.StartTime = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(8);
-            var model = new EventViewModel { SelectedEvent = newevent, Categories = categorySelectList() };
-            
-            ViewBag.action = "Create";
-            return View("EventForm", model);
+            int categories = eventRepository.Categories.Where(x => x.IsActive == true).Count();
+            if (categories == 0)
+            {
+                this.Error(string.Format("You cannot create a new event because there are no active categories"));
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var newevent = new Event();
+                //set proposed deadline to next full hour
+                var currentDatetime = DateTime.Now;
+                newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
+                newevent.StartTime = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(8);
+                var model = new EventViewModel { SelectedEvent = newevent, Categories = categorySelectList() };
+
+                ViewBag.action = "Create";
+                return View("EventForm", model);
+            }
         }
 
         [HttpPost]

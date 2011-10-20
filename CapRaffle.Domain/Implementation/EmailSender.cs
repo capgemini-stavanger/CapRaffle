@@ -4,6 +4,7 @@ using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using System;
+using System.Configuration;
 
 namespace CapRaffle.Domain.Implementation
 {
@@ -12,14 +13,14 @@ namespace CapRaffle.Domain.Implementation
     // Could'nt all of these be exported to Web.config?
     public class EmailSettings
     {
-        public string MailFromAddress = "capraffle@capgemini.com";
-        public bool UseSsl = false;
-        public string Username = "";
-        public string Password = "";
-        public string ServerName = "ismtp.corp.capgemini.com";
-        public int ServerPort = 25;
-        public bool WriteAsFile = false; //Remeber this one
-        public string FileLocation = @"c:\temp\";
+        public string MailFromAddress = ConfigurationManager.AppSettings["SmtpMailFromAddress"];
+        public bool UseSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["SmtpUseSsl"]);
+        public string Username = ConfigurationManager.AppSettings["SmtpUsername"];
+        public string Password = ConfigurationManager.AppSettings["SmtpPassword"];
+        public string ServerName = ConfigurationManager.AppSettings["SmtpServer"];
+        public int ServerPort = Convert.ToInt32(ConfigurationManager.AppSettings["SmtpServerPort"]);
+        public bool WriteAsFile = Convert.ToBoolean(ConfigurationManager.AppSettings["SmtpWriteAsFile"]);
+        public string FileLocation = ConfigurationManager.AppSettings["SmtpFileLocation"];
     }
 
     public class EmailSender : IEmailSender

@@ -24,7 +24,6 @@ namespace CapRaffle.Controllers
 
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(UserEvent participant)
         {
             try
@@ -54,7 +53,6 @@ namespace CapRaffle.Controllers
 
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public JsonResult Delete(UserEvent participant)
         {
             if (!HttpContext.User.Identity.Name.Equals(participant.UserEmail))
