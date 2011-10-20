@@ -57,7 +57,7 @@ namespace CapRaffle.Controllers
             int categories = eventRepository.Categories.Where(x => x.IsActive == true).Count();
             if (categories == 0)
             {
-                this.Error(string.Format("You cannot create a new event be course there is no active categories"));
+                this.Error(string.Format("You cannot create a new event because there are no active categories"));
                 return RedirectToAction("Index");
             }
             else
