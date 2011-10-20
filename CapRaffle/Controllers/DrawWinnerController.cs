@@ -23,7 +23,6 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public PartialViewResult DrawWinner(int eventId, string view)
         {
             DrawWinnerViewModel model = GenerateDrawWinnerViewModel(eventId);
@@ -57,7 +56,6 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public JsonResult SaveRules(int eventid, List<SaveRuleViewModel> rules)
         {
             var ruleparameters = new List<RuleParameter>();
