@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapRaffle.Domain", "CapRaff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapRaffle.UnitTests", "CapRaffle.UnitTests\CapRaffle.UnitTests.csproj", "{BADAB764-50D0-4E1D-ABF9-0F8852E19DBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CapRaffle.WinService", "CapRaffle.WinService\CapRaffle.WinService.csproj", "{7D7EC593-213F-4E40-AB76-60EE540DC068}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{BADAB764-50D0-4E1D-ABF9-0F8852E19DBF}.Release|Mixed Platforms.Build.0 = Release|x86
 		{BADAB764-50D0-4E1D-ABF9-0F8852E19DBF}.Release|x86.ActiveCfg = Release|x86
 		{BADAB764-50D0-4E1D-ABF9-0F8852E19DBF}.Release|x86.Build.0 = Release|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Debug|x86.ActiveCfg = Debug|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Debug|x86.Build.0 = Debug|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Release|Any CPU.ActiveCfg = Release|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Release|Mixed Platforms.Build.0 = Release|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Release|x86.ActiveCfg = Release|x86
+		{7D7EC593-213F-4E40-AB76-60EE540DC068}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -428,7 +428,8 @@ namespace CapRaffle.Domain.Model
         /// <param name="deadLine">Initial value of the DeadLine property.</param>
         /// <param name="categoryId">Initial value of the CategoryId property.</param>
         /// <param name="startTime">Initial value of the StartTime property.</param>
-        public static Event CreateEvent(global::System.Int32 eventId, global::System.String name, global::System.DateTime created, global::System.String creator, global::System.Int32 availableSpots, global::System.DateTime deadLine, global::System.Int32 categoryId, global::System.DateTime startTime)
+        /// <param name="isAutomaticDrawing">Initial value of the IsAutomaticDrawing property.</param>
+        public static Event CreateEvent(global::System.Int32 eventId, global::System.String name, global::System.DateTime created, global::System.String creator, global::System.Int32 availableSpots, global::System.DateTime deadLine, global::System.Int32 categoryId, global::System.DateTime startTime, global::System.Boolean isAutomaticDrawing)
         {
             Event @event = new Event();
             @event.EventId = eventId;
@@ -439,6 +440,7 @@ namespace CapRaffle.Domain.Model
             @event.DeadLine = deadLine;
             @event.CategoryId = categoryId;
             @event.StartTime = startTime;
+            @event.IsAutomaticDrawing = isAutomaticDrawing;
             return @event;
         }
 
@@ -687,6 +689,30 @@ namespace CapRaffle.Domain.Model
         private global::System.DateTime _StartTime;
         partial void OnStartTimeChanging(global::System.DateTime value);
         partial void OnStartTimeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsAutomaticDrawing
+        {
+            get
+            {
+                return _IsAutomaticDrawing;
+            }
+            set
+            {
+                OnIsAutomaticDrawingChanging(value);
+                ReportPropertyChanging("IsAutomaticDrawing");
+                _IsAutomaticDrawing = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsAutomaticDrawing");
+                OnIsAutomaticDrawingChanged();
+            }
+        }
+        private global::System.Boolean _IsAutomaticDrawing;
+        partial void OnIsAutomaticDrawingChanging(global::System.Boolean value);
+        partial void OnIsAutomaticDrawingChanged();
 
         #endregion
     

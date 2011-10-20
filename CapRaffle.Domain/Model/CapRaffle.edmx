@@ -64,6 +64,7 @@
           <Property Name="DeadLine" Type="datetime" Nullable="false" />
           <Property Name="CategoryId" Type="int" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="IsAutomaticDrawing" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Rule">
           <Key>
@@ -266,6 +267,7 @@
           <NavigationProperty Name="UserEvents" Relationship="CapRaffleModel.FK_UserEvent_Event" FromRole="Event" ToRole="UserEvent" />
           <NavigationProperty Name="Winners" Relationship="CapRaffleModel.FK_Winner_Event" FromRole="Event" ToRole="Winner" />
           <Property Type="DateTime" Name="StartTime" Nullable="false" />
+          <Property Type="Boolean" Name="IsAutomaticDrawing" Nullable="false" />
         </EntityType>
         <EntityType Name="Rule">
           <Key>
@@ -427,6 +429,7 @@
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="CapRaffleModel.Event">
               <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="IsAutomaticDrawing" ColumnName="IsAutomaticDrawing" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
                 <ScalarProperty Name="DeadLine" ColumnName="DeadLine" />

@@ -9,8 +9,13 @@ using CapRaffle.Domain.Draw;
 
 namespace CapRaffle.Domain.Implementation
 {
-    public class DrawingRepository : IDrawingRepository
+    public class DrawingRepository : IDrawingRepository, IDisposable
     {
+        public void Dispose()
+        {
+            context.Dispose();
+        }
+
         private CapRaffleContext context = new CapRaffleContext();
 
         public IQueryable<Winner> Winners { get { return context.Winners; } }
@@ -38,6 +43,20 @@ namespace CapRaffle.Domain.Implementation
             context.UpdateDetachedEntity<Winner>(winner, x => x.EventId);
             context.Winners.DeleteObject(winner);
             context.SaveChanges();
+        }
+
+        public void PerformAutomaticDrawing()
+        {
+            var events = context.Events.Where(x => 
+                x.IsAutomaticDrawing && 
+                x.DeadLine < DateTime.Now &&
+                x.UserEvents.Count() > 0).ToList();
+            events.RemoveAll(x => x.Winners != null && (x.Winners.Sum(y => y.NumberOfSpotsWon) - x.AvailableSpots) <= 0);
+            foreach (var selectedEvent in events)
+            {
+                PerformDrawing(selectedEvent.EventId);
+                NotifyWinners(selectedEvent.EventId);
+            }
         }
         
         public void SaveRulesForEvent(int eventId, List<RuleParameter> ruleparameters)
@@ -120,5 +139,7 @@ namespace CapRaffle.Domain.Implementation
             }
             return emailsDeliverd;
         }
+
+
     }
 }

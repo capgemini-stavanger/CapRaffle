@@ -279,8 +279,12 @@
                     }
                     <br />
                     <br />
-                
                     <h4> Draw winner for this event</h4>
+                    @if(Model.SelectedEvent.IsAutomaticDrawing) {
+                     <p>
+                        This event draws winners automatically
+                     </p>   
+                    } else {
                     <div class="buttons">
                         <button type="submit" id="SetRules" class="positive" name="Select rules">
                                 <img src="@Url.Content("~/Content/images/apply2.png")" alt="" />
@@ -299,6 +303,7 @@
                         </button>
                     </div>
                     <br />
+                    }
                 </div>
             }
         </div>

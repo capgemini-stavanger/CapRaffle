@@ -175,22 +175,6 @@ namespace CapRaffle.Controllers
             Response.AppendHeader("Content-Disposition", "inline; filename=" + filename +";");
 
             return File(bytearray, "text/calendar", filename);
-
-            //var memory = new MemoryStream();
-
-            //var writer = new StreamWriter(memory);
-
-            //writer.WriteLine("BEGIN:VEVENT");
-            //writer.WriteLine("UID:" + Guid.NewGuid());
-            //writer.WriteLine("DTSTART:" + selectedevent.StartTime);
-            //writer.WriteLine("DTEND:" + selectedevent.StartTime.AddHours(3));
-            //writer.WriteLine("SUMMARY:" + selectedevent.Name);
-            //writer.WriteLine("DESCRIPTION:" + selectedevent.Description);
-            //writer.WriteLine("CLASS:PUBLIC");
-            //writer.WriteLine("CATEGORIES:" + selectedevent.Category.Name);
-            //writer.WriteLine("END:VEVENT");
-
-            //memory.Seek(0, SeekOrigin.Begin);
         }
 
         [Authorize]
