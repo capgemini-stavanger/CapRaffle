@@ -54,15 +54,24 @@ namespace CapRaffle.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            var newevent = new Event();
-            //set proposed deadline to next full hour
-            var currentDatetime = DateTime.Now;
-            newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
-            newevent.StartTime = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(8);
-            var model = new EventViewModel { SelectedEvent = newevent, Categories = categorySelectList() };
-            
-            ViewBag.action = "Create";
-            return View("EventForm", model);
+            int categories = eventRepository.Categories.Where(x => x.IsActive == true).Count();
+            if (categories == 0)
+            {
+                this.Error(string.Format("You cannot create a new event be course there is no active categories"));
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                var newevent = new Event();
+                //set proposed deadline to next full hour
+                var currentDatetime = DateTime.Now;
+                newevent.DeadLine = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(1);
+                newevent.StartTime = new DateTime(currentDatetime.Year, currentDatetime.Month, currentDatetime.Day, currentDatetime.Hour, 0, 0).AddHours(8);
+                var model = new EventViewModel { SelectedEvent = newevent, Categories = categorySelectList() };
+
+                ViewBag.action = "Create";
+                return View("EventForm", model);
+            }
         }
 
         [HttpPost]
