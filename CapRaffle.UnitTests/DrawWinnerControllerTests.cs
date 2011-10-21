@@ -64,6 +64,10 @@ namespace CapRaffle.UnitTests
                 new SelectListItem { Text = x.Name, Value = x.CategoryId.ToString() }
                 );
             drawingMock = new Mock<IDrawingRepository>();
+            drawingMock.Setup(m => m.Winners).Returns(new Winner[] {
+                new Winner { EventId = 1, UserEmail = "a@capgemini.com", NumberOfSpotsWon = 2 },
+                new Winner { EventId = 2, UserEmail = "remove@capgemini.com", NumberOfSpotsWon = 2}
+            }.AsQueryable());
             categories.FirstOrDefault().Selected = true;
 
             selectedEvent = new EventViewModel { SelectedEvent = eventMock.Object.Events.FirstOrDefault(), Categories = categories };
@@ -120,6 +124,28 @@ namespace CapRaffle.UnitTests
             Assert.IsInstanceOf(typeof(JsonResult), result);
         }
 
+        [Test]
+        public void Can_Notify_Winners()
+        {
+            drawingMock.Setup(m => m.NotifyWinners(1)).Returns(true);
+
+            var result = controller.NotifyWinners(1);
+
+            drawingMock.Verify(m => m.NotifyWinners(1), Times.AtLeastOnce());
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
+        public void Can_Not_Notify_Winners()
+        {
+
+            drawingMock.Setup(m => m.NotifyWinners(2)).Returns(false);
+
+            var result = controller.NotifyWinners(2);
+
+            drawingMock.Verify(m => m.NotifyWinners(2), Times.AtLeastOnce());
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
 
         private IEnumerable<UserEvent> SelectedEventParticipants()
         {
