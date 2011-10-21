@@ -74,24 +74,21 @@ namespace CapRaffle.Domain.Implementation
                 };
             mailMessage.To.Add(new MailAddress(winner.UserEmail));
 
-            using (var stream = new FileStream("event.vcs", FileMode.OpenOrCreate))
-            using (var writer = new StreamWriter(stream))
-            {
-                writer.WriteLine("BEGIN:VCALENDAR");
-                writer.WriteLine("VERSION:2.0");
-                writer.WriteLine("PRODID:-//hacksw/handcal//NONSGML v1.0//EN");
-                writer.WriteLine("BEGIN:VEVENT");
-                writer.WriteLine("DTSTAMP:{0}", ToCalendarDateString(winner.Event.Created));
-                writer.WriteLine("ORGANIZER:mailto:{0}", winner.Event.Creator);
-                writer.WriteLine("DTSTART:{0}", ToCalendarDateString(winner.Event.StartTime));
-                // End time
-                // writer.WriteLine("DTEND:{0}", ToCalendarDateString(winner.Event.DeadLine));
-                writer.WriteLine("SUMMARY:{0}", winner.Event.Name);
-                writer.WriteLine("END:VEVENT");
-                writer.WriteLine("END:VCALENDAR");
-            }
+            var calenderData = new StringWriter();
+            calenderData.WriteLine("BEGIN:VCALENDAR");
+            calenderData.WriteLine("VERSION:2.0");
+            calenderData.WriteLine("PRODID:-//hacksw/handcal//NONSGML v1.0//EN");
+            calenderData.WriteLine("BEGIN:VEVENT");
+            calenderData.WriteLine("DTSTAMP:{0}", ToCalendarDateString(winner.Event.Created));
+            calenderData.WriteLine("ORGANIZER:mailto:{0}", winner.Event.Creator);
+            calenderData.WriteLine("DTSTART:{0}", ToCalendarDateString(winner.Event.StartTime));
+            calenderData.WriteLine("SUMMARY:{0}", winner.Event.Name);
+            calenderData.WriteLine("END:VEVENT");
+            calenderData.WriteLine("END:VCALENDAR");
 
-            mailMessage.Attachments.Add(new Attachment("event.vcs"));
+            MemoryStream memoryStream = new MemoryStream(UTF32Encoding.Default.GetBytes(calenderData.ToString()));
+
+            mailMessage.Attachments.Add(new Attachment(memoryStream,"event.vcs"));
            
             if (emailSettings.WriteAsFile)
             {
@@ -120,7 +117,7 @@ namespace CapRaffle.Domain.Implementation
             return true;
         }
 
-        private  void SetUpSmtpClient()
+        private void SetUpSmtpClient()
         {
             smtpClient = new SmtpClient
                 {
