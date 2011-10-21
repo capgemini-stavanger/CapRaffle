@@ -307,7 +307,7 @@
         <h3 class="eventheader">@Model.SelectedEvent.Name</h3>
         <h6 style="">Created by: @Model.SelectedEvent.Creator on @Model.SelectedEvent.Created.ToString("dd MMM yyyy") under @Model.SelectedEvent.Category.Name</h6>
         <p>@Model.SelectedEvent.Description</p>
-        <p>@(Model.SelectedEvent.InformationUrl == null ? "" : "More information about the event: " + @Model.SelectedEvent.InformationUrl)</p>
+        <p>@(Model.SelectedEvent.InformationUrl == null ? "" : "More information about the event: ")<a href="http://@Model.SelectedEvent.InformationUrl"> @Model.SelectedEvent.InformationUrl </a></p>
         <h4>Number of spots: @Model.SelectedEvent.AvailableSpots</h4>
         <h4>Number of spots left: <span id="spotsleft">@Model.SelectedEvent.AvailableSpots</span></h4>
         <h4>The event starts: @Model.SelectedEvent.StartTime</h4>
