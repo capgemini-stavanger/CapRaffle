@@ -49,7 +49,6 @@ namespace CapRaffle.UnitTests
                 new Category { CategoryId = 4, Name = "Category4", IsActive = true },
                 new Category { CategoryId = 5, Name = "Category5", IsActive = true }
             }.AsQueryable());
-            
 
             newevent = new Event
             {
@@ -227,7 +226,7 @@ namespace CapRaffle.UnitTests
         {
             controller.PageSize = 3;
 
-            ActionResult res = controller.Index(false, 2);
+            ActionResult res = controller.Index(true, 2);
             ViewResult wr = (ViewResult)res;
             EventsListViewModel elvm = (EventsListViewModel)wr.ViewData.Model;
             Event[] events = elvm.Events.ToArray();
