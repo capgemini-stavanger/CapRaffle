@@ -57,7 +57,6 @@ namespace CapRaffle.WinService
                 using (var repository = new DrawingRepository())
                 {
                     repository.PerformAutomaticDrawing();
-                    WriteLogEntry("Performed automatic drawing" + " - " + DateTime.Now);
                 }
             }
             catch (Exception e)
