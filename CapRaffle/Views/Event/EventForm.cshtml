@@ -68,11 +68,8 @@
     <p>
     @Html.Label("Choose between automatic and manual drawing")
     <br />
-    @{ var selectlist = new List<SelectListItem>();
-       selectlist.Add(new SelectListItem { Text = "Manual", Value = "false" });
-       selectlist.Add(new SelectListItem { Text = "Automatic", Value = "true" });
-       }
-    @Html.DropDownListFor(x => x.SelectedEvent.IsAutomaticDrawing, selectlist)
+    @Html.RadioButtonFor(x => x.SelectedEvent.IsAutomaticDrawing, "false") Manual
+    @Html.RadioButtonFor(x => x.SelectedEvent.IsAutomaticDrawing, "true") Automatic
     </p>
     <div class="buttons">
         <button type="submit" class="positive" name="Submit">
