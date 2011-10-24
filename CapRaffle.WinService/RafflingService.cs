@@ -23,7 +23,7 @@ namespace CapRaffle.WinService
             InitializeComponent();
             timer = new System.Timers.Timer();
             timer.Elapsed += new ElapsedEventHandler(Listen);
-            timer.Interval = 10000;
+            timer.Interval = 120000;
             IsRunning = false;
         }
 
