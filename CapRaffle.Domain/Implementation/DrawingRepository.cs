@@ -51,7 +51,7 @@ namespace CapRaffle.Domain.Implementation
                 x.IsAutomaticDrawing && 
                 x.DeadLine < DateTime.Now &&
                 x.UserEvents.Count() > 0).ToList();
-            events.RemoveAll(x => x.Winners != null && (x.Winners.Sum(y => y.NumberOfSpotsWon) - x.AvailableSpots) <= 0);
+            events.RemoveAll(x => x.Winners.Count() > 0 && (x.Winners.Sum(y => y.NumberOfSpotsWon) - x.AvailableSpots) <= 0);
             foreach (var selectedEvent in events)
             {
                 PerformDrawing(selectedEvent.EventId);
