@@ -46,12 +46,12 @@
     $(function () {
         $("#login").click(function () {
             var form = $('#LogInForm');
-            form.attr('action', '/Account/LogOn');
+            form.attr('action', '@Url.Action("LogOn", "Account")');
         });
 
         $("#forgotPassword").click(function () {
             var form = $('#LogInForm');
-            form.attr('action', '/Account/ForgotPassword');
+            form.attr('action', '@Url.Action("ForgotPassword", "Account")');
         });
     }); 
 </script>
