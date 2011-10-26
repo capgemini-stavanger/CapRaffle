@@ -96,6 +96,7 @@ namespace CapRaffle.Domain.Implementation
         public List<RuleParameter> GetRulesForEvent(int eventId)
         {
             int ruleSetId;
+            List<RuleParameter> ruleList = new List<RuleParameter>();
             if (context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault() != null)
             {
                 ruleSetId = context.RuleSets.Where(e => e.EventId == eventId).FirstOrDefault().RuleSetId;
@@ -108,11 +109,11 @@ namespace CapRaffle.Domain.Implementation
                 {
                     ruleSetId = context.RuleSets.Where(e => e.CateogryId == eventCategoryId).FirstOrDefault().RuleSetId;
                 }
-                else { return null; }
+                else { return ruleList; }
             }
 
             List<RuleSet> ruleSets = context.RuleSets.Where(rs => rs.RuleSetId == ruleSetId).OrderBy(rs => rs.Priority).ToList<RuleSet>();
-            List<RuleParameter> ruleList = new List<RuleParameter>();
+            
             foreach (RuleSet rs in ruleSets)
             {
                 Rule rule = context.Rules.FirstOrDefault(r => r.RuleId == rs.RuleId);
