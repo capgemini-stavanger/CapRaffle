@@ -74,6 +74,19 @@
                 });
             });
 
+            $("#DeleteEvent").submit(function(e) {
+                e.preventDefault();
+                var self = this;
+                var dialog = $('<div style="display:none"></div>').appendTo('body');
+                dialog.dialog({
+                    modal: true,
+                    title: "Are you sure you want to delete this event?",
+                    buttons: {
+                        "Yes": function() { self.submit(); $(this).dialog("close");  },
+                        "No": function() { $(this).dialog("close");   }
+                        }
+                })
+            });
         
             $("#adminUserEmailTextbox").autocomplete({
                 source: function (request, response) {
@@ -230,7 +243,7 @@
             @if (@HttpContext.Current.User.Identity.Name.Equals(Model.SelectedEvent.Creator))
             {   
                 <h2>Event administration</h2>
-                using (Html.BeginForm("Delete", "Event"))
+                using (Html.BeginForm("Delete", "Event", FormMethod.Post, new { id = "DeleteEvent" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.Hidden("id", Model.SelectedEvent.EventId)
