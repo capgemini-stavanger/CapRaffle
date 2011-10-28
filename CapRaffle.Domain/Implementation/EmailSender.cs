@@ -57,6 +57,28 @@ namespace CapRaffle.Domain.Implementation
             return false;
         }
 
+        public bool NotifyLooser(UserEvent looser)
+        {
+            var body = "<h1>Sorry!</h1><br />";
+            body += string.Format("You did not win any tickets in the raffle for event: <strong>{0}</strong><br />", looser.Event.Name);
+            body += "Better luck next time";
+
+            var mailMessage = new MailMessage()
+                {
+                    From = new MailAddress(emailSettings.MailFromAddress),
+                    Subject = string.Format("[CapRaffle] {0} result", looser.Event.Name),
+                    Body = body,
+                    IsBodyHtml = true
+                };
+            mailMessage.To.Add(new MailAddress(looser.UserEmail));
+
+            if (emailSettings.WriteAsFile)
+            {
+                mailMessage.BodyEncoding = Encoding.ASCII;
+            }
+            return SendEmail(mailMessage);
+        }
+
         public bool NotifyWinner(Winner winner)
         {
             var body = "<h1>Congratulations!</h1><br />";
@@ -86,10 +108,10 @@ namespace CapRaffle.Domain.Implementation
             calenderData.WriteLine("END:VEVENT");
             calenderData.WriteLine("END:VCALENDAR");
 
-            MemoryStream memoryStream = new MemoryStream(UTF32Encoding.Default.GetBytes(calenderData.ToString()));
-
-            mailMessage.Attachments.Add(new Attachment(memoryStream,"event.vcs"));
-           
+            using (MemoryStream memoryStream = new MemoryStream(UTF32Encoding.Default.GetBytes(calenderData.ToString())))
+            {
+                mailMessage.Attachments.Add(new Attachment(memoryStream, "event.vcs"));
+            }
             if (emailSettings.WriteAsFile)
             {
                 mailMessage.BodyEncoding = Encoding.ASCII;

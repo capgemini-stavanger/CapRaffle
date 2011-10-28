@@ -351,10 +351,11 @@
     @{ Html.RenderPartial("_DisplayWinner", Model.SelectedEvent.Winners); }
     @if (ViewBag.isCreator && !@Model.SelectedEvent.IsAutomaticDrawing)
     {
+        <br />
         <div class="buttons">
-            <button type="submit" id="NotifyWinners" class="positive" name="NotifyWinners" onclick="javascript:window.location=('@Url.Action("NotifyWinners", "DrawWinner", new { eventid = @Model.SelectedEvent.EventId })')">
+            <button type="submit" id="NotifyParticipants" class="positive" name="NotifyParticipants" onclick="javascript:window.location=('@Url.Action("NotifyParticipants", "DrawWinner", new { eventid = @Model.SelectedEvent.EventId })')">
                 <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
-                Notify Winners
+                Notify Participants
             </button>
         </div>
     }

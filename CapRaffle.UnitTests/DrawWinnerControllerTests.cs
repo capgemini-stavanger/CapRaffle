@@ -127,11 +127,11 @@ namespace CapRaffle.UnitTests
         [Test]
         public void Can_Notify_Winners()
         {
-            drawingMock.Setup(m => m.NotifyWinners(1)).Returns(true);
+            drawingMock.Setup(m => m.NotifyParticipants(1)).Returns(true);
 
-            var result = controller.NotifyWinners(1);
+            var result = controller.NotifyParticipants(1);
 
-            drawingMock.Verify(m => m.NotifyWinners(1), Times.AtLeastOnce());
+            drawingMock.Verify(m => m.NotifyParticipants(1), Times.AtLeastOnce());
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
@@ -139,11 +139,11 @@ namespace CapRaffle.UnitTests
         public void Can_Not_Notify_Winners()
         {
 
-            drawingMock.Setup(m => m.NotifyWinners(2)).Returns(false);
+            drawingMock.Setup(m => m.NotifyParticipants(2)).Returns(false);
 
-            var result = controller.NotifyWinners(2);
+            var result = controller.NotifyParticipants(2);
 
-            drawingMock.Verify(m => m.NotifyWinners(2), Times.AtLeastOnce());
+            drawingMock.Verify(m => m.NotifyParticipants(2), Times.AtLeastOnce());
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 

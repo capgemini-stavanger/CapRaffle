@@ -55,7 +55,7 @@ namespace CapRaffle.Domain.Implementation
             foreach (var selectedEvent in events)
             {
                 PerformDrawing(selectedEvent.EventId);
-                NotifyWinners(selectedEvent.EventId);
+                NotifyParticipants(selectedEvent.EventId);
             }
         }
         
@@ -129,13 +129,18 @@ namespace CapRaffle.Domain.Implementation
             existingrules.ForEach(x => context.RuleSets.DeleteObject(x));
         }
 
-        public bool NotifyWinners(int eventId)
+        public bool NotifyParticipants(int eventId)
         {
             IEmailSender emailSender = new EmailSender();
             bool emailsDeliverd = true;
             foreach(Winner w in WinnersForEvent(eventId))
             {
                 bool emailSendt = emailSender.NotifyWinner(w);
+                if (!emailSendt) emailsDeliverd = false;
+            }
+            foreach (var looser in EventParticipantsForEvent(eventId))
+            {
+                bool emailSendt = emailSender.NotifyLooser(looser);
                 if (!emailSendt) emailsDeliverd = false;
             }
             return emailsDeliverd;
