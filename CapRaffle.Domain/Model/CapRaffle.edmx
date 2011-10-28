@@ -103,6 +103,7 @@
           <Property Name="UserEmail" Type="nvarchar" Nullable="false" MaxLength="150" />
           <Property Name="EventId" Type="int" Nullable="false" />
           <Property Name="NumberOfSpots" Type="int" Nullable="false" />
+          <Property Name="AcceptLessSpots" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Winner">
           <Key>
@@ -140,7 +141,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserEvent_Event">
-          <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="1" />
+          <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UserEvent" Type="CapRaffleModel.Store.UserEvent" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Event">
@@ -176,7 +179,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Winner_Event">
-          <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="1" />
+          <End Role="Event" Type="CapRaffleModel.Store.Event" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Winner" Type="CapRaffleModel.Store.Winner" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Event">
@@ -312,6 +317,7 @@
           <Property Type="Int32" Name="NumberOfSpots" Nullable="false" />
           <NavigationProperty Name="Event" Relationship="CapRaffleModel.FK_UserEvent_Event" FromRole="UserEvent" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="CapRaffleModel.FK_UserEvent_User" FromRole="UserEvent" ToRole="User" />
+          <Property Type="Boolean" Name="AcceptLessSpots" Nullable="false" />
         </EntityType>
         <EntityType Name="Winner">
           <Key>
@@ -477,6 +483,7 @@
           <EntitySetMapping Name="UserEvents">
             <EntityTypeMapping TypeName="CapRaffleModel.UserEvent">
               <MappingFragment StoreEntitySet="UserEvent">
+                <ScalarProperty Name="AcceptLessSpots" ColumnName="AcceptLessSpots" />
                 <ScalarProperty Name="NumberOfSpots" ColumnName="NumberOfSpots" />
                 <ScalarProperty Name="EventId" ColumnName="EventId" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
