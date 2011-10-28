@@ -331,16 +331,37 @@
         <h4>The event starts: @Model.SelectedEvent.StartTime</h4>
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
         <h4>Automatic drawing: @Model.SelectedEvent.IsAutomaticDrawing</h4>
+        
+        @if(Model.SelectedEvent.StartTime > DateTime.Now) {
         <div class="buttons">
             <button type="submit" id="exportEvent" class="positive" onclick="javascript:window.location=('@Url.Action("ExportEvent", "Event", new { id = Model.SelectedEvent.EventId })')">
-                <img src="@Url.Content("~/Content/images/apply2.png")" alt="" />
+                <img src="@Url.Content("~/Content/images/plus.gif")" alt="" />
                 Export to calendar
             </button>
         </div>
+        }
+        
     </div>
     <br />
+    <br /> 
+    @if(Model.SelectedEvent.DeadLine < DateTime.Now) {
+        <br />
+        <div class="buttons">
+            <button type="submit" id="ReplayRaffle" class="regular" name="ReplayRaffle">
+                <img src="@Url.Content("~/Content/images/replay.png")" alt=""/>
+                Replay raffle
+            </button>
+            <button type="submit" id="DisplayWinners" class="regular" name="DisplayWinners">
+                <img src="@Url.Content("~/Content/images/play.png")" alt=""/>
+                Display Winners
+            </button>
+        </div>
+    }
+    <br />
+    <br />
     @{ Html.RenderPartial("_DisplayWinner", Model.SelectedEvent.Winners); }
-    @if (ViewBag.isCreator && !@Model.SelectedEvent.IsAutomaticDrawing) {
+    @if (ViewBag.isCreator && !@Model.SelectedEvent.IsAutomaticDrawing)
+    {
         <div class="buttons">
             <button type="submit" id="NotifyWinners" class="positive" name="NotifyWinners" onclick="javascript:window.location=('@Url.Action("NotifyWinners", "DrawWinner", new { eventid = @Model.SelectedEvent.EventId })')">
                 <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
@@ -348,6 +369,7 @@
             </button>
         </div>
     }
+    <br />
     <div class="bottom">
         <div class="drawWinner">
           
