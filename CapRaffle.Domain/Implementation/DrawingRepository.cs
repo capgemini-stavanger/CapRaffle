@@ -5,7 +5,7 @@ using System.Text;
 using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using System.Reflection;
-using CapRaffle.Domain.Draw;
+using CapRaffle.Domain.Raffle;
 
 namespace CapRaffle.Domain.Implementation
 {

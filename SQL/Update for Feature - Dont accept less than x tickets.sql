@@ -1,2 +1,2 @@
 ALTER TABLE "UserEvent"
-ADD AcceptLessSpots bit NOT NULL DEFAULT 1;
+ADD AcceptLessSpots bit NOT NULL DEFAULT 0;

@@ -7,7 +7,7 @@ using CapRaffle.Domain.Abstract;
 using CapRaffle.Domain.Model;
 using CapRaffle.Models;
 using CapRaffle.ActionFilterAttributes;
-using CapRaffle.Domain.Draw;
+using CapRaffle.Domain.Raffle;
 
 namespace CapRaffle.Controllers
 {

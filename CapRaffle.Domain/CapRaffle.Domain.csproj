@@ -53,8 +53,8 @@
     <Compile Include="Abstract\IEventRepository.cs" />
     <Compile Include="Abstract\IDrawingRepository.cs" />
     <Compile Include="Abstract\IStatisticRepository.cs" />
-    <Compile Include="Draw\DrawWinners.cs" />
-    <Compile Include="Draw\ListExtension.cs" />
+    <Compile Include="Raffle\DrawWinners.cs" />
+    <Compile Include="Raffle\ListExtension.cs" />
     <Compile Include="Implementation\DrawingRepository.cs" />
     <Compile Include="Implementation\EmailSender.cs" />
     <Compile Include="Implementation\EventRepository.cs" />
@@ -70,9 +70,9 @@
     <Compile Include="Model\Category.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Draw\RuleParameter.cs" />
-    <Compile Include="Draw\StandardRules.cs" />
-    <Compile Include="Draw\UserTickets.cs" />
+    <Compile Include="Raffle\RuleParameter.cs" />
+    <Compile Include="Raffle\StandardRules.cs" />
+    <Compile Include="Raffle\UserTickets.cs" />
     <Compile Include="Statistics\CategoryStatistics.cs" />
     <Compile Include="Statistics\UserStatistics.cs" />
   </ItemGroup>
