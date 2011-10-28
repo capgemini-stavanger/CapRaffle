@@ -33,6 +33,7 @@ namespace CapRaffle.Domain.Raffle
 
             Random randomGenerator = new Random();
             int availableSpots = NumberOfSpotsLeftForEvent();
+            raffle.RemoveAll(x => (!x.AcceptLessSpots && x.NumberOfSpots > availableSpots));
 
             while (availableSpots > 0 && raffle.Count > 0)
             {
@@ -46,6 +47,7 @@ namespace CapRaffle.Domain.Raffle
                 SaveWinner(drawnParticipant, numberOfSpotsGiven);
                 DeleteParticipant(drawnParticipant);
                 availableSpots -= numberOfSpotsGiven;
+                raffle.RemoveAll(x => (!x.AcceptLessSpots && x.NumberOfSpots > availableSpots));
             }
         }
 

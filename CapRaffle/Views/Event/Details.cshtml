@@ -207,10 +207,13 @@
                         @Html.AntiForgeryToken()   
                         <input type="hidden" name="UserEmail" value="@HttpContext.Current.User.Identity.Name" />
                         <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
-            
+                        
                         <label for="NumberOfSpots">@(Model.UserIsParticipant ? "Update" : "Choose") number of spots</label>
                         @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots)    
-                    <!--<input type="text" name="NumberOfSpots" />-->
+                        <br />
+                        <label for="AcceptLessSpots">Accept less spots?</label>
+                        @Html.CheckBox("AcceptLessSpots", Model.UserIsParticipant ? Model.LoggedInParticipant.AcceptLessSpots : false)
+                
                             <div class="buttons">
                                 <button type="submit" class="positive" name="register">
                                 <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
@@ -282,6 +285,9 @@
                             <input id="adminUserEmailTextbox" type="text" name="UserEmail" />
                             <input type="hidden" name="EventId" value="@Model.SelectedEvent.EventId" />
                             @Html.DropDownList("NumberOfSpots", Model.NumberOfSpots) 
+                            <br />
+                            <label for="AcceptLessSpots">Accept less spots?</label>
+                        @Html.CheckBox("AcceptLessSpots", false)
                             <div class="buttons">
                                 <button type="submit" class="positive" name="register" id="adminAddParticipant">
                                     <img src="@Url.Content("~/Content/images/plus.gif")" alt=""/>
@@ -293,11 +299,14 @@
                     <br />
                     <br />
                     <h4> Draw winner for this event</h4>
-                    @if(Model.SelectedEvent.IsAutomaticDrawing) {
+                    @if (Model.SelectedEvent.IsAutomaticDrawing)
+                    {
                      <p>
                         This event draws winners automatically
                      </p>   
-                    } else {
+                    }
+                    else
+                    {
                     <div class="buttons">
                         <button type="submit" id="SetRules" class="positive" name="Select rules">
                                 <img src="@Url.Content("~/Content/images/apply2.png")" alt="" />
@@ -340,7 +349,8 @@
     </div>
     <br />
     @{ Html.RenderPartial("_DisplayWinner", Model.SelectedEvent.Winners); }
-    @if (ViewBag.isCreator && !@Model.SelectedEvent.IsAutomaticDrawing) {
+    @if (ViewBag.isCreator && !@Model.SelectedEvent.IsAutomaticDrawing)
+    {
         <div class="buttons">
             <button type="submit" id="NotifyWinners" class="positive" name="NotifyWinners" onclick="javascript:window.location=('@Url.Action("NotifyWinners", "DrawWinner", new { eventid = @Model.SelectedEvent.EventId })')">
                 <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
