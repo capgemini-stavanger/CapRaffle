@@ -13,5 +13,7 @@ namespace CapRaffle.Models
 
         public List<Winner> Winners { get; set; }
 
+        public List<UserEvent> Participants { get; set; }
+
     }
 }

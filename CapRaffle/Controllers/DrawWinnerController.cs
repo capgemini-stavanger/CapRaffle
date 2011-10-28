@@ -88,6 +88,7 @@ namespace CapRaffle.Controllers
             DrawWinnerViewModel viewModel = new DrawWinnerViewModel
             {
                 Winners = repository.WinnersForEvent(eventId).ToList<Winner>(),
+                Participants = repository.EventParticipantsForEvent(eventId).ToList<UserEvent>()
             };
             return viewModel;
         }
