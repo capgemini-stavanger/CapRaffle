@@ -330,7 +330,7 @@
         <h4>Number of spots left: <span id="spotsleft">@Model.SelectedEvent.AvailableSpots</span></h4>
         <h4>The event starts: @Model.SelectedEvent.StartTime</h4>
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
-
+        <h4>Automatic drawing: @Model.SelectedEvent.IsAutomaticDrawing</h4>
         <div class="buttons">
             <button type="submit" id="exportEvent" class="positive" onclick="javascript:window.location=('@Url.Action("ExportEvent", "Event", new { id = Model.SelectedEvent.EventId })')">
                 <img src="@Url.Content("~/Content/images/apply2.png")" alt="" />
