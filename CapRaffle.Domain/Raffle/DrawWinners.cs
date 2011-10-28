@@ -6,7 +6,7 @@ using CapRaffle.Domain.Model;
 using CapRaffle.Domain.Implementation;
 using System.Reflection;
 
-namespace CapRaffle.Domain.Draw
+namespace CapRaffle.Domain.Raffle
 {
     public class DrawWinners
     {
@@ -33,6 +33,7 @@ namespace CapRaffle.Domain.Draw
 
             Random randomGenerator = new Random();
             int availableSpots = NumberOfSpotsLeftForEvent();
+            raffle.RemoveAll(x => (!x.AcceptLessSpots && x.NumberOfSpots > availableSpots));
 
             while (availableSpots > 0 && raffle.Count > 0)
             {
@@ -46,6 +47,7 @@ namespace CapRaffle.Domain.Draw
                 SaveWinner(drawnParticipant, numberOfSpotsGiven);
                 DeleteParticipant(drawnParticipant);
                 availableSpots -= numberOfSpotsGiven;
+                raffle.RemoveAll(x => (!x.AcceptLessSpots && x.NumberOfSpots > availableSpots));
             }
         }
 

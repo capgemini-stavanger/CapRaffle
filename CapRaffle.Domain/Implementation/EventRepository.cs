@@ -9,7 +9,7 @@ using System.Data.Objects;
 using System.Reflection;
 using System.Data.Objects.DataClasses;
 using System.Data.Entity;
-using CapRaffle.Domain.Draw;
+using CapRaffle.Domain.Raffle;
 using Rule = CapRaffle.Domain.Model.Rule;
 
 namespace CapRaffle.Domain.Implementation

@@ -1348,12 +1348,14 @@ namespace CapRaffle.Domain.Model
         /// <param name="userEmail">Initial value of the UserEmail property.</param>
         /// <param name="eventId">Initial value of the EventId property.</param>
         /// <param name="numberOfSpots">Initial value of the NumberOfSpots property.</param>
-        public static UserEvent CreateUserEvent(global::System.String userEmail, global::System.Int32 eventId, global::System.Int32 numberOfSpots)
+        /// <param name="acceptLessSpots">Initial value of the AcceptLessSpots property.</param>
+        public static UserEvent CreateUserEvent(global::System.String userEmail, global::System.Int32 eventId, global::System.Int32 numberOfSpots, global::System.Boolean acceptLessSpots)
         {
             UserEvent userEvent = new UserEvent();
             userEvent.UserEmail = userEmail;
             userEvent.EventId = eventId;
             userEvent.NumberOfSpots = numberOfSpots;
+            userEvent.AcceptLessSpots = acceptLessSpots;
             return userEvent;
         }
 
@@ -1437,6 +1439,30 @@ namespace CapRaffle.Domain.Model
         private global::System.Int32 _NumberOfSpots;
         partial void OnNumberOfSpotsChanging(global::System.Int32 value);
         partial void OnNumberOfSpotsChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean AcceptLessSpots
+        {
+            get
+            {
+                return _AcceptLessSpots;
+            }
+            set
+            {
+                OnAcceptLessSpotsChanging(value);
+                ReportPropertyChanging("AcceptLessSpots");
+                _AcceptLessSpots = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AcceptLessSpots");
+                OnAcceptLessSpotsChanged();
+            }
+        }
+        private global::System.Boolean _AcceptLessSpots;
+        partial void OnAcceptLessSpotsChanging(global::System.Boolean value);
+        partial void OnAcceptLessSpotsChanged();
 
         #endregion
     

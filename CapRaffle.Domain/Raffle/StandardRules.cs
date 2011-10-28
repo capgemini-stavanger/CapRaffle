@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CapRaffle.Domain.Model;
 
-namespace CapRaffle.Domain.Draw
+namespace CapRaffle.Domain.Raffle
 {
     /*
      * Ideas for future rules

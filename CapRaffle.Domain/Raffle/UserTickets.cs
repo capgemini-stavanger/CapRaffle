@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CapRaffle.Domain.Draw
+namespace CapRaffle.Domain.Raffle
 {
     public class UserTickets
     {
