@@ -34,6 +34,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.1.1\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah.Contrib.Mvc">
+      <HintPath>..\packages\Elmah.Contrib.Mvc.1.0\lib\net40\Elmah.Contrib.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
@@ -111,6 +117,7 @@
     <Content Include="Content\images\success.png" />
     <Content Include="Content\images\textfield_key.png" />
     <Content Include="Content\images\Warning.png" />
+    <Content Include="favicon.ico" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_55_fbec88_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
