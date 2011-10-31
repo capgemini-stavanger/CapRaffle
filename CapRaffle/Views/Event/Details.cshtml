@@ -190,8 +190,28 @@
                     }
                 })
             });
+
+            $('button#ReplayRaffle').click(function () {
+                var replayView = $("#replayView option:selected").val();
+                $("#WinnerTable tr:gt(0)").each(function () {
+                    $(this).remove();
+                });
+                $("#winners").show();
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Action("ReplayRaffle", "DrawWinner")',
+                    data: 'eventId=@Model.SelectedEvent.EventId&view='+replayView,
+                    success: function(data){ 
+                        $('.drawWinner').html(data);
+                    }
+                })
+                $("#NotifyWinners").show();
+            });
             updateSpotsLeft();
+            $("#winners").hide();
+            $("#NotifyWinners").hide();
         });
+
     </script>
     <div class="right">
         <div class="participants">
@@ -323,6 +343,7 @@
                             <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
                             Draw winners
                         </button>
+
                     </div>
                     <br />
                     }
@@ -353,17 +374,16 @@
     </div>
     <br />
     <br /> 
-    @if(Model.SelectedEvent.DeadLine < DateTime.Now) {
+    @if(Model.SelectedEvent.Winners.Count > 0) {
         <br />
+        <p> The winners for this event is drawn, press the replay button to see who won</p>
+        
         <div class="buttons">
             <button type="submit" id="ReplayRaffle" class="regular" name="ReplayRaffle">
                 <img src="@Url.Content("~/Content/images/replay.png")" alt=""/>
                 Replay raffle
             </button>
-            <button type="submit" id="DisplayWinners" class="regular" name="DisplayWinners">
-                <img src="@Url.Content("~/Content/images/play.png")" alt=""/>
-                Display Winners
-            </button>
+            @Html.DropDownList("replayView", Model.RaffleTypes)
         </div>
     }
     <br />
@@ -377,6 +397,8 @@
                 Notify Winners
             </button>
         </div>
+        <br />
+        <br />
     }
     <br />
     <div class="bottom">
