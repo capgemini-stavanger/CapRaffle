@@ -11,7 +11,7 @@ using CapRaffle.Domain.Raffle;
 
 namespace CapRaffle.Controllers
 {
-    [Authorize]
+    
     [SetSelectedMenu]
     public class DrawWinnerController : Controller
     {
@@ -23,6 +23,7 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public PartialViewResult DrawWinner(int eventId, string view)
         {
             repository.PerformDrawing(eventId);
@@ -36,6 +37,7 @@ namespace CapRaffle.Controllers
             return PartialView(view, model);
         }
 
+        [Authorize]
         public JsonResult RemoveWinner(Winner winner)
         {
             var selectedEvent = repository.Winners.Where(x => x.EventId == winner.EventId).Select(x => x.Event).FirstOrDefault();
@@ -47,6 +49,7 @@ namespace CapRaffle.Controllers
             return this.Json(true);
         }
 
+        [Authorize]
         public PartialViewResult Rules(int eventId)
         {
             var rulesforevent = repository.GetRulesForEvent(eventId) ?? new List<RuleParameter>();
@@ -63,6 +66,7 @@ namespace CapRaffle.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public JsonResult SaveRules(int eventid, List<SaveRuleViewModel> rules)
         {
             var ruleparameters = new List<RuleParameter>();
@@ -75,6 +79,7 @@ namespace CapRaffle.Controllers
             return this.Json(true);
         }
 
+        [Authorize]
         public ActionResult NotifyParticipants(int eventid)
         {
             if (repository.NotifyParticipants(eventid))
