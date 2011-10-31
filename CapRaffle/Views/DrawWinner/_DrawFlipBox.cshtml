@@ -44,11 +44,16 @@
     function appendWinner() {
         if (winnerIndex > 0) {
             var url = '@Url.Content("~/Content/images/cross.png")';
-            $("#WinnerTable").append("<tr><td>" +
-                            "<img class='DeleteWinner' src='" + url + "' alt='' />" +
-                            "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[winnerIndex - 1].UserEmail + " />" +
-                            "<input type='hidden' class='Eventid' name='EventId' value=" + model[winnerIndex - 1].EventId + " />" +
-                        "</td><td>" + model[winnerIndex - 1].Name + "</td><td class='spots'>" + model[winnerIndex - 1].Spots + "</td></tr>");
+            var isCreator = '@TempData["isCreator"]';
+            var app = "<tr>";
+            if (isCreator == "True") {
+                app += "<td><img class='DeleteWinner' src='" + url + "' alt='' />";
+                app += "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[winnerIndex - 1].UserEmail + " />";
+                app += "<input type='hidden' class='Eventid' name='EventId' value=" + model[winnerIndex - 1].EventId + " />";
+                app += "</td>";
+            }
+            app += "<td>" + model[winnerIndex - 1].Name + "</td><td class='spots'>" + model[winnerIndex - 1].Spots + "</td></tr>";
+            $("#WinnerTable").append(app);
             updateSpotsLeft();
         }
         winnerIndex += 1;

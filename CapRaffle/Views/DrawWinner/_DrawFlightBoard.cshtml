@@ -33,11 +33,16 @@
         if (counter <= arrayLength) {
             if (next != 'CAPRAFFLE') {
                 var url = '@Url.Content("~/Content/images/cross.png")';
-                $("#WinnerTable").append("<tr><td>" +
-                            "<img class='DeleteWinner' src='" + url + "' alt='' />" +
-                            "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[counter].UserEmail + " />" +
-                            "<input type='hidden' class='Eventid' name='EventId' value=" + model[counter].EventId + " />" +
-                        "</td><td>" + model[counter].Name + "</td><td class='spots'>" + model[counter].Spots + "</td></tr>");
+                var isCreator = '@TempData["isCreator"]';
+                var app = "<tr>";
+                if (isCreator == "True") {
+                    app += "<td><img class='DeleteWinner' src='" + url + "' alt='' />";
+                    app += "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[counter].UserEmail + " />";
+                    app += "<input type='hidden' class='Eventid' name='EventId' value=" + model[counter].EventId + " />";
+                    app += "</td>";
+                }
+                app += "<td>" + model[counter].Name + "</td><td class='spots'>" + model[counter].Spots + "</td></tr>";
+                $("#WinnerTable").append(app);
                 updateSpotsLeft();
             }
             counter++;

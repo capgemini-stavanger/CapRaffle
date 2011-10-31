@@ -33,6 +33,7 @@ namespace CapRaffle.Controllers
 
         public PartialViewResult ReplayRaffle(int eventId, string view)
         {
+            
             DrawWinnerViewModel model = GenerateDrawWinnerViewModel(eventId);
             return PartialView(view, model);
         }
@@ -95,11 +96,17 @@ namespace CapRaffle.Controllers
 
         private DrawWinnerViewModel GenerateDrawWinnerViewModel(int eventId)
         {
+            
             DrawWinnerViewModel viewModel = new DrawWinnerViewModel
             {
                 Winners = repository.WinnersForEvent(eventId).ToList<Winner>(),
                 Participants = repository.EventParticipantsForEvent(eventId).ToList<UserEvent>()
             };
+            var participant = viewModel.Participants.FirstOrDefault();
+            if(participant != null) {
+                TempData["isCreator"] = participant.Event.Creator.Equals(HttpContext.User.Identity.Name);
+            }
+            
             return viewModel;
         }
     }
