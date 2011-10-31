@@ -24,7 +24,7 @@ namespace CapRaffle.Controllers
   
         public ViewResult Index()
         {
-            var model = new CategoryListViewModel { Categories = repository.Categories.OrderBy(c => c.Name) };
+            var model = new CategoryListViewModel { Categories = repository.Categories.OrderBy(c => c.Name).ToList() };
             
             return View(model);
         }

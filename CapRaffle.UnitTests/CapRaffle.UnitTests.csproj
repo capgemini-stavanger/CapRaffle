@@ -75,6 +75,7 @@
     <Compile Include="EventControllerTests.cs" />
     <Compile Include="NavControllerTests.cs" />
     <Compile Include="ParticipantControllerTests.cs" />
+    <Compile Include="Shared.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

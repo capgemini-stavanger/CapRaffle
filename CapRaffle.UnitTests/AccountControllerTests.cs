@@ -10,33 +10,8 @@ using CapRaffle.Domain.Model;
 namespace CapRaffle.UnitTests
 {
     [TestFixture]
-    class AccountControllerTests
+    class AccountControllerTests : Shared
     {
-
-        Mock<IAccountRepository> mock;
-        AccountController accountController;
-
-        [SetUp]
-        public void Setup()
-        {
-            mock = new Mock<IAccountRepository>();
-            mock.Setup(m => m.Authenticate("test@capgemini.com", "pass1234")).Returns(true);
-            mock.Setup(m => m.Create(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            mock.Setup(m => m.ChangePassword("test@capgemini.com", It.IsAny<string>())).Returns(true);
-            mock.Setup(m => m.GetUserByEmail("test@capgemini.com")).Returns(new User() { Email = "testc@capgemini.com" });
-            mock.Setup(m => m.Users).Returns(new User[] 
-            {
-                new User { Email="test@capgemini.com", Name="Test" },
-                new User { Email="test2@capgemini.com", Name="Test2" }
-            }.AsQueryable());
-
-            var mockContext = new Mock<ControllerContext>();
-            mockContext.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("test@capgemini.com");
-            mockContext.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
-
-            accountController = new AccountController(mock.Object);
-            accountController.ControllerContext = mockContext.Object;
-        }
 
         [Test]
         public void Can_Register_With_Capgemini_Email()
@@ -54,7 +29,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.Register(model);
 
             // Assert
-            mock.Verify(m => m.Create(model.Email, model.Password, model.Name));
+            accountMock.Verify(m => m.Create(model.Email, model.Password, model.Name));
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
         }
 
@@ -129,7 +104,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.ChangePassword(model);
 
             // Assert
-            mock.Verify(m => m.ChangePassword(model.Email, model.Password));
+            accountMock.Verify(m => m.ChangePassword(model.Email, model.Password));
             Assert.IsInstanceOf(typeof(ViewResult), res);
         }
         
@@ -173,7 +148,7 @@ namespace CapRaffle.UnitTests
 
             //Assert
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
-            mock.Verify(m => m.SignOut());
+            accountMock.Verify(m => m.SignOut());
         }
 
         [Test]
@@ -232,7 +207,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.ForgotPassword(model);
 
             // Assert
-            mock.Verify(m => m.ForgotPassword(model.Email));
+            accountMock.Verify(m => m.ForgotPassword(model.Email));
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), res);
         }
         [Test]
@@ -286,7 +261,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.ChangeName(model);
 
             // Assert
-            mock.Verify(m => m.ChangeName(model.Email, model.NewName));
+            accountMock.Verify(m => m.ChangeName(model.Email, model.NewName));
             Assert.IsInstanceOf(typeof(ViewResult), res);
         }
 
@@ -303,7 +278,7 @@ namespace CapRaffle.UnitTests
             ActionResult res = accountController.ChangeName(model);
 
             // Assert
-            mock.Verify(m => m.ChangeName(model.Email, model.NewName), Times.Never());
+            accountMock.Verify(m => m.ChangeName(model.Email, model.NewName), Times.Never());
             Assert.IsInstanceOf(typeof(ViewResult), res);
         }
     }

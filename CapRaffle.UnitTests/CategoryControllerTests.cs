@@ -14,29 +14,13 @@ using CapRaffle.Models;
 namespace CapRaffle.UnitTests
 {
     [TestFixture]
-    public class CategoryControllerTests
+    public class CategoryControllerTests : Shared
     {
-        Mock<IEventRepository> mock;
-        CategoryController controller;
-
-        [SetUp]
-        public void Setup()
-        {
-            mock = new Mock<IEventRepository>();
-            mock.Setup(m => m.Categories).Returns(new Category[] 
-            {
-                new Category { CategoryId = 1, Name = "Hockey" },
-                new Category { CategoryId = 2, Name = "A category" },
-                new Category { CategoryId = 3, Name = "Other" }
-            }.AsQueryable());
-            
-            controller = new CategoryController(mock.Object);
-        }
 
         [Test]
         public void Can_Create_New_Category()
         {
-            ViewResult result = (ViewResult)controller.Create();
+            ViewResult result = (ViewResult)categoryController.Create();
 
             result.AssertViewRendered().ForView("Edit");
             Assert.IsInstanceOf(typeof(Category), result.Model);
@@ -45,14 +29,14 @@ namespace CapRaffle.UnitTests
         [Test]
         public void Can_Save_New_Category()
         {
-            ViewResult target = (ViewResult)controller.Create();
+            ViewResult target = (ViewResult)categoryController.Create();
 
             Category newCategory = target.Model as Category;
             newCategory.Name = "Soccer";
 
-            var result = controller.Edit(newCategory);
+            var result = categoryController.Edit(newCategory);
 
-            mock.Verify(m => m.SaveCategory(newCategory), Times.Once());
+            eventMock.Verify(m => m.SaveCategory(newCategory), Times.Once());
         }
 
         [Test]
@@ -60,9 +44,9 @@ namespace CapRaffle.UnitTests
         {
             var category = new Category { Name = "Hockey" };
 
-            var result = controller.Edit(category);
+            var result = categoryController.Edit(category);
 
-            mock.Verify(m => m.SaveCategory(It.IsAny<Category>()), Times.Never());
+            eventMock.Verify(m => m.SaveCategory(It.IsAny<Category>()), Times.Never());
             result.AssertViewRendered().ForView(string.Empty);
         }
 
@@ -71,34 +55,34 @@ namespace CapRaffle.UnitTests
         {
             var category = new Category { Name = null };
 
-            var result = controller.Edit(category);
+            var result = categoryController.Edit(category);
 
-            mock.Verify(m => m.SaveCategory(It.IsAny<Category>()), Times.Never());
+            eventMock.Verify(m => m.SaveCategory(It.IsAny<Category>()), Times.Never());
             result.AssertViewRendered().ForView(string.Empty);
         }
 
         [Test]
         public void Can_Display_All_Categories_From_Repository_Alphabetical()
         {
-            var result = controller.Index();
+            var result = categoryController.Index();
 
             var categoryListViewModel = result.Model as CategoryListViewModel;
 
-            mock.Verify(m => m.Categories, Times.Once());
+            eventMock.Verify(m => m.Categories, Times.Once());
             result.AssertViewRendered().ForView(string.Empty);
-            Assert.AreEqual(mock.Object.Categories.Count(), categoryListViewModel.Categories.Count());
+            Assert.AreEqual(eventMock.Object.Categories.Count(), categoryListViewModel.Categories.Count());
             Assert.AreEqual("A category", categoryListViewModel.Categories.First().Name); 
         }
 
         [Test]
         public void Can_Edit_Existing_Category()
         {
-            var target = controller.Index();
+            var target = categoryController.Index();
             var categoryListViewModel = target.Model as CategoryListViewModel;
 
 
-            var categoryToEdit = categoryListViewModel.Categories.First();            
-            ViewResult result = (ViewResult)controller.Edit(categoryToEdit.CategoryId);
+            var categoryToEdit = categoryListViewModel.Categories.First();
+            ViewResult result = (ViewResult)categoryController.Edit(categoryToEdit.CategoryId);
 
             var categorySentToView = result.Model as Category;
 
@@ -110,22 +94,22 @@ namespace CapRaffle.UnitTests
         [Test]
         public void Can_Save_Edited_Category()
         {
-            var target = controller.Index();
+            var target = categoryController.Index();
             var categoryListViewModel = target.Model as CategoryListViewModel;
 
             var categoryToEdit = categoryListViewModel.Categories.First();
             categoryToEdit.Name = "Hockey edited";
 
-            var result = controller.Edit(categoryToEdit);
+            var result = categoryController.Edit(categoryToEdit);
 
             result.AssertActionRedirect().ToAction("Index");
-            mock.Verify(m => m.SaveCategory(categoryToEdit), Times.Once());
+            eventMock.Verify(m => m.SaveCategory(categoryToEdit), Times.Once());
         }
 
         [Test]
         public void Can_Display_Category_Rules()
         {
-            var result = controller.Rules(1);
+            var result = categoryController.Rules(1);
 
             result.AssertPartialViewRendered().ForView("_Rules");
             Assert.IsInstanceOf(typeof(PartialViewResult), result);
@@ -138,7 +122,7 @@ namespace CapRaffle.UnitTests
             SaveRuleViewModel srvm = new SaveRuleViewModel { RuleId = 1, Param = 10 };
             rules.Add(srvm);
 
-            var result = controller.SaveRules(1, rules);
+            var result = categoryController.SaveRules(1, rules);
 
             Assert.IsInstanceOf(typeof(JsonResult), result);
         }
