@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using CapRaffle.Infrastructure;
+using CapRaffle.Controllers;
 
 namespace CapRaffle
 {
@@ -38,6 +39,21 @@ namespace CapRaffle
             RegisterRoutes(RouteTable.Routes);
 
             ControllerBuilder.Current.SetControllerFactory(new NinjectControllerFactory());
+        }
+
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            //Should implementing logging of exception here
+            //var exception = server.GetLastError();
+
+            Response.Clear();
+            var routedata = new RouteData();
+            routedata.Values.Add("controller", "Home");
+            routedata.Values.Add("action", "Error");
+            Server.ClearError();
+            Response.TrySkipIisCustomErrors = true;
+            IController home = new HomeController();
+            home.Execute(new RequestContext(new HttpContextWrapper(Context), routedata));
         }
     }
 }

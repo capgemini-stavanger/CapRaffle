@@ -75,9 +75,9 @@ namespace CapRaffle.Controllers
             return this.Json(true);
         }
 
-        public ActionResult NotifyWinners(int eventid)
+        public ActionResult NotifyParticipants(int eventid)
         {
-            if (repository.NotifyWinners(eventid))
+            if (repository.NotifyParticipants(eventid))
             {
                 this.Success("Winners are now notified");
             }
