@@ -205,11 +205,18 @@
                         $('.drawWinner').html(data);
                     }
                 })
-                $("#NotifyWinners").show();
+                $("#NotifyParticipants").show();
             });
             updateSpotsLeft();
             $("#winners").hide();
-            $("#NotifyWinners").hide();
+            $("#NotifyParticipants").hide();
+
+            var today = new Date();
+            var startTime = new Date();
+            startTime.setFullYear( @Model.SelectedEvent.StartTime.Year , @Model.SelectedEvent.StartTime.Month-1, @Model.SelectedEvent.StartTime.Day);
+            if (today > startTime) {
+                $('button#ReplayRaffle').click();
+            }
         });
 
     </script>
