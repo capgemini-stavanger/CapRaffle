@@ -190,8 +190,35 @@
                     }
                 })
             });
+
+            $('button#ReplayRaffle').click(function () {
+                var replayView = $("#replayView option:selected").val();
+                $("#WinnerTable tr:gt(0)").each(function () {
+                    $(this).remove();
+                });
+                $("#winners").show();
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Action("ReplayRaffle", "DrawWinner")',
+                    data: 'eventId=@Model.SelectedEvent.EventId&view='+replayView,
+                    success: function(data){ 
+                        $('.drawWinner').html(data);
+                    }
+                })
+                $("#NotifyParticipants").show();
+            });
             updateSpotsLeft();
+            $("#winners").hide();
+            $("#NotifyParticipants").hide();
+
+            var today = new Date();
+            var startTime = new Date();
+            startTime.setFullYear( @Model.SelectedEvent.StartTime.Year , @Model.SelectedEvent.StartTime.Month-1, @Model.SelectedEvent.StartTime.Day);
+            if (today > startTime) {
+                $('button#ReplayRaffle').click();
+            }
         });
+
     </script>
     <div class="right">
         <div class="participants">
@@ -323,6 +350,7 @@
                             <img src="@Url.Content("~/Content/images/apply2.png")" alt=""/>
                             Draw winners
                         </button>
+
                     </div>
                     <br />
                     }
@@ -340,13 +368,32 @@
         <h4>The event starts: @Model.SelectedEvent.StartTime</h4>
         <h4>Deadline: @Model.SelectedEvent.DeadLine</h4>
         <h4>Automatic drawing: @Model.SelectedEvent.IsAutomaticDrawing</h4>
+        
+        @if(Model.SelectedEvent.StartTime > DateTime.Now) {
         <div class="buttons">
             <button type="submit" id="exportEvent" class="positive" onclick="javascript:window.location=('@Url.Action("ExportEvent", "Event", new { id = Model.SelectedEvent.EventId })')">
-                <img src="@Url.Content("~/Content/images/apply2.png")" alt="" />
+                <img src="@Url.Content("~/Content/images/plus.gif")" alt="" />
                 Export to calendar
             </button>
         </div>
+        }
+        
     </div>
+    <br />
+    <br /> 
+    @if(Model.SelectedEvent.Winners.Count > 0) {
+        <br />
+        <p> The winners for this event is drawn, press the replay button to see who won</p>
+        
+        <div class="buttons">
+            <button type="submit" id="ReplayRaffle" class="regular" name="ReplayRaffle">
+                <img src="@Url.Content("~/Content/images/replay.png")" alt=""/>
+                Replay raffle
+            </button>
+            @Html.DropDownList("replayView", Model.RaffleTypes)
+        </div>
+    }
+    <br />
     <br />
     @{ Html.RenderPartial("_DisplayWinner", Model.SelectedEvent.Winners); }
     @if (ViewBag.isCreator && !@Model.SelectedEvent.IsAutomaticDrawing)
@@ -358,7 +405,10 @@
                 Notify Participants
             </button>
         </div>
+        <br />
+        <br />
     }
+    <br />
     <div class="bottom">
         <div class="drawWinner">
           

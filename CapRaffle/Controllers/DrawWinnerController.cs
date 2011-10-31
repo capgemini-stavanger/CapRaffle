@@ -25,6 +25,13 @@ namespace CapRaffle.Controllers
         [HttpPost]
         public PartialViewResult DrawWinner(int eventId, string view)
         {
+            repository.PerformDrawing(eventId);
+            DrawWinnerViewModel model = GenerateDrawWinnerViewModel(eventId);
+            return PartialView(view, model);
+        }
+
+        public PartialViewResult ReplayRaffle(int eventId, string view)
+        {
             DrawWinnerViewModel model = GenerateDrawWinnerViewModel(eventId);
             return PartialView(view, model);
         }
@@ -83,8 +90,6 @@ namespace CapRaffle.Controllers
 
         private DrawWinnerViewModel GenerateDrawWinnerViewModel(int eventId)
         {
-            repository.PerformDrawing(eventId);
-
             DrawWinnerViewModel viewModel = new DrawWinnerViewModel
             {
                 Winners = repository.WinnersForEvent(eventId).ToList<Winner>(),
