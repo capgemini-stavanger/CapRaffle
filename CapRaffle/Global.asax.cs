@@ -22,7 +22,7 @@ namespace CapRaffle
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.([iI][cC][oO])(/.*)?" });
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
@@ -44,7 +44,7 @@ namespace CapRaffle
         protected void Application_Error(object sender, EventArgs e)
         {
             //Should implementing logging of exception here
-            //var exception = server.GetLastError();
+            var exception = Server.GetLastError();
 
             Response.Clear();
             var routedata = new RouteData();
