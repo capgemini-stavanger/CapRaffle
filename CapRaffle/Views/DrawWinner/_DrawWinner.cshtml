@@ -29,6 +29,7 @@
         var isCreator = '@TempData["isCreator"]';
         var app = "<tr>";
         if (isCreator == "True") app += "<td><img class='DeleteWinner' src='" + url + "' alt='' />";
+        else app += "<td></td>";
         app += "<input type='hidden' class='winnerEmail' name='Participant' value=" + model[winnerIndex].UserEmail + " />";
         app += "<input type='hidden' class='Eventid' name='EventId' value=" + model[winnerIndex].EventId + " />";
         if (isCreator) app += "</td>";
