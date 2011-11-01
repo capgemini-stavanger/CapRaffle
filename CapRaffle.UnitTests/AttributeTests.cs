@@ -18,20 +18,22 @@ namespace CapRaffle.UnitTests
         [Test]
         public void Can_get_correct_viewbag_from_set_selected_menu_attribute()
         {
+            //Arrange
             var attribute = new SetSelectedMenuAttribute();
             var routedata = new RouteData();
             routedata.Values.Add("controller", "Event");
             routedata.Values.Add("action", "Index");
             var httpcontext = new Mock<HttpContextBase>(MockBehavior.Loose);
             var context = new ControllerContext(httpcontext.Object, routedata, eventController);
-
             var filtercontext = new ActionExecutingContext(
                 context, 
                 Rhino.Mocks.MockRepository.GenerateStub<ActionDescriptor>(), 
                 new Dictionary<string, object>());
             
+            //Act
             attribute.OnActionExecuting(filtercontext);
 
+            //Assert
             Assert.AreEqual("Event", eventController.ViewBag.MenuController);
             Assert.AreEqual("Index", eventController.ViewBag.MenuAction);
         }
