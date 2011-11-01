@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using CapRaffle.Models;
 using System.Web.Routing;
 using NUnit.Framework;
+using System.Web;
 
 
 namespace CapRaffle.UnitTests
@@ -74,7 +75,7 @@ namespace CapRaffle.UnitTests
 
             accountMock.Setup(m => m.ChangePassword("test@capgemini.com", It.IsAny<string>())).Returns(true);
 
-            accountMock.Setup(m => m.GetUserByEmail("test@capgemini.com")).Returns(new User() { Email = "testc@capgemini.com" });
+            accountMock.Setup(m => m.GetUserByEmail("test@capgemini.com")).Returns(new User() { Email = "test@capgemini.com" });
             
             accountMock.Setup(m => m.Users).Returns(GetUsers());
         }
@@ -84,6 +85,8 @@ namespace CapRaffle.UnitTests
             controllerContextMock = new Mock<ControllerContext>();
             controllerContextMock.SetupGet(p => p.HttpContext.User.Identity.Name).Returns("test@capgemini.com");
             controllerContextMock.SetupGet(p => p.HttpContext.Request.IsAuthenticated).Returns(true);
+            var mockResponse = new Mock<HttpResponseBase>();
+            controllerContextMock.Setup(p => p.HttpContext.Response).Returns(mockResponse.Object);
         }
 
         protected void setupDrawingMock()
@@ -167,7 +170,7 @@ namespace CapRaffle.UnitTests
         private static IQueryable<Event> GetEvents()
         {
             return new Event[] {
-                new Event { EventId = 1, Name = "event 1", Created = DateTime.Now, Creator = "creator 1", AvailableSpots = 4, DeadLine = DateTime.Now, CategoryId = 1 },
+                new Event { EventId = 1, Name = "event 1", Created = DateTime.Now, Creator = "creator 1", AvailableSpots = 4, DeadLine = DateTime.Now, CategoryId = 1, Category = new Category { Name="category" }},
                 new Event { EventId = 2, Name = "event 2", Created = DateTime.Now, Creator = "creator 2", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 2 },
                 new Event { EventId = 3, Name = "event 3", Created = DateTime.Now, Creator = "test@capgemini.com", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 3 },
                 new Event { EventId = 4, Name = "event 4", Created = DateTime.Now, Creator = "creator 4", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 4 },

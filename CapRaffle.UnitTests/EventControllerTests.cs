@@ -34,6 +34,16 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
+        public void Can_Not_Create_If_There_Is_No_Categories()
+        {
+            eventMock.Setup(m => m.Categories).Returns(new Category[] {}.AsQueryable());
+
+            var result = eventController.Create();
+
+            Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
+        }
+
+        [Test]
         public void Can_Create_New_Events()
         {
             //Arrange
@@ -181,6 +191,28 @@ namespace CapRaffle.UnitTests
             Assert.IsTrue(events.Length == 3);
             Assert.AreEqual(events[0].Name, "event 4");
             Assert.AreEqual(events[1].Name, "event 5");
+        }
+
+        [Test]
+        public void Can_Get_Index()
+        {
+            var res = eventController.Index(false, 1);
+
+            Assert.IsInstanceOf(typeof(ActionResult), res);
+        }
+
+        [Test]
+        public void Can_Export_Event()
+        {
+            var res = eventController.ExportEvent(1);
+
+            Assert.IsInstanceOf(typeof(FileContentResult), res);
+        }
+
+        [Test]
+        public void Can_Not_Export_Event()
+        {
+            Assert.Throws<ArgumentException>(() => eventController.ExportEvent(100));
         }
     }
 }
