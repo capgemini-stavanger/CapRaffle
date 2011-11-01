@@ -11,5 +11,6 @@ namespace CapRaffle.Domain.Abstract
         bool ForgotPassword(string email, string newPassword);
         bool NotifyLooser(UserEvent looser);
         bool NotifyWinner(Winner winner);
+        bool NotifyCreator(Event selectedEvent);
     }
 }
