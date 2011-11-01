@@ -9,6 +9,7 @@ using CapRaffle.Domain.Model;
 using System.Web.Mvc;
 using CapRaffle.Models;
 using System.Web.Routing;
+using NUnit.Framework;
 
 
 namespace CapRaffle.UnitTests
@@ -31,7 +32,8 @@ namespace CapRaffle.UnitTests
         protected EventViewModel selectedEvent;
         protected Event newevent;
 
-        public Shared()
+        [SetUp]
+        public void Setup()
         {
             setupEventMock();
             setupAccountMock();
