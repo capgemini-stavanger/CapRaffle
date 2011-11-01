@@ -57,6 +57,27 @@ namespace CapRaffle.UnitTests
         }
 
         [Test]
+        public void Creator_Can_Create_Participants()
+        {
+            participant.UserEmail = "finnesikke@blirderforlaget.no";
+
+            var result = participantController.Create(participant);
+
+            Assert.IsInstanceOf(typeof(ActionResult), result);
+            accountMock.Verify(m => m.Create(It.IsAny<String>(), It.IsAny<String>(), It.IsAny<String>()), Times.Once());
+        }
+
+        [Test]
+        public void Can_Cast_Exception_On_Create_Participants()
+        {
+            participant.UserEmail = "finnesikke@blirderforlaget.no";
+            eventMock.Setup(em => em.Users).Throws<Exception>();
+            var result = participantController.Create(participant);
+
+            Assert.IsInstanceOf(typeof(ActionResult), result);
+        }
+
+        [Test]
         public void Can_Not_Delete_Others_Participation()
         {
             //Arrange
