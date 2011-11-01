@@ -133,16 +133,21 @@ namespace CapRaffle.Domain.Implementation
         {
             IEmailSender emailSender = new EmailSender();
             bool emailsDeliverd = true;
+            bool emailSendt = true;
             foreach(Winner w in WinnersForEvent(eventId))
             {
-                bool emailSendt = emailSender.NotifyWinner(w);
+                emailSendt = emailSender.NotifyWinner(w);
                 if (!emailSendt) emailsDeliverd = false;
             }
             foreach (var looser in EventParticipantsForEvent(eventId))
             {
-                bool emailSendt = emailSender.NotifyLooser(looser);
+                emailSendt = emailSender.NotifyLooser(looser);
                 if (!emailSendt) emailsDeliverd = false;
             }
+            var selectedEvent = context.Events.Where(x => x.EventId == eventId).FirstOrDefault();
+            emailSendt = emailSender.NotifyCreator(selectedEvent);
+            if (!emailSendt) emailsDeliverd = false;
+            
             return emailsDeliverd;
         }
 

@@ -9,6 +9,7 @@ using System.Configuration;
 namespace CapRaffle.Domain.Implementation
 {
     using System.IO;
+    using System.Collections.Generic;
 
     // Could'nt all of these be exported to Web.config?
     public class EmailSettings
@@ -79,6 +80,32 @@ namespace CapRaffle.Domain.Implementation
             return SendEmail(mailMessage);
         }
 
+        public bool NotifyCreator(Event selectedEvent)
+        {
+            var body = "<h1>CapRaffle results</h1><br />";
+            body += "<h3>Winners</h3><br />";
+            if (selectedEvent.Winners.Count > 0) body += getWinnerTable(selectedEvent.Winners);
+            else body += "There was no winners for this event";
+            body += "<br />";
+            body += "An email has also been sent to all participants of this event";
+
+            var mailMessage = new MailMessage()
+            {
+                From = new MailAddress(emailSettings.MailFromAddress),
+                Subject = string.Format("[CapRaffle] {0} result", selectedEvent.Name),
+                Body = body,
+                IsBodyHtml = true
+            };
+            mailMessage.To.Add(new MailAddress(selectedEvent.Creator));
+
+            if (emailSettings.WriteAsFile)
+            {
+                mailMessage.BodyEncoding = Encoding.ASCII;
+            }
+            return SendEmail(mailMessage);
+        }
+
+
         public bool NotifyWinner(Winner winner)
         {
             var body = "<h1>Congratulations!</h1><br />";
@@ -117,6 +144,19 @@ namespace CapRaffle.Domain.Implementation
                 mailMessage.BodyEncoding = Encoding.ASCII;
             }
             return SendEmail(mailMessage);
+        }
+
+
+        private string getWinnerTable(IEnumerable<Winner> winners)
+        {
+            var table = "<table>";
+            table += "<tr><th>Name</th><th>Number of spots won</th></tr>";
+            foreach (var winner in winners)
+            {
+                table += string.Format("<tr><td>{0}</td><td>{1}</td></tr>", winner.User.Name, winner.NumberOfSpotsWon);
+            }
+            table += "</table>";
+            return table;
         }
 
         private static string ToCalendarDateString(DateTime dateTime)
