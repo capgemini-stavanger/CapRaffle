@@ -81,6 +81,7 @@
     <Compile Include="ParticipantControllerTests.cs" />
     <Compile Include="Shared.cs" />
     <Compile Include="StatisticControllerTests.cs" />
+    <Compile Include="ViewModelTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
