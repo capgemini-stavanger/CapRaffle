@@ -22,12 +22,14 @@ namespace CapRaffle.UnitTests
         protected Mock<IAccountRepository> accountMock;
         protected Mock<IDrawingRepository> drawingMock;
         protected Mock<ControllerContext> controllerContextMock;
+        protected Mock<IStatisticRepository> statisticMock;
 
         protected AccountController accountController;
         protected DrawWinnerController drawWinnerController;
         protected EventController eventController;
         protected CategoryController categoryController;
         protected ParticipantController participantController;
+        protected StatisticController statisticController;
         
         protected UserEvent participant;
         protected EventViewModel selectedEvent;
@@ -40,6 +42,7 @@ namespace CapRaffle.UnitTests
             setupAccountMock();
             setupControllerContextMock();
             setupDrawingMock();
+            setupStatisticMock();
             setNewEvent();
             setSelectedEvent();
             setParticipant();
@@ -95,6 +98,11 @@ namespace CapRaffle.UnitTests
             drawingMock.Setup(m => m.Winners).Returns(GetWinners());
         }
 
+        protected void setupStatisticMock()
+        {
+            statisticMock = new Mock<IStatisticRepository>();
+        }
+
         protected void setupControllers()
         {
             categoryController = new CategoryController(eventMock.Object);
@@ -102,12 +110,14 @@ namespace CapRaffle.UnitTests
             drawWinnerController = new DrawWinnerController(drawingMock.Object);
             eventController = new EventController(eventMock.Object);
             participantController = new ParticipantController(eventMock.Object, accountMock.Object);
+            statisticController = new StatisticController(statisticMock.Object);
 
             categoryController.ControllerContext = controllerContextMock.Object;
             accountController.ControllerContext = controllerContextMock.Object;
             drawWinnerController.ControllerContext = controllerContextMock.Object;
             eventController.ControllerContext = controllerContextMock.Object;
             participantController.ControllerContext = controllerContextMock.Object;
+            statisticController.ControllerContext = controllerContextMock.Object;
         }
 
         private void setSelectedEvent()
