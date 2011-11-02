@@ -196,8 +196,8 @@ namespace CapRaffle.UnitTests
         private static IQueryable<Winner> GetWinners()
         {
             return new Winner[] {
-                new Winner { EventId = 1, UserEmail = "a@capgemini.com", NumberOfSpotsWon = 2 },
-                new Winner { EventId = 2, UserEmail = "remove@capgemini.com", NumberOfSpotsWon = 2}
+                new Winner { EventId = 1, UserEmail = "a@capgemini.com", NumberOfSpotsWon = 2, Event = new Event { EventId = 1, Name = "event 1", Created = DateTime.Now, Creator = "test@capgemini.com", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 2 } },
+                new Winner { EventId = 2, UserEmail = "remove@capgemini.com", NumberOfSpotsWon = 2 , Event = new Event { EventId = 2, Name = "event 2", Created = DateTime.Now, Creator = "creator 2", AvailableSpots = 2, DeadLine = DateTime.Now, CategoryId = 2 }}
             }.AsQueryable();
         }
     }

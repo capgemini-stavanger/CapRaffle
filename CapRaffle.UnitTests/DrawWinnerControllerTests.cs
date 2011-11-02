@@ -89,6 +89,39 @@ namespace CapRaffle.UnitTests
             Assert.IsInstanceOf(typeof(RedirectToRouteResult), result);
         }
 
+        [Test]
+        public void Can_Not_Remove_Winner()
+        {
+            Winner winner = new Winner { EventId = 2, UserEmail = "remove@capgemini.com", NumberOfSpotsWon = 2 };
+            
+            JsonResult result = drawWinnerController.RemoveWinner(winner);
+
+            Assert.AreEqual(false, result.Data);
+            drawingMock.Verify(m => m.RemoveWinner(winner), Times.Never());
+        }
+
+        [Test]
+        public void Can_Remove_Winner()
+        {
+            Winner winner = new Winner { EventId = 1, UserEmail = "remove@capgemini.com", NumberOfSpotsWon = 2 };
+
+            JsonResult result = drawWinnerController.RemoveWinner(winner);
+
+            Assert.AreEqual(true, result.Data);
+            drawingMock.Verify(m => m.RemoveWinner(winner), Times.Once());
+        }
+
+        [Test]
+        public void Can_Replay_Raffle()
+        {
+            PartialViewResult result = (PartialViewResult)drawWinnerController.ReplayRaffle(SelectedEventId(), "Default");
+
+            DrawWinnerViewModel viewModel = (DrawWinnerViewModel)result.Model;
+
+            Assert.IsInstanceOf(typeof(DrawWinnerViewModel), result.Model);
+            result.AssertPartialViewRendered().ForView("Default");
+        }
+
         private IEnumerable<UserEvent> SelectedEventParticipants()
         {
             return eventMock.Object.Participants
