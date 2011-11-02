@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using CapRaffle.Models;
+using CapRaffle.Controllers;
 
 namespace CapRaffle.UnitTests
 {
@@ -51,6 +52,21 @@ namespace CapRaffle.UnitTests
         {
             var haschode = comparer.GetHashCode(null);
             Assert.AreEqual(0, haschode);
+        }
+
+        [Test]
+        public void Controller_extensions_return_correct_tempdata_value()
+        {
+            var controller = new NavController();
+            controller.Info("info");
+            controller.Success("success");
+            controller.Warning("warning");
+            controller.Error("error");
+
+            Assert.AreEqual("info", controller.TempData["Info"]);
+            Assert.AreEqual("success", controller.TempData["Success"]);
+            Assert.AreEqual("warning", controller.TempData["Warning"]);
+            Assert.AreEqual("error", controller.TempData["Error"]);
         }
     }
 }
