@@ -76,6 +76,7 @@
     <Compile Include="DrawWinnerControllerTests.cs" />
     <Compile Include="EventControllerTests.cs" />
     <Compile Include="HomeControllerTests.cs" />
+    <Compile Include="HtmlHelperTests.cs" />
     <Compile Include="NavControllerTests.cs" />
     <Compile Include="ParticipantControllerTests.cs" />
     <Compile Include="Shared.cs" />
