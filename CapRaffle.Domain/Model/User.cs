@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 
 namespace CapRaffle.Domain.Model
 {
@@ -19,9 +20,8 @@ namespace CapRaffle.Domain.Model
 
         public class UserMetaData
         {
-            [Required(ErrorMessage = "Please enter your capgemini.com email address")]
             [Remote("EmailExists", "Account", ErrorMessage = "Email already exists")]
-            [RegularExpression(".+\\@capgemini.com", ErrorMessage = "Please enter a valid capgemini.com email address")]
+            [RequiredAndValidEmail(ErrorMessage = "Please enter your domain email address")]
             public string Email { get; set; }
             
             [Required(ErrorMessage = "Please enter your name")]

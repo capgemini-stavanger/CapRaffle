@@ -2,17 +2,20 @@
 @{
     ViewBag.Title = "Register";
 }
-
 <h2>Registration</h2>
+<script type="text/javascript">
 
+        jQuery.validator.unobtrusive.adapters.addBool('validemail');
+
+</script>
+@{ Html.EnableUnobtrusiveJavaScript(true); Html.EnableClientValidation(); }
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
     <p>
     @Html.LabelFor(x => x.Email)
     <br />
-    @Html.EditorFor(x => x.Email)
+    @Html.TextBoxFor(x => x.Email)
     @Html.ValidationMessageFor(x => x.Email)
     </p>
     <p>

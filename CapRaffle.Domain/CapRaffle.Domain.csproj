@@ -53,6 +53,7 @@
     <Compile Include="Abstract\IEventRepository.cs" />
     <Compile Include="Abstract\IDrawingRepository.cs" />
     <Compile Include="Abstract\IStatisticRepository.cs" />
+    <Compile Include="Model\RequiredAndValidEmail.cs" />
     <Compile Include="Raffle\DrawWinners.cs" />
     <Compile Include="Raffle\ListExtension.cs" />
     <Compile Include="Implementation\DrawingRepository.cs" />

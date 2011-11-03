@@ -82,13 +82,14 @@ namespace CapRaffle.Controllers
         {
             if (ModelState.IsValid)
             {
-               if (accountRepository.Create(user.Email, user.Password, user.Name))
-                    {
-                        this.Success(string.Format("Account for {0} has been registered", user.Email));
-                        accountRepository.Authenticate(user.Email, user.Password);
-                        return RedirectToAction("Index", "Event");
-                    }
+                if (accountRepository.Create(user.Email, user.Password, user.Name))
+                {
+                    this.Success(string.Format("Account for {0} has been registered", user.Email));
+                    accountRepository.Authenticate(user.Email, user.Password);
+                    return RedirectToAction("Index", "Event");
                 }
+            }
+            //this.Error(string.Join("<br />", ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage)));
             return View();
         }
 
