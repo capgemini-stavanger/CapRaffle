@@ -9,8 +9,10 @@ using System.Configuration;
 namespace CapRaffle.Domain.Implementation
 {
     using System.IO;
+    using System.Collections.Generic;
+    using System.Linq;
 
-    // Could'nt all of these be exported to Web.config?
+	// Could'nt all of these be exported to Web.config?
     public class EmailSettings
     {
         public string MailFromAddress = ConfigurationManager.AppSettings["SmtpMailFromAddress"];
@@ -63,8 +65,7 @@ namespace CapRaffle.Domain.Implementation
             body += string.Format("You did not win any tickets in the raffle for event: <strong>{0}</strong><br />", looser.Event.Name);
             body += "Better luck next time";
 
-            var mailMessage = new MailMessage()
-                {
+            var mailMessage = new MailMessage {
                     From = new MailAddress(emailSettings.MailFromAddress),
                     Subject = string.Format("[CapRaffle] {0} result", looser.Event.Name),
                     Body = body,
@@ -79,6 +80,31 @@ namespace CapRaffle.Domain.Implementation
             return SendEmail(mailMessage);
         }
 
+        public bool NotifyCreator(Event selectedEvent)
+        {
+            var body = "<h1>CapRaffle results</h1><br />";
+            body += "<h3>Winners</h3><br />";
+            if (selectedEvent.Winners.Count > 0) body += GetWinnerTable(selectedEvent.Winners);
+            else body += "There was no winners for this event";
+            body += "<br />";
+            body += "An email has also been sent to all participants of this event";
+
+            var mailMessage = new MailMessage {
+                From = new MailAddress(emailSettings.MailFromAddress),
+                Subject = string.Format("[CapRaffle] {0} result", selectedEvent.Name),
+                Body = body,
+                IsBodyHtml = true
+            };
+            mailMessage.To.Add(new MailAddress(selectedEvent.Creator));
+
+            if (emailSettings.WriteAsFile)
+            {
+                mailMessage.BodyEncoding = Encoding.ASCII;
+            }
+            return SendEmail(mailMessage);
+        }
+
+
         public bool NotifyWinner(Winner winner)
         {
             var body = "<h1>Congratulations!</h1><br />";
@@ -87,8 +113,7 @@ namespace CapRaffle.Domain.Implementation
             body += string.Format("Please look at the event details or contact <a href=\"{0}\">{0}</a> to get {1}.", 
                 winner.Event.Creator, winner.NumberOfSpotsWon == 1 ? "it" : "them");
 
-            var mailMessage = new MailMessage()
-                {
+            var mailMessage = new MailMessage {
                     From = new MailAddress(emailSettings.MailFromAddress),
                     Subject = string.Format("[CapRaffle] {0} winner!", winner.Event.Name),
                     Body = body,
@@ -96,19 +121,9 @@ namespace CapRaffle.Domain.Implementation
                 };
             mailMessage.To.Add(new MailAddress(winner.UserEmail));
 
-            var calenderData = new StringWriter();
-            calenderData.WriteLine("BEGIN:VCALENDAR");
-            calenderData.WriteLine("VERSION:2.0");
-            calenderData.WriteLine("PRODID:-//hacksw/handcal//NONSGML v1.0//EN");
-            calenderData.WriteLine("BEGIN:VEVENT");
-            calenderData.WriteLine("DTSTAMP:{0}", ToCalendarDateString(winner.Event.Created));
-            calenderData.WriteLine("ORGANIZER:mailto:{0}", winner.Event.Creator);
-            calenderData.WriteLine("DTSTART:{0}", ToCalendarDateString(winner.Event.StartTime));
-            calenderData.WriteLine("SUMMARY:{0}", winner.Event.Name);
-            calenderData.WriteLine("END:VEVENT");
-            calenderData.WriteLine("END:VCALENDAR");
+        	var calendarData = GenerateCalendarEvent(winner.Event);
 
-            using (MemoryStream memoryStream = new MemoryStream(UTF32Encoding.Default.GetBytes(calenderData.ToString())))
+            using (var memoryStream = new MemoryStream(Encoding.Default.GetBytes(calendarData)))
             {
                 mailMessage.Attachments.Add(new Attachment(memoryStream, "event.vcs"));
             }
@@ -117,6 +132,36 @@ namespace CapRaffle.Domain.Implementation
                 mailMessage.BodyEncoding = Encoding.ASCII;
             }
             return SendEmail(mailMessage);
+        }
+
+		private static string GenerateCalendarEvent(Event winnerEvent)
+		{
+            var calendarData = new StringWriter();
+
+            calendarData.WriteLine("BEGIN:VCALENDAR");
+            calendarData.WriteLine("VERSION:2.0");
+            calendarData.WriteLine("PRODID:-//hacksw/handcal//NONSGML v1.0//EN");
+			calendarData.WriteLine("BEGIN:VEVENT");
+            calendarData.WriteLine("DTSTAMP:{0}", ToCalendarDateString(winnerEvent.Created.ToUniversalTime()));
+            calendarData.WriteLine("ORGANIZER:mailto:{0}", winnerEvent.Creator);
+            calendarData.WriteLine("DTSTART:{0}", ToCalendarDateString(winnerEvent.StartTime.ToUniversalTime()));
+            calendarData.WriteLine("SUMMARY:{0}", winnerEvent.Name);
+            calendarData.WriteLine("END:VEVENT");
+            calendarData.WriteLine("END:VCALENDAR");
+
+			return calendarData.ToString();
+		}
+
+        private static string GetWinnerTable(IEnumerable<Winner> winners)
+        {
+            var table = "<table>";
+            table += "<tr><th>Name</th><th>Number of spots won</th></tr>";
+        	table = winners.Aggregate(table, (current, winner) => 
+				current + string.Format("<tr><td>{0}</td><td>{1}</td></tr>", 
+				winner.User.Name, 
+				winner.NumberOfSpotsWon));
+        	table += "</table>";
+            return table;
         }
 
         private static string ToCalendarDateString(DateTime dateTime)
